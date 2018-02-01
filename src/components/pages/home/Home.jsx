@@ -4,7 +4,7 @@ import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 //Template parts
 import Header from '../../template/header/Header';
 import Footer from '../../template/footer/Footer';
-
+import Forum from '../../mixins/forum/Forum';
 
 //Data
 import data from '../../../topics.json';
@@ -15,7 +15,7 @@ import categories from '../../../categories.json';
 class Home extends Component {
 	constructor() {
 		super();
-		this.state = {topics: []};
+		this.state = {topics: data};
 	}
 
 	componentWillMount() {	
@@ -29,7 +29,6 @@ class Home extends Component {
 	}
 	render() {
 		const { topics } = this.state;
-
 		return (
 			<div id="home">
 			<Header />	
@@ -39,7 +38,7 @@ class Home extends Component {
 	          					<SearchFilter categories={categories} page="home" /> 
 	          				</div>
 	          				<div className="right">
-	          					
+	          					<Forum topics={ topics } />
 	          				</div>
 
 	          		</div>
