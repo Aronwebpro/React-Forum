@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik");
+.navigation-buttons {
+  margin-bottom: 10px;
+  color: #fff;
+  box-sizing: border-box; }
+  .navigation-buttons .btn {
+    border-radius: 3px;
+    display: inline-block;
+    background-color: #7f1ae5; }
+    .navigation-buttons .btn:hover {
+      background-color: rgba(127, 26, 229, 0.6); }
+  .navigation-buttons .new-topic-button {
+    display: block; }
+  .navigation-buttons .back-button {
+    padding: 10px 0 10px 10px;
+    width: 34%;
+    position: relative; }
+    .navigation-buttons .back-button img {
+      width: 30%;
+      position: absolute;
+      left: 2px;
+      top: 23%; }
+  .navigation-buttons .new-comment-button {
+    padding: 10px 0;
+    width: 64%; }
+  .navigation-buttons:after {
+    content: '';
+    display: block;
+    clear: both; }

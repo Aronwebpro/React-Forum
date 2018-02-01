@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik");
+.search-filter {
+  background-color: white;
+  color: #222;
+  font-family: sans-serif; }
+
+.search-filter h5 {
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  margin: 0px; }
+
+.search-filter ul {
+  padding: 0px;
+  margin: 0px; }
+
+.search-filter ul li {
+  list-style-type: none;
+  padding: 15px 10px;
+  font-weight: 700;
+  border-bottom: 1px solid #ededed;
+  transition: all 0.2s linear; }
+
+.search-filter li:last-child {
+  border-bottom: 0px; }
+
+.search-filter li:hover {
+  cursor: pointer;
+  background-color: #ededed; }
+
+.filter-count {
+  float: right; }

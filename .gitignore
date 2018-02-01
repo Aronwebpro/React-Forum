@@ -9,6 +9,9 @@
 # production
 /build
 
+# Rebase logins
+/src/base.js
+
 # misc
 .DS_Store
 .env.local

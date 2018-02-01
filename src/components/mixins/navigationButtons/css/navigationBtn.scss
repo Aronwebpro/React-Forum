@@ -1,0 +1,46 @@
+@import '../../../../css/variables.scss';
+
+.navigation-buttons {
+	margin-bottom: 10px;
+	color: $btn-text-color;
+	box-sizing: border-box;
+
+	.btn {
+		border-radius: 3px;
+		display:inline-block;
+		background-color: #7f1ae5;
+
+		&:hover {
+			background-color: rgba(127,26,229, 0.6);
+		}
+	}
+
+	.new-topic-button {
+		display:block;
+	}
+	
+	.back-button {
+		padding: 10px 0 10px 10px;
+		width: 34%;
+		position: relative;
+
+		img {
+				width:30%;
+				position:absolute;
+				left:2px;
+				top:23%;
+		}
+	}
+
+	.new-comment-button {
+		padding: 10px 0;
+		width:64%;
+	}
+
+	&:after {
+		content:'';
+		display:block;
+		clear:both;
+	}
+
+}

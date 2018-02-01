@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik");
+header {
+  background-color: #222;
+  margin: 0;
+  font-family: 'Noto Sans', sans-serif;
+  height: 75px;
+  position: sticky;
+  width: 100%;
+  top: 0;
+  transition: all 0.25s ease;
+  z-index: 1; }
+
+.shrink {
+  height: 50px;
+  font-size: 0.8em; }
+
+.app-header {
+  color: white;
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%); }
+
+.app-title {
+  font-size: 2em;
+  margin: 0;
+  font-weight: 400; }
+
+.app-title span {
+  font-weight: 700;
+  color: #7f1ae5; }
+
+/**********Navigation**********/
+nav {
+  display: inline-block;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%); }
+
+nav a,
+nav a:link,
+nav a:visited {
+  color: white;
+  text-decoration: none;
+  font-size: 1.25em;
+  margin: 0 15px;
+  padding-bottom: 3px;
+  transition: color 0.1s linear; }
+
+nav a:hover {
+  color: #7f1ae5; }
