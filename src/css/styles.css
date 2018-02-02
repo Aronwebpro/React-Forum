@@ -88,16 +88,26 @@ a, a:hover, a:active, a:visited {
 
 form {
   width: 100%;
-  display: block; }
-  form label, form input, form button, form textarea {
-    display: block;
-    width: 100%;
-    margin: auto; }
-  form input {
-    height: 30px; }
-  form label {
-    margin: 5px auto 2px;
-    color: #6b6a6a; }
-  form button {
-    margin-top: 20px;
-    padding: 10px; }
+  display: block; 
+  
+}
+form label, form input, form button, form textarea {
+  display: block;
+  width: 100%;
+  margin: auto; 
+  
+}
+form input {
+  height: 30px; 
+  
+}
+form label {
+  margin: 5px auto 2px;
+  color: #6b6a6a; 
+  
+}
+form button {
+  margin-top: 20px;
+  padding: 10px; 
+  
+}

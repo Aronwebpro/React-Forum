@@ -6,6 +6,7 @@ import { BrowserRouter, Match, Miss } from 'react-router';
 //Components
 import Home from './components/pages/home/Home.jsx';
 import NotFound from './components/pages/404/notfound.jsx';
+import Post from './components/pages/post/Post';
 
 //Styles
 import './css/styles.css'
@@ -15,6 +16,7 @@ const Root = () => {
 		<BrowserRouter>
 			<div className="page">
 				<Match exactly pattern="/" component={Home} />
+				<Match pattern="/post/:postId" component={Post} />
 				<Miss component={NotFound} />
 			</div>
 		</BrowserRouter>
