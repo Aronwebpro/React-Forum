@@ -1,0 +1,27 @@
+@import '../../../../css/variables.scss';
+
+.login-wrapper {
+	max-width: 300px;
+	width: 100%;
+	display:block;
+	margin:auto;
+	font-size:1.2em;
+	font-family: $primary-font-stack;
+
+
+	.dont-have-acc {
+		text-align: center;
+		color: #6b6a6a;
+		margin-top:10px;
+
+		a {
+			color: #1d1d1d;
+		}
+	}
+
+	.form-wrapper {
+		border:1px solid #222;
+		margin-top:10px;
+		padding-bottom: 20px;
+	}
+}
