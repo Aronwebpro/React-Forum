@@ -17,25 +17,16 @@ class Home extends Component {
 		super();
 		this.state = {topics: data};
 	}
-
-	componentWillMount() {	
-
-	}
-	componentDidMount() {
-
-	}
-	componentWillUnmount() {
-
-	}
 	render() {
 		const { topics } = this.state;
+		const { isLoggedIn } = this.props;
 		return (
 			<div id="home">
 			<Header />	
 	          <div className="content" >
 	          		<div className="container">
 	          				<div className="left">
-	          					<SearchFilter categories={categories} page="home" /> 
+	          					<SearchFilter categories={categories} page="home" isLoggedIn={ isLoggedIn } /> 
 	          				</div>
 	          				<div className="right">
 	          					<Forum topics={ topics } />

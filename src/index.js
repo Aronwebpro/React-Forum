@@ -15,13 +15,14 @@ import Login from './components/pages/login/Login';
 import './css/styles.css'
 
 const Root = () => {
+	const isLoggedIn = false;
 	return (
 		<BrowserRouter>
 			<div className="page">
-				<Match exactly pattern="/" component={Home} />
-				<Match pattern="/post/:postId" component={Post} />
+				<Match exactly pattern="/" render={ () => <Home isLoggedIn={ isLoggedIn } /> } />
+				<Match pattern="/post/:postId" render={(params) => <Post params={ params } isLoggedIn={ isLoggedIn } /> } />
 				<Match exactly pattern="/login" component={Login} />
-				<Match exactly pattern="/new" component={NewTopic} />
+				<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } /> } />
 				<Miss component={NotFound} />
 			</div>
 		</BrowserRouter>

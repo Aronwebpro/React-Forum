@@ -10,9 +10,10 @@ class SearchFilter extends Component {
 
 	render() {
 		const { categories } = this.props;
+		const {isLoggedIn } = this.props;
 		return(
 			<div>
-				<NavigationBnt page={this.props.page} />
+				<NavigationBnt page={this.props.page} isLoggedIn={ isLoggedIn } />
 				<div className="search-filter">
 					<h5>Select a Category</h5>
 					<ul>

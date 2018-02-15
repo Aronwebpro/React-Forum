@@ -5,7 +5,8 @@ import arrow from './img/back-arrow.png';
 const NavigationBnt = (props) => {
 	let BackBtn;
 	let actionBnt;
-	if (props.hasOwnProperty('page')) {
+	let btnLink;
+	if (props.hasOwnProperty('page') && props.isLoggedIn ) {
 		switch(props.page) {
 			case 'home' :
 			actionBnt = (<a href="/new" className="new-topic-button btn">New Topic</a> );
@@ -20,16 +21,27 @@ const NavigationBnt = (props) => {
 			default :
 			break;
 		}
+	} 
+	if (props.isLoggedIn) {
+		return (
+			<div className="navigation-buttons">
+				{BackBtn} {actionBnt}
+			</div>
+
+		);
+	} else if (!props.isLoggedIn && props.hasOwnProperty('page') && props.page === 'post' ) {
+			BackBtn = (<a href="/" className="back-button btn"><span><img src={arrow} alt=""/></span>Back</a> );
+			actionBnt = (<a href="/login" className="new-comment-button btn">Respond</a> );
+			console.log(props.isLoggedIn);
+			return (
+				<div className="navigation-buttons">
+					{BackBtn} {actionBnt}
+				</div>
+
+			);
+	} else {
+		return ( '' )
 	}
-
-
-	
-	return (
-		<div className="navigation-buttons">
-			{BackBtn} {actionBnt}
-		</div>
-
-	);
 };
 
 export default NavigationBnt;
