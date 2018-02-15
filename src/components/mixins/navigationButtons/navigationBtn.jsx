@@ -12,8 +12,8 @@ const NavigationBnt = (props) => {
 			actionBnt = (<a href="/new" className="new-topic-button btn">New Topic</a> );
 			break;
 			case 'post' :
-			BackBtn = (<a href="/" className="back-button btn"><span><img src={arrow} alt=""/></span>Back</a> );
-			actionBnt = (<a href="/" className="new-comment-button btn">Respond</a> );
+			BackBtn = (<a href="/" className="back-button btn">{/*<span><img src={arrow} alt=""/> </span>*/}Back</a> );
+			actionBnt = (<a onClick={props.respond} className="new-comment-button btn">Reply</a> );
 			break;
 			case 'new' :
 			BackBtn = (<a href="/" className="back-button btn"><span><img src={arrow} alt=""/></span>Back</a> );
@@ -32,7 +32,6 @@ const NavigationBnt = (props) => {
 	} else if (!props.isLoggedIn && props.hasOwnProperty('page') && props.page === 'post' ) {
 			BackBtn = (<a href="/" className="back-button btn"><span><img src={arrow} alt=""/></span>Back</a> );
 			actionBnt = (<a href="/login" className="new-comment-button btn">Respond</a> );
-			console.log(props.isLoggedIn);
 			return (
 				<div className="navigation-buttons">
 					{BackBtn} {actionBnt}

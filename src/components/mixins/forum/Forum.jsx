@@ -24,18 +24,18 @@ class Forum extends Component {
 		} else {
 			this.arrow.style.transform = 'rotateZ(0deg) translate(20%, 0%)';
 		}
-	}
+	} 
 	componentDidUpdate() {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
 
 	}
 	render() {
-		const { topics } = this.props.topics;
+		const { topics } = this.props;
 		return (
 			<div className="forum">
 				<div className="forum-header">
 					<div className="forum-title">
-						<h2>Forum Component</h2>
+						<h2>Recent Posts</h2>
 					</div>
 					<div ref={input => (this.arrow = input)} className="arrors" onClick={() => this.expand(this)}>
 						<div className="leftArrow" />

@@ -9,13 +9,27 @@ import Forum from '../../mixins/forum/Forum';
 //Data
 import data from '../../../topics.json';
 import categories from '../../../categories.json';
-
+import base from '../../../base';
 
 
 class Home extends Component {
 	constructor() {
 		super();
-		this.state = {topics: data};
+		this.state = {topics: {}};
+	}
+	componentWillMount() {
+		const oneDay = 86400000;
+		const dateNow = Date.now() - (oneDay * 7);
+		this.ref = base.bindToState('topics', {
+			context: this,
+			state: 'topics',
+			queries: {
+				orderByChild: 'created'
+  			}
+		});		
+	}
+	componentWillUnmount() {
+		base.removeBinding(this.ref);
 	}
 	render() {
 		const { topics } = this.state;
