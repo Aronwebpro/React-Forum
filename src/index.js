@@ -24,7 +24,7 @@ const Root = () => {
 				<Match exactly pattern="/" render={ () => <Home isLoggedIn={ isLoggedIn } /> } />
 				<Match pattern="/post/:postId" render={(params) => <Post params={ params } isLoggedIn={ isLoggedIn } user={ user } /> } />
 				<Match exactly pattern="/login" component={Login} />
-				<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } /> } />
+				<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } user={ user } /> } />
 				<Miss component={NotFound} />
 			</div>
 		</BrowserRouter>

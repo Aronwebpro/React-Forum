@@ -3,8 +3,9 @@ import Header from '../../template/header/Header';
 import Footer from '../../template/footer/Footer';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import categories from '../../../categories.json';
+import CommentRow from '../../mixins/commentrow/CommentRow';
 
-//Data
+//Database
 import base from '../../../base';
 
 class Post extends Component {
@@ -16,7 +17,8 @@ class Post extends Component {
 		this.Id = this.props.params.params.postId;
 		const defaultState = { 
 					post: {},
-					user: props.user
+					user: props.user,
+					comments: {}
 				};
 		defaultState.post[this.Id] = {
 			topicId: '',
@@ -31,7 +33,7 @@ class Post extends Component {
 		this.state = defaultState;
 	}
 	componentWillMount() {
-		this.ref = base.bindToState('topics', {
+		this.postRef = base.bindToState('topics', {
 			context: this,
 			state: 'post',
 			queries: {
@@ -39,9 +41,36 @@ class Post extends Component {
 				equalTo: this.Id
 			}
 		});
+		this.commentRef = base.bindToState('comments', {
+			context: this,
+			state: 'comments',
+			queries: {
+				orderByChild: 'topicId',
+				equalTo: this.Id
+			}
+		});
 	}
 	post() {
+		const time = Date.now();
+		const input = {
+			text: this.respText.value,
+			authorAvatar: this.props.user.authorAvatar,
+			authorName: this.props.user.authorName,
+			topicId:this.Id,
+			posted: time,
+		}
+		
+  		this.postRef = base.push('comments', {
+		    data: input
+		  }).then(newLocation => {
+		    let generatedKey = newLocation.key;
+		  }).catch(err => {
+		    //handle error
 
+		  });
+		 
+		this.setState({respond:''});
+		this.respText.value = '';
 	}
 	respond(user) {
 		this.setState({
@@ -57,21 +86,8 @@ class Post extends Component {
 					<div className="post">
 									<div className="full-post new-post-body">
 										<form>
-											<label htmlFor=""><h3>Title:</h3></label>
-											<input type="text" name="title"/>
-											<div className="category-select">
-												<label htmlFor=""><h3>Category</h3></label>
-												<select name="category" id="">
-													<option value="">Select Category</option>
-													<option value="Board Games">Board Games</option>
-													<option value="Card Games">Card Games</option>
-													<option value="PC Games">PC Games</option>
-													<option value="Console Games">Console Games</option>
-													<option value="Handheld Games">Handheld Gamess</option>
-												</select>
-											</div>
-											<label htmlFor=""><h3>Text:</h3></label>
-											<textarea name="" id="" cols="30" rows="10"></textarea>
+											<label htmlFor=""><h2>Write a Comment:</h2></label>
+											<textarea name="" id="" cols="30" rows="10" ref={ (input) => this.respText = input }></textarea>
 										</form>
 										<button onClick={ this.post } className="btn" style={ {marginTop: '20px'} } >Post</button>
 									</div>
@@ -94,7 +110,7 @@ class Post extends Component {
 			createdDate = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();
 			createdTime = date.getHours() + ':' + date.getMinutes();
 		}
-
+		const comments = this.state.comments;
 		const { isLoggedIn }= this.props;
 		return (
 			<div>
@@ -122,7 +138,20 @@ class Post extends Component {
 									<div className="fl_c" />
 								</div>
 								<div className="post-title forum-header" style={ {marginTop:'20px'} }>
-									<h2>Responses 0</h2>
+									<h2>{ Object.keys(comments).length || 0 } Responses </h2>
+								</div>
+								<div>
+									{Object.keys(comments).map(comment => {
+										let date = new Date(comments[comment].posted);
+										let createdDate = date.getMonth()+1 + '/' + date.getDate() + ' ' + date.getFullYear();
+										let createdTime = date.getHours() + ':' + date.getMinutes();	
+										return <CommentRow 
+													key={ comment } 
+													comment={ comments[comment]} 
+													createdTime={ createdTime }  
+													createdDate={ createdDate } 
+												/>;
+									})}
 								</div>
 								<div>
 									{ this.respondForm() }

@@ -32,7 +32,6 @@ class TopicRow extends Component {
 				return defGm;
 		}
 	}
-
 	render() {
 		const { topic, since, createdDate, createdTime, topicId } = this.props;
 		return (
