@@ -30,7 +30,7 @@ class Header extends Component {
         <div className='app-header'>
           <a href="/"><h1 className='app-title'>Forum<span>Header</span></h1></a>
         </div>
-        <Navigation />
+        <Navigation user={ this.props.user }/>
       </header>
     );
   }

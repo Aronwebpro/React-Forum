@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 
-//Template parts
-import Header from '../../template/header/Header';
-import Footer from '../../template/footer/Footer';
-
 //import TopicRow from '../../__mixins/topicrow/TopicRow';
 import Forum from '../../mixins/forum/Forum';
 
@@ -47,8 +43,6 @@ class Home extends Component {
 		if(isLoggedIn) {
 			return (
 				<div id="home">
-				<Header />	
-		          <div className="content" >
 		          		<div className="container">
 		          				<div className="left">
 		          					<SearchFilter categories={categories} page="new" isLoggedIn={ isLoggedIn } /> 
@@ -78,11 +72,10 @@ class Home extends Component {
 										<button className="btn" onClick={ this.post } style={ {marginTop:'20px'} } >Post</button>
 									</div>
 		          				</div>
-
-		          		</div>
+		          		
 		          </div>
 		         <div className="fl_c"></div> 
-				<Footer />
+
 				</div>
 			)
 		} else {

@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
-
-//Template parts
-import Header from '../../template/header/Header';
-import Footer from '../../template/footer/Footer';
 import Forum from '../../mixins/forum/Forum';
 
 //Data
@@ -36,8 +32,6 @@ class Home extends Component {
 		const { isLoggedIn } = this.props;
 		return (
 			<div id="home">
-			<Header />	
-	          <div className="content" >
 	          		<div className="container">
 	          				<div className="left">
 	          					<SearchFilter categories={categories} page="home" isLoggedIn={ isLoggedIn } /> 
@@ -47,9 +41,7 @@ class Home extends Component {
 	          				</div>
 
 	          		</div>
-	          </div>
 	         <div className="fl_c"></div> 
-			<Footer />
 			</div>
 		)
 	}

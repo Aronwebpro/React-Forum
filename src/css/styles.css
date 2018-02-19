@@ -110,3 +110,11 @@ form {
   form button {
     margin-top: 20px;
     padding: 10px; }
+
+.register-page {
+  margin:auto;
+  width: 500px;
+}
+.register-page .btn {
+  margin-top:20px;
+}

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Header from '../../template/header/Header';
-import Footer from '../../template/footer/Footer';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import categories from '../../../categories.json';
 import CommentRow from '../../mixins/commentrow/CommentRow';
@@ -114,7 +112,6 @@ class Post extends Component {
 		const { isLoggedIn }= this.props;
 		return (
 			<div>
-				<Header />
 				<div className="content">
 					<div className="content">
 						<div className="container">
@@ -162,7 +159,6 @@ class Post extends Component {
 					</div>
 				</div>
 
-				<Footer />
 			</div>
 		);
 	}
