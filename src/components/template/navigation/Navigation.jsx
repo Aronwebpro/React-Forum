@@ -15,7 +15,6 @@ class Navigation extends Component {
 	}
 	render() {
 		let logout;
-		console.log(this.props);
 		if (this.props.user) {
 			logout = (<a onClick={ this.logOut } style={ {cursor: 'pointer'} }>Logout</a>);
 		} else {

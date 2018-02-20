@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Match, Miss } from 'react-router';
 import firebase from 'firebase';
 //import registerServiceWorker from './registerServiceWorker';
-
+import firebaseApp from './firebase.js';
 //Page Components
 import Home from './components/pages/home/Home.jsx';
 import NotFound from './components/pages/404/notfound.jsx';
@@ -22,7 +22,14 @@ import './css/styles.css'
 
 firebase.auth().onAuthStateChanged( user => {
   if (user) {
-  		console.log(user); 
+  		console.log(user);
+  		const user2 = {
+  			uid: user.uid,
+  			name: user.displayName,
+  			memberSince: user.metadata.a,
+  			avatar: user.photoURL
+  		}
+
 	    const Root = () => {
 		const isLoggedIn = true;
 			return (

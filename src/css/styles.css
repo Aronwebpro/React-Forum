@@ -118,3 +118,53 @@ form {
 .register-page .btn {
   margin-top:20px;
 }
+
+.avatar-square {
+  float:left;
+  width: 12.5%;
+
+}
+.avatar-square img {
+  max-width: 100%;
+  cursor:pointer;
+  opacity:0.7;
+}
+.avatar-wrapper {
+
+}
+.avatar-wrapper:after {
+  content: '';
+  display: block;
+  clear:both;
+}
+
+input#img1,
+input#img2,
+input#img3,
+input#img4,
+input#img5,
+input#img6,
+input#img7,
+input#img8,
+input#img9,
+input#img10,
+input#img11,
+input#img12,
+input#img13,
+input#img14,
+input#img15,
+input#img16  {
+    display: none;
+}
+.avatar-square input:checked + label img,
+.avatar-square input:checked + label {
+    transform:scale(1.14);
+    opacity:1;
+}
+.avatar-title {
+  padding: 20px 0 0;
+}
+
+.avatar-wrapper .avatar-row {
+  margin: 5px auto;
+}
