@@ -22,25 +22,30 @@ import './css/styles.css'
 
 firebase.auth().onAuthStateChanged( user => {
   if (user) {
-  		console.log(user);
-  		const user2 = {
+  		const date = new Date(Number.parseInt(user.metadata.a));	
+  		let createdDate = ''
+		if(date != 'Invalid Date') {
+			createdDate = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();
+		}
+
+  		const userMeta = {
   			uid: user.uid,
-  			name: user.displayName,
-  			memberSince: user.metadata.a,
-  			avatar: user.photoURL
+  			authorName: user.displayName,
+  			authorAvatar: user.photoURL,
+  			memberSince: createdDate
   		}
 
 	    const Root = () => {
-		const isLoggedIn = true;
+			const isLoggedIn = true;
 			return (
 				<BrowserRouter>
 					<div className="page">
 						<Header isLoggedIn={ isLoggedIn } user={ user } />
 						<div className="content">	
 							<Match exactly pattern="/" render={ () => <Home isLoggedIn={ isLoggedIn } /> } />
-							<Match pattern="/post/:postId" render={(params) => <Post params={ params } isLoggedIn={ isLoggedIn } user={ user } /> } />
-							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } /> } />
-							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } user={ user } /> } />
+							<Match pattern="/post/:postId" render={(params) => <Post params={ params } isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
+							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
+							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
 							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } />
 							<Miss component={NotFound} />
 						</div>
@@ -52,7 +57,7 @@ firebase.auth().onAuthStateChanged( user => {
 		ReactDOM.render(<Root />, document.getElementById('root'));
   } else {
 	    const Root = () => {
-		const isLoggedIn = false;
+			const isLoggedIn = false;
 			return (
 				<BrowserRouter>
 					<div className="page">
@@ -62,7 +67,7 @@ firebase.auth().onAuthStateChanged( user => {
 							<Match pattern="/post/:postId" render={(params) => <Post params={ params } isLoggedIn={ isLoggedIn } /> } />
 							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } /> } />
 							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } /> } />
-							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } />
+							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } /> 
 							<Miss component={NotFound} />
 						</div>
 						<Footer />

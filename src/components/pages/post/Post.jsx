@@ -11,12 +11,14 @@ class Post extends Component {
 		super(props);
 		this.respond = this.respond.bind(this);
 		this.respondForm = this.respondForm.bind(this);
-		this.post = this.post.bind(this);
+		this.postComment = this.postComment.bind(this);
+		this.respondText = this.respondText.bind(this);
 		this.Id = this.props.params.params.postId;
 		const defaultState = { 
 					post: {},
 					user: props.user,
-					comments: {}
+					comments: {},
+					replyText: {text:'', user:''}
 				};
 		defaultState.post[this.Id] = {
 			topicId: '',
@@ -48,14 +50,17 @@ class Post extends Component {
 			}
 		});
 	}
-	post() {
+	postComment() {
+		console.log(this.state.replyText);
 		const time = Date.now();
 		const input = {
 			text: this.respText.value,
 			authorAvatar: this.props.user.authorAvatar,
 			authorName: this.props.user.authorName,
+			memberSince:this.props.user.memberSince,
 			topicId:this.Id,
 			posted: time,
+			quote: this.state.replyText
 		}
 		
   		this.postRef = base.push('comments', {
@@ -64,7 +69,6 @@ class Post extends Component {
 		    let generatedKey = newLocation.key;
 		  }).catch(err => {
 		    //handle error
-
 		  });
 		 
 		this.setState({respond:''});
@@ -75,9 +79,9 @@ class Post extends Component {
 			respond: true,
 			user: user
 		});
+		setTimeout(() => this.respondDiv.scrollIntoView({ behavior:'smooth'}), 200 );
 	}
 	respondForm() {
-
 		if (this.state.respond === true ) {
 			return ( 
 				<div className="full-post" style={ {marginTop:'20px'} }>
@@ -87,17 +91,21 @@ class Post extends Component {
 											<label htmlFor=""><h2>Write a Comment:</h2></label>
 											<textarea name="" id="" cols="30" rows="10" ref={ (input) => this.respText = input }></textarea>
 										</form>
-										<button onClick={ this.post } className="btn" style={ {marginTop: '20px'} } >Post</button>
+										<button onClick={ this.postComment } className="btn" style={ {marginTop: '20px'} } >Post</button>
 									</div>
 					</div>
 					<div className="author-info">
 						<img src={this.props.user.authorAvatar} alt=""/>
-						<p>{this.props.user.authorName}</p>
+						<p>Author: {this.props.user.authorName}</p>
+						<p>Member Since: {this.props.user.memberSince}</p>
 					</div>
 					<div className="fl_c" />
 				</div> 
 				);
 		}
+	}
+	respondText(data) {
+		this.setState({replyText: {text:data.text, user:data.user}});
 	}
 	render() {
 		const post = this.state.post[this.Id];
@@ -124,13 +132,15 @@ class Post extends Component {
 								</div>
 								<div className="full-post">
 									<div className="post">
-										<div className="post-info">Topic: {post.category}</div>
-										<p>{post.text}</p>
+										<div className="post-info">Category: {post.category} / Posted: { createdDate + ' ' + createdTime }</div>
+										<div className="post-text">
+											<p>{post.text}</p>
+										</div>
 									</div>
 									<div className="author-info">
 										<img src={post.authorAvatar} alt=""/>
 										<p>Author: {post.authorName}</p>
-										<p>Created: {createdDate}</p>
+										<p>Member Since: {createdDate}</p>
 									</div>
 									<div className="fl_c" />
 								</div>
@@ -146,7 +156,8 @@ class Post extends Component {
 													key={ comment } 
 													comment={ comments[comment]} 
 													createdTime={ createdTime }  
-													createdDate={ createdDate } 
+													createdDate={ createdDate }
+													respondText={ this.respondText }
 												/>;
 									})}
 								</div>
@@ -158,8 +169,9 @@ class Post extends Component {
 						</div>
 					</div>
 				</div>
-
+				<div style={ { height: '20px' } } ref={input => this.respondDiv = input}></div>
 			</div>
+
 		);
 	}
 }

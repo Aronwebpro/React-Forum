@@ -5,42 +5,48 @@ import arrow from './img/back-arrow.png';
 const NavigationBnt = (props) => {
 	let BackBtn;
 	let actionBnt;
-	let btnLink;
-	if (props.hasOwnProperty('page') && props.isLoggedIn ) {
+	let btnLink;	
+	if (props.hasOwnProperty('page')) {
 		switch(props.page) {
 			case 'home' :
-			actionBnt = (<a href="/new" className="new-topic-button btn">New Topic</a> );
+			if(props.isLoggedIn) {
+				actionBnt = (<a href="/new" className="new-topic-button btn">New Post</a> );
+			} else {
+		   		actionBnt = (<a href="/login" className="new-topic-button btn">New Post</a> );
+			}
 			break;
 			case 'post' :
-			BackBtn = (<a href="/" className="back-button btn">{/*<span><img src={arrow} alt=""/> </span>*/}Back</a> );
-			actionBnt = (<a onClick={props.respond} className="new-comment-button btn">Reply</a> );
+			if(props.isLoggedIn) {
+				BackBtn = (<a href="/" className="back-button btn">Back</a> );
+				actionBnt = (<a onClick={props.respond} className="new-comment-button btn">Reply</a> );
+			} else {
+				BackBtn = (<a href="/" className="back-button btn">Back</a> );
+				actionBnt = (<a href="/login" className="new-comment-button btn">Reply</a> );
+			}
 			break;
 			case 'new' :
-			BackBtn = (<a href="/" className="back-button btn"><span><img src={arrow} alt=""/></span>Back</a> );
-			actionBnt = (<a href="" className="new-comment-button btn">Reset</a> );
+				BackBtn = (<a href="/" className="back-button btn">Back</a> );
+				actionBnt = (<a onClick={props.reset} className="new-comment-button btn">Reset</a> );
 			default :
 			break;
 		}
 	} 
-	if (props.isLoggedIn) {
-		return (
-			<div className="navigation-buttons">
-				{BackBtn} {actionBnt}
-			</div>
 
-		);
-	} else if (!props.isLoggedIn && props.hasOwnProperty('page') && props.page === 'post' ) {
-			BackBtn = (<a href="/" className="back-button btn"><span><img src={arrow} alt=""/></span>Back</a> );
-			actionBnt = (<a href="/login" className="new-comment-button btn">Respond</a> );
-			return (
-				<div className="navigation-buttons">
-					{BackBtn} {actionBnt}
-				</div>
+	return (
+		<div className="navigation-buttons">
+			{BackBtn} {actionBnt}
+		</div>
+	)
+ 		// 	if (!props.isLoggedIn && props.hasOwnProperty('page') && props.page === 'post' ) {
+			// 	BackBtn = (<a href="/" className="back-button btn"><span><img src={arrow} alt=""/></span>Back</a> );
+			// 	actionBnt = (<a href="/login" className="new-comment-button btn">Respond</a> );
+			// 	return (
+			// 		<div className="navigation-buttons">
+			// 			{BackBtn} {actionBnt}
+			// 		</div>
 
-			);
-	} else {
-		return ( '' )
-	}
+			// 	);
+			// } 
 };
 
 export default NavigationBnt;
