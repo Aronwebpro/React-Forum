@@ -4,7 +4,7 @@ import React from 'react';
 const CommentRow = (props) => {
 	const { comment, createdDate, createdTime, quote } = props;
 	let reply;
-	if (comment.quote) {
+	if (comment.hasOwnProperty('quote') && comment.quote.text) {
 		reply = ( <div className="quote"><p>{ comment.quote.user } said: </p><p>"{comment.quote.text}"</p></div> );
 	}
 	return (

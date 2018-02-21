@@ -7,10 +7,11 @@ class Register extends Component {
 	constructor() {
 		super();
 		this.createUser = this.createUser.bind(this);
-		this.state = {avatar: '', redirect:false}
+		this.state = {avatar: '', redirect:false, spinner:''}
 
 	}
 	createUser() {
+		this.setState({spinner: true});
 		const nickname = this.nickname.value;
 		const photo = this.state.avatar;
 		if (photo === '') { alert('Please select Avatar'); return; }
@@ -52,6 +53,8 @@ class Register extends Component {
 	}
 	render() {
 		if (this.state.redirect === true ) return ( <Redirect to="/" />)
+		let spinner;	
+		if(this.state.spinner === true)  spinner = (<span><img src="https://linkjuice.io/img/loading.gif" alt="" style={ {width: '30px', transform:'translateY(11px)' } }/></span> )	
 		return (
 			<div className="register-page">
 				<h1>Please fill register form:</h1>
@@ -138,7 +141,7 @@ class Register extends Component {
 						<label htmlFor="password">Password:</label>
 						<input type="password" name="password" ref={input => this.password = input}/>
 					</form>
-					<button className='btn' onClick={ this.createUser }>Register</button>
+					<button className='btn' onClick={ this.createUser }>Register</button> { spinner }
 				</div>
 				
 			</div>
