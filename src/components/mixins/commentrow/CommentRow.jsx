@@ -9,7 +9,12 @@ const CommentRow = (props) => {
 	}
 	return (
 		<div className="topic">
-			<div className="full-post" onClick={ () => props.respondText({text: comment.text, user:comment.authorName }) }>
+			<div className="full-post" onClick={ () => props.respondText({text: comment.text, user:comment.authorName }) } >
+				<div className="reply-to-this" style={ props.replyStyleInit } >
+					<div className="reply-to-this_text">
+						<div className="reply-to-this-text-inner" style={ props.replyStyle }>Reply to Comment?</div>
+					</div>
+				</div>
 				<div className="post">
 					<div className="post-info"><p>Replied: {createdDate + ' ' + createdTime}</p></div>
 					<div className="post-text">

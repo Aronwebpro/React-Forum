@@ -18,7 +18,9 @@ class Post extends Component {
 					post: {},
 					user: props.user,
 					comments: {},
-					replyText: {text:'', user:''}
+					replyText: {text:'', user:''},
+					replyStyle: { width: '0', height: '0'},
+					replyStyleInit: {display: 'none' }
 				};
 		defaultState.post[this.Id] = {
 			topicId: '',
@@ -105,7 +107,12 @@ class Post extends Component {
 		}
 	}
 	respondText(data) {
-		this.setState({replyText: {text:data.text, user:data.user}});
+		this.setState({replyStyle: { width: '100%', height: '100%'}, replyStyleInit: {display: 'block' }, reply: true });
+		if( this.state.reply === true ) {
+			this.setState({replyText: {text:data.text, user:data.user}, replyStyleInit: {display: 'none' }, reply: false });
+			this.respond();
+		}
+		
 	}
 	render() {
 		const post = this.state.post[this.Id];
@@ -158,6 +165,8 @@ class Post extends Component {
 													createdTime={ createdTime }  
 													createdDate={ createdDate }
 													respondText={ this.respondText }
+													replyStyle={this.state.replyStyle}
+													replyStyleInit={this.state.replyStyleInit}
 												/>;
 									})}
 								</div>
