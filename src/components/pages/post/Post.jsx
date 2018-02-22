@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import categories from '../../../categories.json';
 import CommentRow from '../../mixins/commentrow/CommentRow';
+import { Redirect } from 'react-router';
 
 //Database
 import base from '../../../base';
@@ -20,7 +21,9 @@ class Post extends Component {
 					comments: {},
 					replyText: {text:'', user:''},
 					replyStyle: { width: '0', height: '0'},
-					replyStyleInit: {display: 'none' }
+					replyStyleInit: {display: 'none' },
+					clickedId:'',
+					redirect:false
 				};
 		defaultState.post[this.Id] = {
 			topicId: '',
@@ -53,7 +56,6 @@ class Post extends Component {
 		});
 	}
 	postComment() {
-		console.log(this.state.replyText);
 		const time = Date.now();
 		const input = {
 			text: this.respText.value,
@@ -73,7 +75,7 @@ class Post extends Component {
 		    //handle error
 		  });
 		 
-		this.setState({respond:''});
+		this.setState({respond:'',reply:false, replyStyleInit: {display: 'none' }});
 		this.respText.value = '';
 	}
 	respond(user) {
@@ -107,9 +109,11 @@ class Post extends Component {
 		}
 	}
 	respondText(data) {
-		this.setState({replyStyle: { width: '100%', height: '100%'}, replyStyleInit: {display: 'block' }, reply: true });
+		this.setState({replyStyle: { width: '100%', height: '100%'}, replyStyleInit: {display: 'block' }, reply: true, clickedId:data.clickedId });
 		if( this.state.reply === true ) {
-			this.setState({replyText: {text:data.text, user:data.user}, replyStyleInit: {display: 'none' }, reply: false });
+			if (this.state.clickedId != data.commentId) return
+			if (!this.props.isLoggedIn) return this.setState({redirect:true});
+			this.setState({replyText: {text:data.text, user:data.user}, reply: false });
 			this.respond();
 		}
 		
@@ -123,8 +127,9 @@ class Post extends Component {
 			createdDate = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();
 			createdTime = date.getHours() + ':' + date.getMinutes();
 		}
-		const comments = this.state.comments;
+		const { comments } = this.state;
 		const { isLoggedIn }= this.props;
+		if (this.state.redirect ) { return <Redirect to="/login" /> }
 		return (
 			<div>
 				<div className="content">
@@ -161,12 +166,14 @@ class Post extends Component {
 										let createdTime = date.getHours() + ':' + date.getMinutes();	
 										return <CommentRow 
 													key={ comment } 
-													comment={ comments[comment]} 
-													createdTime={ createdTime }  
-													createdDate={ createdDate }
-													respondText={ this.respondText }
+													comment={comments[comment]} 
+													createdTime={createdTime}  
+													createdDate={createdDate}
+													respondText={this.respondText}
 													replyStyle={this.state.replyStyle}
 													replyStyleInit={this.state.replyStyleInit}
+													commentId={comment}
+													clickedId={this.state.clickedId}
 												/>;
 									})}
 								</div>
