@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Match, Miss } from 'react-router';
-import firebase from 'firebase';
-//import registerServiceWorker from './registerServiceWorker';
 import firebaseApp from './firebase.js';
+
+//import registerServiceWorker from './registerServiceWorker';
+
+
 //Page Components
 import Home from './components/pages/home/Home.jsx';
 import NotFound from './components/pages/404/notfound.jsx';
@@ -20,7 +22,7 @@ import Footer from './components/template/footer/Footer';
 import './css/styles.css'
 
 
-firebase.auth().onAuthStateChanged( user => {
+firebaseApp.auth().onAuthStateChanged( user => {
   if (user) {
   		const date = new Date(Number.parseInt(user.metadata.a));	
   		let createdDate = ''

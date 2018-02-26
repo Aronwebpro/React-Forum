@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 
-//import TopicRow from '../../__mixins/topicrow/TopicRow';
-import Forum from '../../mixins/forum/Forum';
-
 //Data
 import categories from '../../../categories.json';
-
+import firebaseApp from  '../../../firebase';
 //Database
 import base from '../../../base';
 
@@ -28,13 +25,22 @@ class Home extends Component {
 			created: time
 		}
 		
-  		this.postRef = base.push('topics', {
-		    data: input
-		  }).then(newLocation => {
-		  	this.setState({redirect: true});
-		    let generatedKey = newLocation.key;
-		  }).catch(err => {
-		    //handle error
+  		// this.postRef = base.push('topics', {
+		  //   data: input
+		  // }).then(newLocation => {
+		  // 	this.setState({redirect: true});
+		  //   let generatedKey = newLocation.key;
+		  // }).catch(err => {
+		  //   //handle error
+		  // });
+		  const key = firebaseApp.database().ref().child('topics').push().key;
+		  console.log(key);
+		  let updates = {};
+		  updates[key ] = input;
+		  this.postsRef = firebaseApp.database().ref('topics').update(updates)
+			.catch( err => {
+		  	console.log('Error!');
+		  	console.log(err);
 		  });
 	}
 	render() {

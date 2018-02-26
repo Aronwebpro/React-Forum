@@ -209,3 +209,57 @@ input#img16  {
 .reply-to-this-text-inner {
   transition: all 0.6s;
 }
+
+/*
+*****Home Page******
+*/
+.forum {
+  padding: 0 15px;
+  box-sizing: border-box; 
+}
+.forum-content {
+  /*background-color: #fff;*/
+  margin-top: 10px;
+  overflow: hidden;
+  transition: all 0.6s ease-in; 
+}
+.forum-content h2 {
+  margin-top: 0px; 
+}
+.forum-header {
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  margin: 0; 
+}
+.forum-title {
+  width: 90%;
+  display: inline-block; 
+}
+/*Arrors*****/
+.arrors {
+  position: relative;
+  width: 50px;
+  height: 35px;
+  float: right;
+  cursor: pointer;
+  transform: rotateZ(0deg) translate(20%, 0%); 
+}
+.leftArrow {
+  position: absolute;
+  height: 20px;
+  left: 36%;
+  border-right: 5px solid #fff;
+  -webkit-transform: rotate(130deg) translate(100%);
+  -ms-transform: rotate(130deg) translate(100%);
+  transform: rotate(135deg) translate(100%, -13%); 
+}
+.rightArrow {
+  position: absolute;
+  height: 20px;
+  left: 65%;
+  border-right: 5px solid #fff;
+  -webkit-transform: rotate(50deg);
+  -ms-transform: rotate(50deg);
+  transform: rotate(45deg) translate(0, 35%); 
+}
