@@ -15,37 +15,32 @@ class Home extends Component {
 		this.state = { topics: [], redirect: false};
 	}
 	post() {
-		const time = Date.now();
+		const created = Date.now();
+		const categoryUrl = this.category.value.replace(/\s/g, '').toLowerCase();
 		const input = {
 			title: this.title.value,
 			text: this.text.value,
 			category: this.category.value,
+			categoryUrl: categoryUrl,
 			authorAvatar: this.props.user.authorAvatar,
 			authorName: this.props.user.authorName,
-			created: time
+			created: created
 		}
-		
-  		// this.postRef = base.push('topics', {
-		  //   data: input
-		  // }).then(newLocation => {
-		  // 	this.setState({redirect: true});
-		  //   let generatedKey = newLocation.key;
-		  // }).catch(err => {
-		  //   //handle error
-		  // });
-		  const key = firebaseApp.database().ref().child('topics').push().key;
-		  console.log(key);
-		  let updates = {};
-		  updates[key ] = input;
-		  this.postsRef = firebaseApp.database().ref('topics').update(updates)
+		const key = firebaseApp.database().ref().child('topics').push().key;
+		let updates = {};
+		updates[key] = input;
+		this.postsRef = firebaseApp.database().ref('topics').update(updates)
+			.then(() => {
+				this.setState({url:'/post/'+key, redirect:true});
+			})
 			.catch( err => {
-		  	console.log('Error!');
-		  	console.log(err);
-		  });
+				console.log('Error!');
+				console.log(err);
+			});
 	}
 	render() {
 		const { isLoggedIn } = this.props;
-		if (this.state.redirect === true ) { return <Redirect to="/" /> }
+		if (this.state.redirect === true ) { return <Redirect to={this.state.url} /> }
 		if(isLoggedIn) {
 			return (
 				<div id="home">

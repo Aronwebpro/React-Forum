@@ -6,6 +6,7 @@ import { Redirect } from 'react-router';
 
 //Database
 import base from '../../../base';
+import firebaseApp from '../../../firebase';
 
 class Post extends Component {
 	constructor(props) {
@@ -14,6 +15,11 @@ class Post extends Component {
 		this.respondForm = this.respondForm.bind(this);
 		this.postComment = this.postComment.bind(this);
 		this.respondText = this.respondText.bind(this);
+		this.getPost = this.getPost.bind(this);
+		this.getComments = this.getComments.bind(this);
+		this.comClick = this.comClick.bind(this);
+		this.escClick = this.escClick.bind(this);
+
 		this.Id = this.props.params.params.postId;
 		const defaultState = { 
 					post: {},
@@ -23,7 +29,8 @@ class Post extends Component {
 					replyStyle: { width: '0', height: '0'},
 					replyStyleInit: {display: 'none' },
 					clickedId:'',
-					redirect:false
+					redirect:false,
+					isReply:false
 				};
 		defaultState.post[this.Id] = {
 			topicId: '',
@@ -38,22 +45,49 @@ class Post extends Component {
 		this.state = defaultState;
 	}
 	componentWillMount() {
-		this.postRef = base.bindToState('topics', {
-			context: this,
-			state: 'post',
-			queries: {
-				orderByKey: 'topics',
-				equalTo: this.Id
-			}
-		});
-		this.commentRef = base.bindToState('comments', {
-			context: this,
-			state: 'comments',
-			queries: {
-				orderByChild: 'topicId',
-				equalTo: this.Id
-			}
-		});
+		this.getPost();
+		this.getComments();
+	}
+	componentDidMount() {
+		document.addEventListener('click', this.comClick);
+		document.addEventListener('keydown', this.escClick);
+
+	}
+	componentWillUnmount() {
+		document.removeEventListener('click', this.comClick);
+		document.removeEventListener('keydown', this.escClick);
+	}
+	comClick(e) {
+		if (e.target.classList.value === 'container') {
+				this.setState({reply: false, replyStyleInit: {display: 'none'}});
+		}
+	}
+	escClick(e, obj) {
+		if (e.keyCode === 27) {
+			this.setState({reply: false, replyStyleInit: {display: 'none'}});
+		}
+	}
+	getPost() {
+		this.topicRef = firebaseApp.database()
+							.ref('/topics/'+this.Id)
+							.once('value', (snapshot) => {
+								if (snapshot.val()) {
+									let post = {};
+									post[this.Id] = snapshot.val();
+									this.setState({post});
+								}
+							});		
+	}
+	getComments() {
+		this.commentRef = firebaseApp.database()
+							.ref('/comments/')
+							.orderByChild('topicId')
+							.equalTo(this.Id)
+							.once('value', (snapshot) => {
+								if (snapshot.val()) {
+									this.setState({comments:snapshot.val()});
+								}
+							});		
 	}
 	postComment() {
 		const time = Date.now();
@@ -66,16 +100,20 @@ class Post extends Component {
 			posted: time,
 			quote: this.state.replyText
 		}
-		
-  		this.postRef = base.push('comments', {
-		    data: input
-		  }).then(newLocation => {
-		    let generatedKey = newLocation.key;
-		  }).catch(err => {
-		    //handle error
-		  });
-		 
-		this.setState({respond:'',reply:false, replyStyleInit: {display: 'none' }});
+		const key = firebaseApp.database().ref().child('comments').push().key;
+		let updates = {};
+		updates[key] = input;
+		this.postRef = firebaseApp.database()
+						.ref('comments')
+						.update(updates)
+						.then(() => {
+							this.getComments();
+						})
+						.catch( err => {
+							console.log('Error!');
+							console.log(err);
+						});
+		this.setState({respond:'', reply:false, replyStyleInit: {display: 'none' }});
 		this.respText.value = '';
 	}
 	respond(user) {
@@ -88,9 +126,13 @@ class Post extends Component {
 	respondForm() {
 		if (this.state.respond === true ) {
 			return ( 
-				<div className="full-post" style={ {marginTop:'20px'} }>
+				<div className="full-post" style={ {marginTop:'20px'} } onKeyDown={this.escClick}>
 					<div className="post">
 									<div className="full-post new-post-body">
+										{	//Return comment text if quote
+											this.state.replyText &&  
+											( <div>Replying to...<br /><div className="quote"><p>{ this.state.replyText.user } said: </p><p>"{this.state.replyText.text}"</p></div></div>)
+										}
 										<form>
 											<label htmlFor=""><h2>Write a Comment:</h2></label>
 											<textarea name="" id="" cols="30" rows="10" ref={ (input) => this.respText = input }></textarea>
@@ -110,13 +152,12 @@ class Post extends Component {
 	}
 	respondText(data) {
 		this.setState({replyStyle: { width: '100%', height: '100%'}, replyStyleInit: {display: 'block' }, reply: true, clickedId:data.clickedId });
-		if( this.state.reply === true ) {
+		if( this.state.reply === true) {
 			if (this.state.clickedId != data.commentId) return
 			if (!this.props.isLoggedIn) return this.setState({redirect:true});
-			this.setState({replyText: {text:data.text, user:data.user}, reply: false });
+			this.setState({replyText: {text:data.text, user:data.user}, reply: false, replyStyleInit: {display: 'none'} });
 			this.respond();
 		}
-		
 	}
 	render() {
 		const post = this.state.post[this.Id];
@@ -151,8 +192,8 @@ class Post extends Component {
 									</div>
 									<div className="author-info">
 										<img src={post.authorAvatar} alt=""/>
-										<p>Author: {post.authorName}</p>
-										<p>Member Since: {createdDate}</p>
+										<p>Author: <span className="bold">{post.authorName}</span></p>
+										<p>Member Since: <span className="bold">{createdDate}</span></p>
 									</div>
 									<div className="fl_c" />
 								</div>

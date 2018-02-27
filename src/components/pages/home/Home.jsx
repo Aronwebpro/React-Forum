@@ -1,20 +1,40 @@
 import React, { Component } from 'react';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import TopicRow from '../../mixins/topicrow/TopicRow';
+import { Redirect } from 'react-router';
 //Data
 import data from '../../../topics.json';
 import categories from '../../../categories.json';
 //import firebaseApp from '../../../firebase';
-import firebase from 'firebase';
+import firebaseApp from '../../../firebase';
+
 class Home extends Component {
 	constructor() {
 		super();
-		this.state = {topics: {}};
+		this.state = {topics: {}, redirect:false};
 	}
 	componentWillMount() {
-		this.refTopics = firebase.database().ref('topics').once('value').then((snapshot) => {
-			this.setState({topics: snapshot.val()});
-		});	
+		if (this.props.params) {
+			this.refTopics = firebaseApp.database()
+								.ref('topics')
+								.orderByChild('categoryUrl')
+								.equalTo(this.props.params.params.category)
+								.once('value', (snapshot)=> {
+									if (snapshot.val()) {
+										this.setState({topics: snapshot.val()});
+									} else {
+										this.setState({redirect: true});
+									}
+								});
+		} else {
+			this.refTopics = firebaseApp.database()
+								.ref('topics')
+								.orderByChild('created')
+								.once('value')
+								.then((snapshot) => {
+									this.setState({topics: snapshot.val()});
+								});				
+			}
 	}
 	componentDidUpdate() {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
@@ -38,6 +58,7 @@ class Home extends Component {
 	render() {
 		const { topics } = this.state;
 		const { isLoggedIn } = this.props;
+		if (this.state.redirect ) { return <Redirect to="/" /> }
 		return (
 			<div id="home">
 	          		<div className="container">
@@ -58,7 +79,7 @@ class Home extends Component {
 									<div className="fl_c" />
 									<div ref={input => (this.forumContent = input)} className="forum-content">
 										<div ref={input => (this.forumContentInner = input)} className="forum-coontent-inner" >
-											{Object.keys(topics).map(topic => {
+											{Object.keys(topics).reverse().map(topic => {
 												let date = new Date(topics[topic].created);
 												let since = date.getMonth()+1 + '/' + date.getDate() + '  ' + date.getFullYear();
 												let createdDate = date.getMonth()+1 + '/' + date.getDate() + ' ' + date.getFullYear();

@@ -4,11 +4,11 @@ class FilterCategory extends Component {
 	constructor() {
 		super();
 	}
-
 	render() {
 		const { category } = this.props;
+		const url = /category/+category.categoryUrl;
 		return (
-			<li>{category.title}<span className="filter-count">({category.count})</span></li>
+			<a href={url} ><li>{category.name}<span className="filter-count">({category.count})</span></li></a>
 		)
 	}
 }

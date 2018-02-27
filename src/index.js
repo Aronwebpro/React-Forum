@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Match, Miss } from 'react-router';
 import firebaseApp from './firebase.js';
-
+import { Redirect } from 'react-router';
 //import registerServiceWorker from './registerServiceWorker';
 
 
@@ -26,7 +26,7 @@ firebaseApp.auth().onAuthStateChanged( user => {
   if (user) {
   		const date = new Date(Number.parseInt(user.metadata.a));	
   		let createdDate = ''
-		if(date != 'Invalid Date') {
+		if (date != 'Invalid Date') {
 			createdDate = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();
 		}
 
@@ -46,6 +46,8 @@ firebaseApp.auth().onAuthStateChanged( user => {
 						<div className="content">	
 							<Match exactly pattern="/" render={ () => <Home isLoggedIn={ isLoggedIn } /> } />
 							<Match pattern="/post/:postId" render={(params) => <Post params={ params } isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
+							<Match exactly pattern="/category/:category" render={ (params) => <Home isLoggedIn={ isLoggedIn } params={params}/> } />
+							<Match exactly pattern="/category/" render={ () => <Redirect to="/" /> } />
 							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
 							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
 							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } />
@@ -67,6 +69,8 @@ firebaseApp.auth().onAuthStateChanged( user => {
 						<div className="content">	
 							<Match exactly pattern="/" render={ () => <Home isLoggedIn={ isLoggedIn } /> } />
 							<Match pattern="/post/:postId" render={(params) => <Post params={ params } isLoggedIn={ isLoggedIn } /> } />
+							<Match exactly pattern="/category/:category" render={ (params) => <Home isLoggedIn={ isLoggedIn } params={params}/> } />
+							<Match exactly pattern="/category/" render={ () => <Redirect to="/" /> } />
 							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } /> } />
 							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } /> } />
 							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } /> 

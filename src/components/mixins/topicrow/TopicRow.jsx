@@ -3,11 +3,11 @@ import './css/topicrow.css';
 
 //images
 import defGm from './img/forum_img.png';
-import brdGm from './img/coolcat.png';
-import CardGm from './img/freepik.jpg';
-import PcGm from './img/freepik.jpg';
-import ConsGm from './img/freepik.jpg';
-import HandGm from './img/freepik.jpg';
+import brdGm from './img/board-games.png';
+import CardGm from './img/card-games.jpg';
+import PcGm from './img/pc-games.png';
+import ConsGm from './img/console-games.png';
+import HandGm from './img/handheld-games.png';
 
 
 class TopicRow extends Component {
@@ -36,28 +36,25 @@ class TopicRow extends Component {
 		const { topic, since, createdDate, createdTime, topicId } = this.props;
 		return (
 			<div className="topic">
-				<a href={`post/${topicId}`}>
+				<a href={`/post/${topicId}`}>
 					<div className="row-left">
-						<div className="category-img">
-							<img src={this.categoryImg(topic.category)} alt="" />
-						</div>
-						<div className="topic-date">
-							<div className="left-topic-date">
-								<p>Created: </p>
+						<div className="topic-category">
+							<div className="category-img">
+								<img src={this.categoryImg(topic.category)} alt="" />
 							</div>
-							<div className="rigth-topic-date">
-								<p>{ createdDate }</p>
-								<p>{ createdTime }</p>
-							</div>
-							<div className="fl_c"></div>
+							<p>{ topic.category }</p>
 						</div>
 					</div>
 					<div className="row-middle">
 						<div className="topic-title">
 							<h3>{topic.title}</h3>
+							<p>Created: { createdDate+' '+createdTime }</p>
 						</div>
 						<div className="topic-description">
 							<p>{topic.text}</p>
+						</div>
+						<div className="topic-readmore">
+							<p>Click to Read More</p>
 						</div>
 					</div>
 					<div className="row-right">
@@ -67,12 +64,6 @@ class TopicRow extends Component {
 						<div className="topic-meta">
 							<p>
 								By: <span className="author">{topic.authorName} </span>
-							</p>
-							<p>
-								Status: <span className="author">Veteran</span>
-							</p>
-							<p>
-								Posts: <span className="author">{ 'postNr'} </span>
 							</p>
 							<p>
 								Member Since: <span className="date">{ since }</span>

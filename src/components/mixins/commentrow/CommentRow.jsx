@@ -33,8 +33,8 @@ class CommentRow extends Component {
 					</div>
 					<div className="author-info">
 						<img src={comment.authorAvatar} alt=""/>
-						<p>Author: {comment.authorName}</p>
-						<p>Member Since: {comment.memberSince}</p>
+						<p>Author: <span className="bold">{comment.authorName}</span></p>
+						<p>Member Since: <span className="bold">{comment.memberSince}</span></p>
 					</div>
 					<div className="fl_c" />
 				</div>
