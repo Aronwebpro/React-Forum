@@ -131,7 +131,7 @@ class Post extends Component {
 									<div className="full-post new-post-body">
 										{	//Return comment text if quote
 											this.state.replyText &&  
-											( <div>Replying to...<br /><div className="quote"><p>{ this.state.replyText.user } said: </p><p>"{this.state.replyText.text}"</p></div></div>)
+											( <div><span className="theme-color_txt">Replying to...</span><br /><div className="quote"><p>{ this.state.replyText.user } said: </p><p>"{this.state.replyText.text}"</p></div></div>)
 										}
 										<form>
 											<label htmlFor=""><h2>Write a Comment:</h2></label>

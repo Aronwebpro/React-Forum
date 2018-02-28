@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik");
 header {
-  background-color: #222;
+  background-color: #20232a;
   margin: 0;
   font-family: 'Noto Sans', sans-serif;
   height: 75px;
@@ -8,19 +8,37 @@ header {
   width: 100%;
   top: 0;
   transition: all 0.25s ease;
-  z-index: 1; }
+  z-index: 1; 
+}
 
 .shrink {
   height: 50px;
-  font-size: 0.8em; }
-
+  font-size: 0.8em; 
+}
+.shrink .navigation-wrapper {
+  transform: translateY(-75%);  
+}
+.shrink .header-avatar {
+  transform: scale(0.8) translateY(25%);  
+}
+.shrink .app-header img {
+  transform:scale(0.8) translateY(-25%);
+}
 .app-header {
-  color: white;
-  position: absolute;
+  position: relative;
   left: 15px;
   top: 50%;
-  transform: translateY(-50%); }
+  transform: translateY(-50%); 
+  display: block;
+  color: white;
 
+}
+.app-header img {
+  margin-right: 0.5em;
+  max-width: 50px;
+  float: left;
+  transform:translateY(-10%);
+}
 .app-title {
   font-size: 2em;
   margin: 0;
@@ -28,15 +46,23 @@ header {
 
 .app-title span {
   font-weight: 700;
-  color:#093a73; }
+}
 
 /**********Navigation**********/
-nav {
+.navigation-wrapper {
+  position:absolute;
+  right:10px;
   display: inline-block;
-  position: absolute;
+  transform: translateY(-50%); 
+}
+nav {
+  position: relative;
   right: 15px;
   top: 50%;
-  transform: translateY(-50%); }
+  display: inline-block;
+  transform: translateY(-50%); 
+  
+}
 
 nav a,
 nav a:link,
@@ -49,4 +75,30 @@ nav a:visited {
   transition: color 0.1s linear; }
 
 nav a:hover {
-  color: #7f1ae5; }
+  color: rgba(97, 218, 251, 0.54); 
+}
+nav a.theme-color_txt:hover {
+  color: rgba(97, 218, 251, 0.54);
+}
+
+.header-avatar {
+  position:relative;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border:1px solid #fff;
+}
+.header-avatar:hover {
+  background-color: #fff;
+}
+.header-avatar img {
+  width: 100%;
+}
+.header-avatar:hover img {
+  transform:scale(1.1);
+}
+nav.nav-logged-out {
+  position:static;
+  transform: none;
+}

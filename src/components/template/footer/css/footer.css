@@ -1,0 +1,14 @@
+.footer {
+	margin-top:2%;
+	min-height: 80px;
+	background-color: #20232a;
+	color:#fff;
+}
+.footer h1 {
+	position:relative;
+	top:50%;
+	left:50%;
+	transform:translate(-50%, 50%);
+	display: inline-block;
+	margin:auto;
+}

@@ -11,8 +11,11 @@
 background:linear-gradient(transparent 80px, transparent);
 }
  .topic:hover .row-middle .topic-readmore p {
+  margin: 14px auto;
+  background: #fff;
+  border-radius: 12px;
   opacity: 1;
- }
+}
 
 .topic:first-of-type {
   margin-top: 5px; 
@@ -87,16 +90,16 @@ background:linear-gradient(transparent 80px, transparent);
   border-radius: 50%; }
 
 .topic-meta {
+  padding-left: 10%;
   font-size: 0.8em;
   text-align: left;
-  padding-left: 10%; }
+}
 
-.topic-meta .author {
-  font-weight: bold; }
-
+.topic-meta .author,
 .topic-meta .date {
-  font-weight: bold; }
-
+  font-weight: bold;
+  color:#000; 
+}
 .left-topic-date {
   width: 50%;
   float: left; }
@@ -107,19 +110,24 @@ background:linear-gradient(transparent 80px, transparent);
 
 .topic-date {
   margin-top: 20px;
-  text-align: center; }
-  .topic-date p {
-    font-size: 0.57em; }
-  .topic-date .left-topic-date p {
-    font-weight: bold;
-    font-size: 0.7em; 
-  }
+  text-align: center; 
+}
+.topic-date p {
+  font-size: 0.57em; 
+}
+.topic-date .left-topic-date p {
+  font-weight: bold;
+  font-size: 0.7em; 
+}
 
 
 .topic-readmore p {
-  margin-top:10px;
-  text-align: center;
+  margin:0px auto;
+  width: 80%;  
   opacity: 0;
-  transition: all 0.6s;
-  color:#093a73;
+  transition: all 0.4s;
+  text-align: center;
+}
+.topic-readmore p:hover {
+  transform:scale(1.2);
 }

@@ -19,12 +19,12 @@ class CommentRow extends Component {
 						</div>
 					</div>
 					<div className="post">
-						<div className="post-info"><p>Replied: {createdDate + ' ' + createdTime}</p></div>
+						<div className="post-info"><p><span className="theme-color_txt">Replied:</span> {createdDate + ' ' + createdTime}</p></div>
 						<div className="post-text">
 							{	//Return comment text if quote
 								comment.hasOwnProperty('quote') && 
 								comment.quote.text && 
-								( <div className="quote"><p>{ comment.quote.user } said: </p><p>"{comment.quote.text}"</p></div>)
+								( <div className="quote"><p className="theme-color_txt">{ comment.quote.user } said: </p><p>"{comment.quote.text}"</p></div>)
 							}
 						
 							<p>{comment.text}</p>
@@ -33,8 +33,8 @@ class CommentRow extends Component {
 					</div>
 					<div className="author-info">
 						<img src={comment.authorAvatar} alt=""/>
-						<p>Author: <span className="bold">{comment.authorName}</span></p>
-						<p>Member Since: <span className="bold">{comment.memberSince}</span></p>
+						<p><span className="theme-color_txt">Author:</span> <span className="bold">{comment.authorName}</span></p>
+						<p><span className="theme-color_txt">Member Since: </span><span className="bold">{comment.memberSince}</span></p>
 					</div>
 					<div className="fl_c" />
 				</div>

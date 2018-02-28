@@ -4,8 +4,8 @@ import './css/footer.css';
 class Footer extends Component {
   render() {
     return (
-        <footer>
-          <h1>This is Forum Footer</h1>
+        <footer className="footer">
+          <h1>Game <span className="theme-color_txt">Forum</span></h1>
         </footer>
     );
   }

@@ -48,12 +48,12 @@ class TopicRow extends Component {
 					<div className="row-middle">
 						<div className="topic-title">
 							<h3>{topic.title}</h3>
-							<p>Created: { createdDate+' '+createdTime }</p>
+							<p><span className="theme-color_txt">Created:</span> { createdDate+' '+createdTime }</p>
 						</div>
 						<div className="topic-description">
 							<p>{topic.text}</p>
 						</div>
-						<div className="topic-readmore">
+						<div className="topic-readmore theme-color_txt">
 							<p>Click to Read More</p>
 						</div>
 					</div>
@@ -61,7 +61,7 @@ class TopicRow extends Component {
 						<div className="author-avatar">
 							<img src={topic.authorAvatar} alt="" />
 						</div>
-						<div className="topic-meta">
+						<div className="topic-meta theme-color_txt">
 							<p>
 								By: <span className="author">{topic.authorName} </span>
 							</p>
