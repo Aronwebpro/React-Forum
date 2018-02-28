@@ -58,7 +58,7 @@ class Post extends Component {
 		document.removeEventListener('keydown', this.escClick);
 	}
 	comClick(e) {
-		if (e.target.classList.value === 'container') {
+		if (e.target.classList.value === 'container' || e.target.classList.value === 'content') {
 				this.setState({reply: false, replyStyleInit: {display: 'none'}});
 		}
 	}
