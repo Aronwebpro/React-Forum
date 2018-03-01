@@ -15,6 +15,7 @@ class Header extends Component {
   //shrink the header when scroll down
   shrinkHeader() {
     const header = this.header;
+    if (!header) return;
     const distanceY = window.pageYOffset;
       if(distanceY > 101) {
         header.classList.add('shrink');

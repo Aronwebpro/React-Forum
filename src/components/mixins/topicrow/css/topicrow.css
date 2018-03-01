@@ -17,7 +17,7 @@ background:linear-gradient(transparent 80px, transparent);
   opacity: 1;
 }
 
-.topic:first-of-type {
+#home .topic:first-of-type {
   margin-top: 5px; 
 }
 

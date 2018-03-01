@@ -18,7 +18,7 @@ const NavigationBnt = (props) => {
 			case 'post' :
 			if(props.isLoggedIn) {
 				BackBtn = (<a href="/" className="back-button btn">Back</a> );
-				actionBnt = (<a onClick={props.respond} className="new-comment-button btn">Reply</a> );
+				actionBnt = (<a onClick={ () => {props.respond(); props.clearReply();} } className="new-comment-button btn">Reply</a> );
 			} else {
 				BackBtn = (<a href="/" className="back-button btn">Back</a> );
 				actionBnt = (<a href="/login" className="new-comment-button btn">Reply</a> );

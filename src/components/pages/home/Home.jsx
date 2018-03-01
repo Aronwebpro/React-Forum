@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import TopicRow from '../../mixins/topicrow/TopicRow';
 import { Redirect } from 'react-router';
+import Flash from '../../mixins/flash/Flash';
 //Data
 import data from '../../../topics.json';
 import categories from '../../../categories.json';
@@ -11,7 +12,7 @@ import firebaseApp from '../../../firebase';
 class Home extends Component {
 	constructor() {
 		super();
-		this.state = {topics: {}, redirect:false};
+		this.state = {topics: {}, redirect:false, flash:false};
 	}
 	componentWillMount() {
 		if (this.props.params) {
@@ -36,6 +37,18 @@ class Home extends Component {
 								});				
 			}
 	}
+	componentDidMount() {
+		this.refTopics = firebaseApp.database()
+							.ref('flash')
+							.once('value')
+							.then((snapshot) => {
+								let data = snapshot.val();
+								if (data && data.status === true ) {	
+									firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'', redirect:false, redirectUrl:''});
+									this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus});
+								}							
+							});						
+	}
 	componentDidUpdate() {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
 	}
@@ -59,9 +72,15 @@ class Home extends Component {
 		const { topics } = this.state;
 		const { isLoggedIn } = this.props;
 		if (this.state.redirect ) { return <Redirect to="/" /> }
+		if(this.state.flash) {
+			setTimeout(() => {
+				this.setState({flash:false});
+			}, 2500);
+		}			
 		return (
-			<div id="home">
-	          		<div className="container">
+			<div>
+				{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
+	          		<div id="home" className="container">
 	          				<div className="left">
 	          					<SearchFilter categories={categories} page="home" isLoggedIn={ isLoggedIn } /> 
 	          				</div>

@@ -19,13 +19,14 @@ class Post extends Component {
 		this.getComments = this.getComments.bind(this);
 		this.comClick = this.comClick.bind(this);
 		this.escClick = this.escClick.bind(this);
+		this.clearReply = this.clearReply.bind(this);
 
 		this.Id = this.props.params.params.postId;
 		const defaultState = { 
 					post: {},
 					user: props.user,
 					comments: {},
-					replyText: {text:'', user:''},
+					replyText: '',
 					replyStyle: { width: '0', height: '0'},
 					replyStyleInit: {display: 'none' },
 					clickedId:'',
@@ -123,14 +124,17 @@ class Post extends Component {
 		});
 		setTimeout(() => this.respondDiv.scrollIntoView({ behavior:'smooth'}), 200 );
 	}
+	clearReply() {
+		this.setState({replyText:''});
+	}
 	respondForm() {
 		if (this.state.respond === true ) {
 			return ( 
-				<div className="full-post" style={ {marginTop:'20px'} } onKeyDown={this.escClick}>
+				<div className="full-post" style={ {marginTop:'20px'} } >
 					<div className="post">
 									<div className="full-post new-post-body">
 										{	//Return comment text if quote
-											this.state.replyText &&  
+											this.state.replyText != '' &&  
 											( <div><span className="theme-color_txt">Replying to...</span><br /><div className="quote"><p>{ this.state.replyText.user } said: </p><p>"{this.state.replyText.text}"</p></div></div>)
 										}
 										<form>
@@ -177,7 +181,7 @@ class Post extends Component {
 					<div className="content">
 						<div className="container">
 							<div className="left">
-								<SearchFilter categories={categories} page="post" isLoggedIn={ isLoggedIn } respond={ this.respond }/>
+								<SearchFilter categories={categories} page="post" isLoggedIn={ isLoggedIn } respond={ this.respond } clearReply={ this.clearReply }/>
 							</div>
 							<div className="right post-container">
 								<div className="post-title forum-header">
@@ -200,7 +204,7 @@ class Post extends Component {
 								<div className="post-title forum-header" style={ {marginTop:'20px'} }>
 									<h2>{ Object.keys(comments).length || 0 } Responses </h2>
 								</div>
-								<div>
+								<div className="comments-wrapper">
 									{Object.keys(comments).map(comment => {
 										let date = new Date(comments[comment].posted);
 										let createdDate = date.getMonth()+1 + '/' + date.getDate() + ' ' + date.getFullYear();

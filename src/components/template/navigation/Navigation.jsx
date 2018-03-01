@@ -8,10 +8,13 @@ class Navigation extends Component {
 	}
 	logOut() {
 		firebaseApp.auth().signOut().then(function() {
-		  // Sign-out successful.
+		 	let msg = 'GoodBye! You\'ve logged out successfully!';
+			firebaseApp.database().ref('flash').update({status:true, msg:msg, msgStatus:'success', redirect: false, redirectUrl: ''});
 		}).catch(function(error) {
-		  // An error happened.
+		 	let msg = 'Ups! Something happen, you didn\'t log out!';
+			firebaseApp.database().ref('flash').update({status:true, msg:msg, msgStatus:'error', redirect: false, redirectUrl: ''});
 		});
+		window.scrollTo(0,0);
 	}
 	render() {
 		let logout;
