@@ -12,7 +12,7 @@ const NavigationBnt = (props) => {
 			if(props.isLoggedIn) {
 				actionBnt = (<a href="/new" className="new-topic-button btn">New Post</a> );
 			} else {
-		   		actionBnt = (<a href="/login" className="new-topic-button btn">New Post</a> );
+		   		actionBnt = (<a href="/login" onClick={() => props.flash(true, 'Sorry! You have to login to write new Topic!', 'error', false, '', window.location.href) } className="new-topic-button btn">New Post</a> );
 			}
 			break;
 			case 'post' :
@@ -21,7 +21,7 @@ const NavigationBnt = (props) => {
 				actionBnt = (<a onClick={ () => {props.respond(); props.clearReply();} } className="new-comment-button btn">Reply</a> );
 			} else {
 				BackBtn = (<a href="/" className="back-button btn">Back</a> );
-				actionBnt = (<a href="/login" className="new-comment-button btn">Reply</a> );
+				actionBnt = (<a href="/login" onClick={() => props.flash(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href) } className="new-comment-button btn">Reply</a> );
 			}
 			break;
 			case 'new' :

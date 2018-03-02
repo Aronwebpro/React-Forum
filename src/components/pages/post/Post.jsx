@@ -20,6 +20,7 @@ class Post extends Component {
 		this.comClick = this.comClick.bind(this);
 		this.escClick = this.escClick.bind(this);
 		this.clearReply = this.clearReply.bind(this);
+		this.flash = this.flash.bind(this);
 
 		this.Id = this.props.params.params.postId;
 		const defaultState = { 
@@ -158,10 +159,13 @@ class Post extends Component {
 		this.setState({replyStyle: { width: '100%', height: '100%'}, replyStyleInit: {display: 'block' }, reply: true, clickedId:data.clickedId });
 		if( this.state.reply === true) {
 			if (this.state.clickedId != data.commentId) return
-			if (!this.props.isLoggedIn) return this.setState({redirect:true});
+			if (!this.props.isLoggedIn) this.setState({redirect:true}); this.flash(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href ); return;
 			this.setState({replyText: {text:data.text, user:data.user}, reply: false, replyStyleInit: {display: 'none'} });
 			this.respond();
 		}
+	}
+	flash(status=true, msg, msgStatus, redirect=false, url='/', back='/') {
+		firebaseApp.database().ref('flash').update({status:status, msg:msg, msgStatus:msgStatus, redirect: redirect, redirectUrl: url, back:back });
 	}
 	render() {
 		const post = this.state.post[this.Id];
@@ -181,7 +185,7 @@ class Post extends Component {
 					<div className="content">
 						<div className="container">
 							<div className="left">
-								<SearchFilter categories={categories} page="post" isLoggedIn={ isLoggedIn } respond={ this.respond } clearReply={ this.clearReply }/>
+								<SearchFilter categories={categories} page="post" isLoggedIn={ isLoggedIn } respond={ this.respond } clearReply={ this.clearReply } flash={this.flash}/>
 							</div>
 							<div className="right post-container">
 								<div className="post-title forum-header">

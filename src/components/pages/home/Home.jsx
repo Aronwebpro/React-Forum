@@ -13,41 +13,45 @@ class Home extends Component {
 	constructor() {
 		super();
 		this.state = {topics: {}, redirect:false, flash:false};
+		this.flash = this.flash.bind(this);
 	}
 	componentWillMount() {
 		if (this.props.params) {
-			this.refTopics = firebaseApp.database()
-								.ref('topics')
-								.orderByChild('categoryUrl')
-								.equalTo(this.props.params.params.category)
-								.once('value', (snapshot)=> {
-									if (snapshot.val()) {
-										this.setState({topics: snapshot.val()});
-									} else {
-										this.setState({redirect: true});
-									}
-								});
+				firebaseApp.database()
+					.ref('topics')
+					.orderByChild('categoryUrl')
+					.equalTo(this.props.params.params.category)
+					.once('value', (snapshot)=> {
+						if (snapshot.val()) {
+							this.setState({topics: snapshot.val()});
+						} else {
+							this.setState({redirect: true});
+						}
+				});
 		} else {
-			this.refTopics = firebaseApp.database()
-								.ref('topics')
-								.orderByChild('created')
-								.once('value')
-								.then((snapshot) => {
-									this.setState({topics: snapshot.val()});
-								});				
-			}
+				firebaseApp.database()
+					.ref('topics')
+					.orderByChild('created')
+					.once('value')
+					.then((snapshot) => {
+						this.setState({topics: snapshot.val()});
+				});				
+		}
 	}
 	componentDidMount() {
-		this.refTopics = firebaseApp.database()
-							.ref('flash')
-							.once('value')
-							.then((snapshot) => {
-								let data = snapshot.val();
-								if (data && data.status === true ) {	
-									firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'', redirect:false, redirectUrl:''});
-									this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus});
-								}							
-							});						
+		firebaseApp.database()
+			.ref('flash')
+			.once('value')
+			.then((snapshot) => {
+				let data = snapshot.val();
+				if (data && data.status === true ) {	
+					firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'', redirect:false, redirectUrl:''});
+					this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus});
+				}							
+			if (data && data.back) {
+					firebaseApp.database().ref('flash').update({back:false});
+			}
+		});		
 	}
 	componentDidUpdate() {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
@@ -68,6 +72,9 @@ class Home extends Component {
 			this.arrow.style.transform = 'rotateZ(0deg) translate(20%, 0%)';
 		}
 	}
+	flash(status=true, msg, msgStatus, redirect=false, url='/', back='/') {
+		firebaseApp.database().ref('flash').update({status:status, msg:msg, msgStatus:msgStatus, redirect: redirect, redirectUrl: url, back:back});
+	}
 	render() {
 		const { topics } = this.state;
 		const { isLoggedIn } = this.props;
@@ -78,11 +85,11 @@ class Home extends Component {
 			}, 2500);
 		}			
 		return (
-			<div>
-				{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
-	          		<div id="home" className="container">
+			<div className="container">
+					{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
+	          		<div id="home">
 	          				<div className="left">
-	          					<SearchFilter categories={categories} page="home" isLoggedIn={ isLoggedIn } /> 
+	          					<SearchFilter categories={categories} page="home" isLoggedIn={ isLoggedIn } flash={ this.flash } /> 
 	          				</div>
 	          				<div className="right">
 								<div className="forum">

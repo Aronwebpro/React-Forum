@@ -11,7 +11,7 @@ class Login extends Component {
 	constructor() {
 		super();
 		this.login = this.login.bind(this);
-		this.state = {flash: false, redirect: false}
+		this.state = {flash: false, redirect: false, back:false }
 	}
 	componentDidMount() {
 		this.refTopics = firebaseApp.database()
@@ -19,14 +19,23 @@ class Login extends Component {
 							.once('value')
 							.then((snapshot) => {
 								let data = snapshot.val();
+									console.log (data.back);
 								if (data && data.redirect === true) {
 									firebaseApp.database().ref('flash').update({redirect: false, redirectUrl: ''});
 									this.setState({redirect:true});
 								}
-								if (data && data.redirect === false && data.status === true ) {	
+								if (data && data.redirect === false && data.status === true && this.props.isLoggedIn ) {	
 									firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'' });
 									this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus, redirect:true});
-								}							
+								}
+								if (data && data.redirect === false && data.status === true && !this.props.isLoggedIn ) {	
+									firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'' });
+									this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus, redirect:false});
+								}
+								if (data && data.back) {
+									this.setState({back: data.back});
+									// firebaseApp.database().ref('flash').update({back:'/'});
+								} 							
 							});						
 	}
 	login(e) {
@@ -54,12 +63,13 @@ class Login extends Component {
 			if(this.state.flash) {
 				setTimeout(() => {
 					this.setState({flash:false});
-				}, 1800);
+				}, 4000);
 			}
 			return (
 				<div id="login">
 					<div className="container">
 						{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
+						{ this.state.back && <a  href={this.state.back}><button className="btn">Back</button></a>}
 						<div className="login-wrapper">
 						<h1>Login: </h1>
 							<div className="form-wrapper">
@@ -72,7 +82,7 @@ class Login extends Component {
 								</form>
 								<div className="dont-have-acc">
 									<p>Don't have an account?</p>
-									<p>Click <a href="/register">Here</a> to Register.</p>
+									<p><a href="/register">Click to <span className="bold">Sign Up.</span></a></p>
 								</div>
 							</div>
 						</div>

@@ -18,11 +18,11 @@ class SearchFilter extends Component {
 							});				
 	}
 	render() {
-		const {isLoggedIn, respond, clearReply } = this.props;
+		const {isLoggedIn, respond, clearReply, flash } = this.props;
 		const { categories } = this.state;
 		return(
 			<div>
-				<NavigationBnt page={this.props.page} isLoggedIn={ isLoggedIn } respond={ respond } clearReply={ clearReply }/>
+				<NavigationBnt page={this.props.page} isLoggedIn={ isLoggedIn } respond={ respond } clearReply={ clearReply } flash={ flash }/>
 				<div className="search-filter">
 					<h5>Select a Category</h5>
 					<ul>

@@ -217,8 +217,7 @@ input#img16  {
   width: 100%;
   height: 100%;
   display: none;
-  background-color: #20232a;
-  opacity: 0.4;
+  background-color: rgba(32, 35, 42, 0.65);
 }
 .reply-to-this_text {
   position: absolute;
