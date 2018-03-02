@@ -21,7 +21,7 @@ class Home extends Component {
 					.ref('topics')
 					.orderByChild('categoryUrl')
 					.equalTo(this.props.params.params.category)
-					.once('value', (snapshot)=> {
+					.once('value', (snapshot) => {
 						if (snapshot.val()) {
 							this.setState({topics: snapshot.val()});
 						} else {

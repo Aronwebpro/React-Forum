@@ -31,6 +31,12 @@ class Home extends Component {
 		updates[key] = input;
 		this.postsRef = firebaseApp.database().ref('topics').update(updates)
 			.then(() => {
+				let category = this.category.value;
+				firebaseApp.database().ref('categories/'+categoryUrl+'/count').once('value', (snapshot) => {
+					let count = snapshot.val() + 1;
+					firebaseApp.database().ref('/categories/'+ categoryUrl).update({count:count});
+				});
+				firebaseApp.database().ref('flash').update({status:true, msg:'Congrats! Your Post Created!', msgStatus:'success', redirect:false, redirectUrl:''});
 				this.setState({url:'/post/'+key, redirect:true});
 			})
 			.catch( err => {

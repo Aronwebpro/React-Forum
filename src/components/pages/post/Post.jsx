@@ -3,6 +3,7 @@ import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import categories from '../../../categories.json';
 import CommentRow from '../../mixins/commentrow/CommentRow';
 import { Redirect } from 'react-router';
+import Flash from '../../mixins/flash/Flash';
 
 //Database
 import base from '../../../base';
@@ -53,6 +54,16 @@ class Post extends Component {
 	componentDidMount() {
 		document.addEventListener('click', this.comClick);
 		document.addEventListener('keydown', this.escClick);
+		firebaseApp.database()
+			.ref('flash')
+			.once('value')
+			.then((snapshot) => {
+				let data = snapshot.val();
+				if (data && data.status === true ) {	
+					firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'', redirect:false, redirectUrl:''});
+					this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus});
+				}							
+		});
 
 	}
 	componentWillUnmount() {
@@ -179,11 +190,17 @@ class Post extends Component {
 		const { comments } = this.state;
 		const { isLoggedIn }= this.props;
 		if (this.state.redirect ) { return <Redirect to="/login" /> }
+		if(this.state.flash) {
+			setTimeout(() => {
+				this.setState({flash:false});
+			}, 2500);
+		}				
 		return (
 			<div>
 				<div className="content">
 					<div className="content">
 						<div className="container">
+							{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
 							<div className="left">
 								<SearchFilter categories={categories} page="post" isLoggedIn={ isLoggedIn } respond={ this.respond } clearReply={ this.clearReply } flash={this.flash}/>
 							</div>
