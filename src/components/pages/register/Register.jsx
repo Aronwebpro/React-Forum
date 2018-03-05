@@ -1,19 +1,23 @@
 import React, {Component} from 'react';
 import firebaseApp from '../../../firebase.js';
 import { Redirect } from 'react-router';
+import Flash from '../../mixins/flash/Flash';
 
 class Register extends Component {
 	constructor() {
 		super();
 		this.createUser = this.createUser.bind(this);
-		this.state = {avatar: '', redirect:false, spinner:''}
+		this.state = {avatar: '', redirect:false, flash:false}
 
 	}
 	createUser() {
+		let _this = this; 
 		this.setState({spinner: true});
 		const nickname = this.nickname.value;
 		const photo = this.state.avatar;
-		if (photo === '') { alert('Please select Avatar'); return; }
+		if (photo === '') { this.setState({flash:true, flashMsg:'Please select Avatar!', flashStatus:'error'});  return; }
+		if (nickname === '' ) { this.setState({flash:true, flashMsg:'Nickname field can\'t be blank!', flashStatus:'error'});  return; } else { this.setState({flash:false});}
+
 		firebaseApp.auth().createUserWithEmailAndPassword( this.email.value, this.password.value)
 			.then ((userData) => {
 				const user = firebaseApp.auth().currentUser;
@@ -47,16 +51,16 @@ class Register extends Component {
 			  var errorCode = error.code;
 			  var errorMessage = error.message;
 			  if (errorCode == 'auth/weak-password') {
-			    alert('The password is too weak.');
+			  	_this.setState({flash:true, flashMsg:'The password is too weak!', flashStatus:'error'});
 			  } else {
-			    alert(errorMessage);
+			    _this.setState({flash:true, flashMsg:errorMessage, flashStatus:'error'});
 			  }
 			  //console.log(error);
 			});
 
 	}
 	checked(event) {
-		this.setState({avatar: event.target.src});
+		this.setState({avatar: event.target.src, flash:false});
 	}
 	render() {
 		if (this.state.redirect === true || this.props.user ) return ( <Redirect to="/" />)
@@ -64,6 +68,7 @@ class Register extends Component {
 		if(this.state.spinner === true)  spinner = (<span><img src="https://linkjuice.io/img/loading.gif" alt="" style={ {width: '30px', transform:'translateY(11px)' } }/></span> )	
 		return (
 			<div className="register-page">
+				{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
 				<h1>Please fill register form:</h1>
 				<div className="form-wrapper">
 					<div className="avatar-wrapper">
@@ -148,10 +153,9 @@ class Register extends Component {
 						<label htmlFor="password">Password:</label>
 						<input type="password" name="password" ref={input => this.password = input}/>
 					</form>
-					<button className='btn' onClick={ this.createUser }>Register</button> { spinner }
-				</div>
-				
+					<button className='btn' onClick={ this.createUser }>Register</button>
 			</div>
+		</div>
 		)
 	}
 }
