@@ -25,25 +25,26 @@ class Register extends Component {
 					displayName:nickname,
 					photoURL: photo
 				});
-				// const input = {
-				// 		authorAvatar: photo,
-				// 		authorName: nickname,
-				// 		userID: userData.uid,
-				// 		memberSince: userData.metadata.a
-				// };	
-				// const key = firebaseApp.database().ref().child('comments').push().key;
-				// let updates = {};
-				// updates[key] = input;
-				// this.postRef = firebaseApp.database()
-				// 				.ref('users')
-				// 				.update(updates)
-				// 				.then(() => {
+				
+				const input = {
+						authorAvatar: photo,
+						authorName: nickname,
+						userID: userData.uid,
+						memberSince: userData.metadata.a
+				};	
+				const key = firebaseApp.database().ref().child('users').push().key;
+				let updates = {};
+				updates[key] = input;
+				this.postRef = firebaseApp.database()
+								.ref('users')
+								.update(updates)
+								.then(() => {
 									
-				// 				})
-				// 				.catch( err => {
-				// 					console.log('Error!');
-				// 					console.log(err);
-				// 				});
+								})
+								.catch( err => {
+									console.log('Error!');
+									console.log(err);
+								});
 			  	this.setState({redirect:true});
 			}) 
 		    .catch(function(error) {
