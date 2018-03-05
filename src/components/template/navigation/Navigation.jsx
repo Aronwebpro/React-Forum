@@ -25,14 +25,14 @@ class Navigation extends Component {
 		}
 		return (
 			<div className="navigation-wrapper">
-				<nav className={!this.props.user ? 'nav-logged-out' : undefined }>
+				<nav className={!this.props.user || this.props.user && !this.props.user.authorAvatar ? 'nav-logged-out' : undefined }>
 					<a href="/">Home</a>
 					<a href="/community">Community</a>
 					<a href="/about">About</a>
 					{ log }
 					{ !this.props.user && <a href="/register">Sign Up</a>}
 				</nav>
-				{ this.props.user && (<div className="header-avatar"><a href="/user"><img src={ this.props.user.photoURL } alt=""/></a></div>)}
+				{ this.props.user && this.props.user.authorAvatar && (<div className="header-avatar"><a href="/user"><img src={ this.props.user.authorAvatar } alt=""/></a></div>)}
 			</div>
 
 		);

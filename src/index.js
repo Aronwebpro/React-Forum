@@ -42,14 +42,15 @@ firebaseApp.auth().onAuthStateChanged( user => {
 			return (
 				<BrowserRouter>
 					<div className="page">
-						<Header isLoggedIn={ isLoggedIn } user={ user } />
+						<Header isLoggedIn={ isLoggedIn } user={ userMeta } />
 						<div className="content">	
-							<Match exactly pattern="/" render={ () => <Home isLoggedIn={ isLoggedIn } /> } />
+							<Match exactly pattern="/" render={ () => <Home isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
 							<Match pattern="/post/:postId" render={(params) => <Post params={ params } isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
 							<Match exactly pattern="/category/:category" render={ (params) => <Home isLoggedIn={ isLoggedIn } params={params}/> } />
 							<Match exactly pattern="/category/" render={ () => <Redirect to="/" /> } />
 							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
 							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
+							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } /> 
 							<Miss component={NotFound} />
 						</div>
 						<Footer />

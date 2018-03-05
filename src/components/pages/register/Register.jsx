@@ -21,26 +21,26 @@ class Register extends Component {
 					displayName:nickname,
 					photoURL: photo
 				});
-			const input = {
-					authorAvatar: photo,
-					authorName: nickname,
-					userID: userData.uid,
-					memberSince: userData.metadata.a
-			};	
-			const key = firebaseApp.database().ref().child('comments').push().key;
-			let updates = {};
-			updates[key] = input;
-			this.postRef = firebaseApp.database()
-							.ref('users')
-							.update(updates)
-							.then(() => {
-								
-							})
-							.catch( err => {
-								console.log('Error!');
-								console.log(err);
-							});
-		  	this.setState({redirect:true});
+				// const input = {
+				// 		authorAvatar: photo,
+				// 		authorName: nickname,
+				// 		userID: userData.uid,
+				// 		memberSince: userData.metadata.a
+				// };	
+				// const key = firebaseApp.database().ref().child('comments').push().key;
+				// let updates = {};
+				// updates[key] = input;
+				// this.postRef = firebaseApp.database()
+				// 				.ref('users')
+				// 				.update(updates)
+				// 				.then(() => {
+									
+				// 				})
+				// 				.catch( err => {
+				// 					console.log('Error!');
+				// 					console.log(err);
+				// 				});
+			  	this.setState({redirect:true});
 			}) 
 		    .catch(function(error) {
 			  // Handle Errors here.
@@ -59,7 +59,7 @@ class Register extends Component {
 		this.setState({avatar: event.target.src});
 	}
 	render() {
-		if (this.state.redirect === true ) return ( <Redirect to="/" />)
+		if (this.state.redirect === true || this.props.user ) return ( <Redirect to="/" />)
 		let spinner;	
 		if(this.state.spinner === true)  spinner = (<span><img src="https://linkjuice.io/img/loading.gif" alt="" style={ {width: '30px', transform:'translateY(11px)' } }/></span> )	
 		return (
