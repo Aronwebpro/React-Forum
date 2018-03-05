@@ -17,11 +17,11 @@ class Navigation extends Component {
 		window.scrollTo(0,0);
 	}
 	render() {
-		let logout;
+		let log;
 		if (this.props.user) {
-			logout = (<a className="theme-color_txt log-out" onClick={ this.logOut } style={ {cursor: 'pointer'} }>Logout</a>);
+			log = (<a className="theme-color_txt log-out" onClick={ this.logOut } style={ {cursor: 'pointer'} }>Logout</a>);
 		} else {
-			logout = (<a className="theme-color_txt log-out" href="/login">Login</a>);
+			log = (<a className="theme-color_txt log-out" href="/login">Login</a>);
 		}
 		return (
 			<div className="navigation-wrapper">
@@ -29,7 +29,8 @@ class Navigation extends Component {
 					<a href="/">Home</a>
 					<a href="/community">Community</a>
 					<a href="/about">About</a>
-					{ logout }
+					{ log }
+					{ !this.props.user && <a href="/register">Sign Up</a>}
 				</nav>
 				{ this.props.user && (<div className="header-avatar"><a href="/user"><img src={ this.props.user.photoURL } alt=""/></a></div>)}
 			</div>

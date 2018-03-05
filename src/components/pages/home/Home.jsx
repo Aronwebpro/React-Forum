@@ -3,10 +3,7 @@ import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import TopicRow from '../../mixins/topicrow/TopicRow';
 import { Redirect } from 'react-router';
 import Flash from '../../mixins/flash/Flash';
-//Data
-import data from '../../../topics.json';
-import categories from '../../../categories.json';
-//import firebaseApp from '../../../firebase';
+
 import firebaseApp from '../../../firebase';
 
 class Home extends Component {
@@ -89,7 +86,7 @@ class Home extends Component {
 					{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
 	          		<div id="home">
 	          				<div className="left">
-	          					<SearchFilter categories={categories} page="home" isLoggedIn={ isLoggedIn } flash={ this.flash } /> 
+	          					<SearchFilter page="home" isLoggedIn={ isLoggedIn } flash={ this.flash } /> 
 	          				</div>
 	          				<div className="right">
 								<div className="forum">

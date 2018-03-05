@@ -14,12 +14,11 @@ class Login extends Component {
 		this.state = {flash: false, redirect: false, back:false }
 	}
 	componentDidMount() {
-		this.refTopics = firebaseApp.database()
+		this.refFlash = firebaseApp.database()
 							.ref('flash')
 							.once('value')
 							.then((snapshot) => {
 								let data = snapshot.val();
-									console.log (data.back);
 								if (data && data.redirect === true) {
 									firebaseApp.database().ref('flash').update({redirect: false, redirectUrl: ''});
 									this.setState({redirect:true});

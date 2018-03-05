@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
-import categories from '../../../categories.json';
 import CommentRow from '../../mixins/commentrow/CommentRow';
 import { Redirect } from 'react-router';
 import Flash from '../../mixins/flash/Flash';
 
 //Database
-import base from '../../../base';
 import firebaseApp from '../../../firebase';
 
 class Post extends Component {
@@ -202,7 +200,7 @@ class Post extends Component {
 						<div className="container">
 							{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
 							<div className="left">
-								<SearchFilter categories={categories} page="post" isLoggedIn={ isLoggedIn } respond={ this.respond } clearReply={ this.clearReply } flash={this.flash}/>
+								<SearchFilter page="post" isLoggedIn={ isLoggedIn } respond={ this.respond } clearReply={ this.clearReply } flash={this.flash}/>
 							</div>
 							<div className="right post-container">
 								<div className="post-title forum-header">

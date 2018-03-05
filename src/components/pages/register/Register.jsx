@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import firebaseApp from '../../../firebase.js';
-import base from '../../../base';
 import { Redirect } from 'react-router';
 
 class Register extends Component {
@@ -22,18 +21,26 @@ class Register extends Component {
 					displayName:nickname,
 					photoURL: photo
 				});
-
-				const input = {};
-				input[userData.uid] = {
+			const input = {
 					authorAvatar: photo,
 					authorName: nickname,
 					userID: userData.uid,
 					memberSince: userData.metadata.a
-				};
-		  		this.userRef = base.update('users', {
-				    data: input
-				  });
-		  		this.setState({redirect:true});
+			};	
+			const key = firebaseApp.database().ref().child('comments').push().key;
+			let updates = {};
+			updates[key] = input;
+			this.postRef = firebaseApp.database()
+							.ref('users')
+							.update(updates)
+							.then(() => {
+								
+							})
+							.catch( err => {
+								console.log('Error!');
+								console.log(err);
+							});
+		  	this.setState({redirect:true});
 			}) 
 		    .catch(function(error) {
 			  // Handle Errors here.

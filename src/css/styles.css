@@ -2,27 +2,24 @@
 * {
   box-sizing: border-box; 
 }
-
 body {
   margin: 0;
   font-family: 'Raleway', sans-serif;
 }
-
 html {
   margin: 0;
   padding: 0;
-  background-color: #ededed; }
-
+  background-color: #ededed; 
+}
 .container {
   max-width: 1200px;
   margin: auto;
-  min-height: 600px; }
-
+  min-height: 600px; 
+}
 h1, h2, h3, h4, h5, h6, p {
   padding: 0;
   margin: 0; 
 }
-
 a, a:hover, a:active, a:visited {
   text-decoration: none;
   color: inherit;
@@ -32,26 +29,27 @@ a, a:hover, a:active, a:visited {
 }
 .content {
   min-height: 100vh;
-  margin-top: 20px; 
+  margin-top: 95px; 
 }
-
 .left {
   width: 20%;
   float: left; 
+  height: 200px;
 }
-
 .right {
   width: 80%;
   float: left; 
 }
-
 .fl_c {
   clear: both; 
 }
 .theme-color_txt {
   color: rgb(97, 218, 251);  
 }
-
+.left > div {
+  position: fixed;
+  width: 240px;
+}
 /******Post******/
 .post-container {
   padding: 0 15px; }
@@ -251,9 +249,7 @@ input#img16  {
 /*
 *****Home Page******
 */
-#home {
-  margin-top: 50px;
-}
+
 .forum {
   padding: 0 15px;
   box-sizing: border-box; 

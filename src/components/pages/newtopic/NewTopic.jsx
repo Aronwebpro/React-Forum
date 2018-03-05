@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
-
-//Data
-import categories from '../../../categories.json';
 import firebaseApp from  '../../../firebase';
-//Database
-import base from '../../../base';
 
 class Home extends Component {
 	constructor() {
@@ -52,7 +47,7 @@ class Home extends Component {
 				<div id="home">
 		          		<div className="container">
 		          				<div className="left">
-		          					<SearchFilter categories={categories} page="new" isLoggedIn={ isLoggedIn } /> 
+		          					<SearchFilter page="new" isLoggedIn={ isLoggedIn } /> 
 		          				</div>
 		          				<div className="right post-container">
 		          					<div className="post-title forum-header">

@@ -50,7 +50,6 @@ firebaseApp.auth().onAuthStateChanged( user => {
 							<Match exactly pattern="/category/" render={ () => <Redirect to="/" /> } />
 							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
 							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
-							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } />
 							<Miss component={NotFound} />
 						</div>
 						<Footer />

@@ -4,7 +4,7 @@ header {
   margin: 0;
   font-family: 'Noto Sans', sans-serif;
   height: 75px;
-  position: sticky;
+  position: fixed;
   width: 100%;
   top: 0;
   transition: all 0.25s ease;
