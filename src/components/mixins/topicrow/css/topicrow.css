@@ -11,7 +11,7 @@
 background:linear-gradient(transparent 80px, transparent);
 }
  .topic:hover .row-middle .topic-readmore p {
-  margin: 14px auto;
+  /*margin: 10px auto;*/
   background: #fff;
   border-radius: 12px;
   opacity: 1;
@@ -44,26 +44,27 @@ background:linear-gradient(transparent 80px, transparent);
   width: 70%;
   float: left;
   border-right: 1px solid #ededde; 
-  height: 200px;
+  height: 135px;
 }
 
-.row-middle .topic-title {
+.row-middle .topic-title-wrapper {
   border-bottom: 1px solid #ededed;
-  padding-bottom: 5px;
 }
-.row-middle .topic-title h3 {
+.row-middle .topic-title-wrapper h3 {
   padding: 4px 7px 0; 
+  font-size: 1.1em;
 }
-.row-middle .topic-title p {
+.row-middle .topic-title-wrapper p {
   font-size:0.9em;
   padding: 2px 7px;
 }
 .row-middle .topic-description {
   position:relative;
   padding: 5px 0 30px 5px;
-  height: 100px;
+  height: 45px;
   overflow: hidden;
   line-height: 19px; 
+  font-size: 0.8em;
 }
 .row-middle .topic-description:before {
   content:'';
@@ -84,8 +85,8 @@ background:linear-gradient(transparent 80px, transparent);
 .row-right .author-avatar {
   /*text-align:center;*/ }
 
-.row-right img {
-  width: 50%;
+.row-right .author-avatar img {
+  width: 30%;
   margin: auto;
   border-radius: 50%; }
 
@@ -130,4 +131,32 @@ background:linear-gradient(transparent 80px, transparent);
 }
 .topic-readmore p:hover {
   transform:scale(1.2);
+}
+.topic-title .title-left {
+ /* border-right: 1px solid #ededde;*/
+}
+.topic-title-wrapper table td,
+.topic-title-wrapper table th  {
+  padding: 2px 5px;
+  text-align: center;
+  font-size: 0.8em;
+  font-weight: 400;
+ /* background-color: rgba(222,222,222,0.5);*/
+}
+
+.title-left {
+  width: 60%;
+}
+.title-right {
+  width: 40%;
+}
+.title-right img {
+  max-width: 80%;
+  float:left;
+}
+.topic-type span {
+  padding: 0 10px;
+  border-radius:10px;
+  background-color: #545454;
+  color:#fff;
 }

@@ -26,13 +26,22 @@ class Home extends Component {
 						}
 				});
 		} else {
+				// firebaseApp.database()
+				// 	.ref('topics')
+				// 	.orderByChild('created')
+				// 	.once('value')
+				// 	.then((snapshot) => {
+				// 		this.setState({topics: snapshot.val()});
+				// });
 				firebaseApp.database()
 					.ref('topics')
-					.orderByChild('created')
+					//.orderByChild('created')
+					//.startAt(1)
+					//.endAt(3)
 					.once('value')
 					.then((snapshot) => {
 						this.setState({topics: snapshot.val()});
-				});				
+				});					
 		}
 	}
 	componentDidMount() {
