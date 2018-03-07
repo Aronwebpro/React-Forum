@@ -33,12 +33,10 @@ class TopicRow extends Component {
 		}
 	}
 	render() {
-		const { topic, since, createdDate, createdTime, topicId } = this.props;
-		const repliesCount = '7';
-		const diType = 'Announcment';
-		const repBy = 'Chipsy';
-		const repAvatar = 'http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-A2-icon.png';
-		const repTime = '3/07 2018';
+		const { topic, since, topicId, convertDate } = this.props;
+
+		const createdDate = convertDate(topic.created, 'date');
+		const createdTime = convertDate(topic.created, 'time');
 		return (
 			<div className="topic">
 				<a href={`/post/${topicId}`}>
@@ -54,31 +52,35 @@ class TopicRow extends Component {
 						<div className="topic-title-wrapper topic-title">
 							<div className="fl_l title-left">
 								<h3>{topic.title}</h3>
-							<p><span className="theme-color_txt">Created:</span> { createdDate+' '+createdTime }</p>
-							<p className="topic-type">{ diType && (<span>#{ diType }</span>) }</p>
+							<p><span className="theme-color_txt">Created:</span> { createdDate+' '+createdTime } <span className="topic-type">{topic.type && (<span>#{ topic.type }</span>) }</span> </p>
+							
 							</div>
 							<div className="fl_l title-right">
 								<table style={{borderLeft: '1px solid #ededde'}}>
-									<tr>
-										<th width="20%">Replies:</th>
-										<th style={{fontWeight: '600', fontSize: '1.1em'}}>{ repliesCount }</th>
-										<th rowspan="2" style={{borderLeft: '1px solid #ededde'}}>
-											<table>
-												<tr>
-													<th style={{textAlign: 'right', fontWeight: '600', fontSize: '1.1em'}}>Most Recent</th>
-													<th rowspan="3" width="50px">
-														<img src={repAvatar} alt=""/>
-													</th>
-												</tr>
-												<tr>
-													<td style={ {textAlign:'right'}}> <span className="theme-color_txt">By:</span> <span style={{textAlign: 'right', fontWeight: '600'}} >{ repBy }</span></td>
-												</tr>
-												<tr>
-													<td style={ {textAlign:'right'}}>{ repTime }</td>
-												</tr>
-											</table> 
-										</th>
-									</tr>
+									<tbody>
+										<tr>
+											<th width="20%">Replies:</th>
+											<th style={{fontWeight: '600', fontSize: '1.1em'}}>{ topic.repliesCount }</th>
+											<th rowSpan="2" style={{borderLeft: '1px solid #ededde'}}>
+												<table>
+													<tbody>
+														<tr>												
+															<th style={{textAlign: 'right', fontWeight: '600', fontSize: '1.1em'}}>Most Recent</th>
+															<th rowSpan="3" width="50px">
+																<img src={topic.lastAvatar} alt=""/>
+															</th>
+														</tr>
+														<tr>
+															<td style={ {textAlign:'right'}}> <span className="theme-color_txt">By:</span> <span style={{textAlign: 'right', fontWeight: '600'}} >{ topic.last }</span></td>
+														</tr>
+														<tr>
+															<td style={ {textAlign:'right'}}>{  convertDate(topic.lastDate, 'date')} {convertDate(topic.lastDate, 'time')}</td>
+														</tr>
+													</tbody>
+												</table> 
+											</th>
+										</tr>
+									</tbody>
 								</table>
 								
 							</div>
@@ -100,7 +102,7 @@ class TopicRow extends Component {
 								By: <span className="author">{topic.authorName} </span>
 							</p>
 							<p>
-								Member Since: <span className="date">{ since }</span>
+								Member Since: <span className="date">{ topic.memberSince }</span>
 							</p>
 						</div>
 					</div>

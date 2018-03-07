@@ -157,6 +157,7 @@ background:linear-gradient(transparent 80px, transparent);
 .topic-type span {
   padding: 0 10px;
   border-radius:10px;
+  font-size:0.9em;
   background-color: #545454;
   color:#fff;
 }

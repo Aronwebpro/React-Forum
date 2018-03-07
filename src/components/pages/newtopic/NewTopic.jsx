@@ -19,7 +19,14 @@ class Home extends Component {
 			categoryUrl: categoryUrl,
 			authorAvatar: this.props.user.authorAvatar,
 			authorName: this.props.user.authorName,
-			created: created
+			memberSince: this.props.user.memberSince,
+			type: this.type.value,
+			created: created,
+			last: this.props.user.authorName,
+			lastAvatar: this.props.user.authorAvatar,
+			repliesCount: 0,
+			lastDate: created
+
 		}
 		const key = firebaseApp.database().ref().child('topics').push().key;
 		let updates = {};
@@ -51,7 +58,7 @@ class Home extends Component {
 		          				</div>
 		          				<div className="right post-container">
 		          					<div className="post-title forum-header">
-										<h2>New Post</h2>
+										<h2>New Discussion</h2>
 									</div>
 									<div className="full-post new-post-body">
 										<form>
@@ -66,6 +73,15 @@ class Home extends Component {
 													<option value="PC Games">PC Games</option>
 													<option value="Console Games">Console Games</option>
 													<option value="Handheld Games">Handheld Gamess</option>
+												</select>
+											</div>
+											<div className="category-select">
+												<label htmlFor=""><h3>Discussion Type</h3></label>
+												<select name="category" id="" ref={ (input => this.type = input) }>
+													<option value="">Select Type</option>
+													<option value="announcement">Announcement</option>
+													<option value="question">Question</option>
+													<option value="general">General</option>
 												</select>
 											</div>
 											<label htmlFor=""><h3>Text:</h3></label>

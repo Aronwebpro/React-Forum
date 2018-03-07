@@ -11,6 +11,7 @@ class Home extends Component {
 		super();
 		this.state = {topics: {}, redirect:false, flash:false};
 		this.flash = this.flash.bind(this);
+		this.convertDate = this.convertDate.bind(this);
 	}
 	componentWillMount() {
 		if (this.props.params) {
@@ -73,13 +74,25 @@ class Home extends Component {
 	}
 	changeBtn(position) {
 		if (position === 'down') {
-			this.arrow.style.transform = 'rotateZ(-90deg) translate(10%, 40%)';
+			this.arrow.style.transform = 'rotateZ(-90deg) translate(7%, 40%)';
 		} else {
 			this.arrow.style.transform = 'rotateZ(0deg) translate(20%, 0%)';
 		}
 	}
 	flash(status=true, msg, msgStatus, redirect=false, url='/', back='/') {
 		firebaseApp.database().ref('flash').update({status:status, msg:msg, msgStatus:msgStatus, redirect: redirect, redirectUrl: url, back:back});
+	}
+	convertDate(unixTime, type) {
+		var date = new Date(unixTime);
+		var returnString;
+		if (type === 'date') {
+			returnString = date.getMonth()+1 + '/' + date.getDate() + ' ' + date.getFullYear();
+		} else if (type === 'time') {
+			returnString = date.getHours() + ':' + date.getMinutes();
+			
+		}
+		//console.log(returnString);
+		return returnString;																				
 	}
 	render() {
 		const { topics } = this.state;
@@ -101,7 +114,7 @@ class Home extends Component {
 								<div className="forum">
 									<div className="forum-header">
 										<div className="forum-title">
-											<h2>Recent Posts</h2>
+											<h2>Recent Discussions</h2>
 										</div>
 										<div ref={input => (this.arrow = input)} className="arrors" onClick={() => this.expand(this)}>
 											<div className="leftArrow" />
@@ -112,11 +125,7 @@ class Home extends Component {
 									<div ref={input => (this.forumContent = input)} className="forum-content">
 										<div ref={input => (this.forumContentInner = input)} className="forum-coontent-inner" >
 											{Object.keys(topics).reverse().map(topic => {
-												let date = new Date(topics[topic].created);
-												let since = date.getMonth()+1 + '/' + date.getDate() + '  ' + date.getFullYear();
-												let createdDate = date.getMonth()+1 + '/' + date.getDate() + ' ' + date.getFullYear();
-												let createdTime = date.getHours() + ':' + date.getMinutes();	
-												return <TopicRow key={topic} topicId={topic} topic={topics[topic]} since={ since } createdTime={ createdTime }  createdDate={ createdDate }/>;
+												return <TopicRow key={topic} topicId={topic} convertDate={this.convertDate} topic={topics[topic]} />;
 											})}
 										</div>
 									</div>
