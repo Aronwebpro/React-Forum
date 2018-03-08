@@ -89,17 +89,6 @@ class Post extends Component {
 								}
 							});		
 	}
-	getComments() {
-		this.commentRef = firebaseApp.database()
-							.ref('/comments/')
-							.orderByChild('topicId')
-							.equalTo(this.Id)
-							.once('value', (snapshot) => {
-								if (snapshot.val()) {
-									this.setState({comments:snapshot.val()});
-								}
-							});		
-	}
 	postComment() {
 		const time = Date.now();
 		const input = {
@@ -119,6 +108,13 @@ class Post extends Component {
 						.update(updates)
 						.then(() => {
 							this.getComments();
+							let date = Date.now();
+							this.updatePost(this.Id, {
+								last: this.props.user.authorName,
+								lastAvatar: this.props.user.authorAvatar,
+								lastDate: date,
+								repliesCount: ''
+							});
 						})
 						.catch( err => {
 							console.log('Error!');
@@ -126,6 +122,30 @@ class Post extends Component {
 						});
 		this.setState({respond:'', reply:false, replyStyleInit: {display: 'none' }});
 		this.respText.value = '';
+	}
+	getComments() {
+		this.commentRef = firebaseApp.database()
+							.ref('/comments/')
+							.orderByChild('topicId')
+							.equalTo(this.Id)
+							.once('value', (snapshot) => {
+								if (snapshot.val()) {
+									this.setState({comments:snapshot.val()});
+								}
+							});		
+	}
+	updatePost(id, input) {
+		const db = firebaseApp.database().ref('topics/'+id);		
+			db.once('value', (snapshot) => {
+				input['repliesCount'] = snapshot.val().repliesCount + 1;
+				db.update(input)
+				.then(() => {
+				})
+				.catch( err => {
+					console.log('Error!');
+					console.log(err);
+				});	
+			});				
 	}
 	respond(user) {
 		this.setState({
@@ -165,10 +185,12 @@ class Post extends Component {
 		}
 	}
 	respondText(data) {
+		console.log(this.state.reply);
 		this.setState({replyStyle: { width: '100%', height: '100%'}, replyStyleInit: {display: 'block' }, reply: true, clickedId:data.clickedId });
 		if( this.state.reply === true) {
-			if (this.state.clickedId != data.commentId) return
-			if (!this.props.isLoggedIn) this.setState({redirect:true}); this.flash(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href ); return;
+
+			if (this.state.clickedId != data.commentId) { console.log('shit happen'); return }
+			if (!this.props.user) { this.setState({redirect:true}); this.flash(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href ); window.scrollTo(0, 0); return; }
 			this.setState({replyText: {text:data.text, user:data.user}, reply: false, replyStyleInit: {display: 'none'} });
 			this.respond();
 		}
@@ -195,7 +217,7 @@ class Post extends Component {
 		}				
 		return (
 			<div>
-				<div className="content">
+				<div className="post-page">
 					<div className="content">
 						<div className="container">
 							{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
@@ -208,15 +230,15 @@ class Post extends Component {
 								</div>
 								<div className="full-post">
 									<div className="post">
-										<div className="post-info">Category: {post.category} / Posted: { createdDate + ' ' + createdTime }</div>
+										<div className="post-info"><span className="theme-color_txt">Category:</span> {post.category}, <span className="theme-color_txt">Posted:</span> { createdDate + ' ' + createdTime } <span className="topic-type"> {post.type && (<span>#{ post.type }</span>) }</span></div>
 										<div className="post-text">
 											<p>{post.text}</p>
 										</div>
 									</div>
 									<div className="author-info">
 										<img src={post.authorAvatar} alt=""/>
-										<p>Author: <span className="bold">{post.authorName}</span></p>
-										<p>Member Since: <span className="bold">{createdDate}</span></p>
+										<p><span className="theme-color_txt">Author:</span> <span className="bold">{post.authorName}</span></p>
+										<p><span className="theme-color_txt">Member Since:</span> <span className="bold">{createdDate}</span></p>
 									</div>
 									<div className="fl_c" />
 								</div>
@@ -238,6 +260,7 @@ class Post extends Component {
 													replyStyleInit={this.state.replyStyleInit}
 													commentId={comment}
 													clickedId={this.state.clickedId}
+													user={this.props.user}
 												/>;
 									})}
 								</div>

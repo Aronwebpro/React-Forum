@@ -59,64 +59,6 @@ a, a:hover, a:active, a:visited {
 img {
   max-width: 100%;
 }
-/******Post******/
-.post-container {
-  padding: 0 15px; }
-
-.full-post {
-  position:relative;
-  background-color: #fff; 
-}
-
-.post {
-  float: left;
-  width: 80%;
-  padding: 5px; 
-  border-right:1px solid #e2e2e2;
-}
-  .post .post-info {
-    font-style: italic; }
-
-.author-info {
-  float: right;
-  width: 20%;
-  padding: 5px;
-  font-size: 0.9em; 
-}
-  .author-info img {
-    width: 55%;
-    display: block;
-    margin: auto;
-    margin-bottom: 15px; 
-  }
-
-.btn {
-  padding: 10px 20px;
-  border: 1px solid rgb(97, 218, 251);
-  background-color: rgb(97, 218, 251);
-  text-align: center;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.6s; 
-}
-.navigation-buttons .btn:hover {
-  background-color: rgba(251, 251, 251, 0.6); 
-  color: #000;
-}
-
-
-.new-post-body {
-  padding: 20px;
-  color: inherit; }
-  .new-post-body select {
-    display: inline-block;
-    margin-left: 10px;
-    height: 35px; }
-  .new-post-body h3, .new-post-body label {
-    display: inline-block;
-    width: auto; }
-  .new-post-body .category-select {
-    margin-top: 10px; }
 
 form {
   width: 100%;
@@ -201,15 +143,79 @@ input#img16  {
   margin: 5px auto;
 }
 
+
 /*
-*****Post Page******
+***********Post Page****************
 */
+.post-container {
+  padding: 0 15px; 
+}
+.full-post {
+  position:relative;
+  background-color: #fff; 
+}
+.post {
+  float: left;
+  width: 80%;
+  padding: 5px; 
+  border-right:1px solid #e2e2e2;
+}
+.post-title h2 {
+  font-size: 1.25em;
+}
+.post .post-info {
+  font-style: italic; 
+}
+.author-info {
+  float: right;
+  width: 20%;
+  padding: 5px;
+  font-size: 0.8em; 
+  text-align: center;
+}
+.author-info img {
+  width: 30%;
+  display: block;
+  margin: auto;
+  margin-bottom: 15px; 
+}
+
+.btn {
+  padding: 10px 20px;
+  border: 1px solid rgb(97, 218, 251);
+  background-color: rgb(97, 218, 251);
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.6s; 
+}
+.navigation-buttons .btn:hover {
+  background-color: rgba(251, 251, 251, 0.6); 
+  color: #000;
+}
+.new-post-body {
+  padding: 20px;
+  color: inherit; 
+}
+.new-post-body select {
+  display: inline-block;
+  margin-left: 10px;
+  height: 35px; 
+}
+.new-post-body h3, .new-post-body label {
+  display: inline-block;
+  width: auto; 
+}
+.new-post-body .category-select {
+  margin-top: 10px; 
+}
 .post .post-info {
   padding: 10px;
   border-bottom: 1px solid #e2e2e2;
 }
 .post .post-text {
   padding: 10px;
+  font-size: 0.8em;
   line-height: 1.4em;
 }
 .quote {
@@ -218,7 +224,6 @@ input#img16  {
     width: 98%;
     margin: 0 auto 10px;
 }
-
 .reply-to-this {
   position: absolute;
   width: 100%;
@@ -250,13 +255,39 @@ input#img16  {
   border-left: 10px solid transparent;
   border-bottom: 10px solid #fff;
   border-right: 10px solid transparent;
-  z-index: 2;
-  
+  z-index: 1;
+}
+.click-to-reply p {
+  margin:0px auto;
+  width: 80%;  
+  opacity: 0;
+  border-radius: 12px;
+  transition: all 0.4s;
+  text-align: center;
+  background-color: rgba(32, 35, 42, 0.65);
+}
+.click-to-reply p:hover {
+  transform:scale(1.2);
+}
+ .post-page .full-post:hover .click-to-reply p {
+  /*margin: 10px auto;*/
+  opacity: 1;
+}
+.post-page .full-post:active .click-to-reply p {
+  opacity: 0;
 }
 
-
+.quote-comment {
+  margin:10px;
+  padding: 5px;
+  display:inline-block;
+/*  border: 1px solid #000;*/
+}
+.quote-comment:hover {
+  background-color: rgba(32, 35, 42, 0.15);  
+}
 /*
-*****Home Page******
+*************Home Page***************
 */
 
 .forum {
