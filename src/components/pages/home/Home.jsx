@@ -91,7 +91,6 @@ class Home extends Component {
 			returnString = date.getHours() + ':' + date.getMinutes();
 			
 		}
-		//console.log(returnString);
 		return returnString;																				
 	}
 	render() {

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
+
+//Components
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import CommentRow from '../../mixins/commentrow/CommentRow';
-import { Redirect } from 'react-router';
 import Flash from '../../mixins/flash/Flash';
 
 //Database
@@ -89,6 +91,17 @@ class Post extends Component {
 								}
 							});		
 	}
+	getComments() {
+		this.commentRef = firebaseApp.database()
+							.ref('/comments/')
+							.orderByChild('topicId')
+							.equalTo(this.Id)
+							.once('value', (snapshot) => {
+								if (snapshot.val()) {
+									this.setState({comments:snapshot.val()});
+								}
+							});		
+	}
 	postComment() {
 		const time = Date.now();
 		const input = {
@@ -123,17 +136,6 @@ class Post extends Component {
 		this.setState({respond:'', reply:false, replyStyleInit: {display: 'none' }});
 		this.respText.value = '';
 	}
-	getComments() {
-		this.commentRef = firebaseApp.database()
-							.ref('/comments/')
-							.orderByChild('topicId')
-							.equalTo(this.Id)
-							.once('value', (snapshot) => {
-								if (snapshot.val()) {
-									this.setState({comments:snapshot.val()});
-								}
-							});		
-	}
 	updatePost(id, input) {
 		const db = firebaseApp.database().ref('topics/'+id);		
 			db.once('value', (snapshot) => {
@@ -162,17 +164,17 @@ class Post extends Component {
 			return ( 
 				<div className="full-post" style={ {marginTop:'20px'} } >
 					<div className="post">
-									<div className="full-post new-post-body">
-										{	//Return comment text if quote
-											this.state.replyText != '' &&  
-											( <div><span className="theme-color_txt">Replying to...</span><br /><div className="quote"><p>{ this.state.replyText.user } said: </p><p>"{this.state.replyText.text}"</p></div></div>)
-										}
-										<form>
-											<label htmlFor=""><h2>Write a Comment:</h2></label>
-											<textarea name="" id="" cols="30" rows="10" ref={ (input) => this.respText = input }></textarea>
-										</form>
-										<button onClick={ this.postComment } className="btn" style={ {marginTop: '20px'} } >Post</button>
-									</div>
+						<div className="full-post new-post-body">
+							{	//Return comment text if quote
+								this.state.replyText != '' &&  
+								( <div><span className="theme-color_txt">Replying to...</span><br /><div className="quote"><p>{ this.state.replyText.user } said: </p><p>"{this.state.replyText.text}"</p></div></div>)
+							}
+							<form>
+								<label htmlFor=""><h2>Write a Comment:</h2></label>
+								<textarea name="" id="" cols="30" rows="10" ref={ (input) => this.respText = input }></textarea>
+							</form>
+							<button onClick={ this.postComment } className="btn" style={ {marginTop: '20px'} } >Post</button>
+						</div>
 					</div>
 					<div className="author-info">
 						<img src={this.props.user.authorAvatar} alt=""/>
@@ -262,7 +264,7 @@ class Post extends Component {
 													clickedId={this.state.clickedId}
 													user={this.props.user}
 												/>;
-									})}
+									}) }
 								</div>
 								<div>
 									{ this.respondForm() }
