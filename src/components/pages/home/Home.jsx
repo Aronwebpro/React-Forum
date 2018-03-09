@@ -3,47 +3,19 @@ import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import TopicRow from '../../mixins/topicrow/TopicRow';
 import { Redirect } from 'react-router';
 import Flash from '../../mixins/flash/Flash';
-
+import Pagination from '../../mixins/pagination/pagination';
 import firebaseApp from '../../../firebase';
 
 class Home extends Component {
 	constructor() {
 		super();
-		this.state = {topics: {}, redirect:false, flash:false};
+		this.state = {topics: {}, redirect:false, flash:false, lastRow:''};
 		this.flash = this.flash.bind(this);
 		this.convertDate = this.convertDate.bind(this);
+		this.updateTopics = this.updateTopics.bind(this);
 	}
 	componentWillMount() {
-		if (this.props.params) {
-				firebaseApp.database()
-					.ref('topics')
-					.orderByChild('categoryUrl')
-					.equalTo(this.props.params.params.category)
-					.once('value', (snapshot) => {
-						if (snapshot.val()) {
-							this.setState({topics: snapshot.val()});
-						} else {
-							this.setState({redirect: true});
-						}
-				});
-		} else {
-				// firebaseApp.database()
-				// 	.ref('topics')
-				// 	.orderByChild('created')
-				// 	.once('value')
-				// 	.then((snapshot) => {
-				// 		this.setState({topics: snapshot.val()});
-				// });
-				firebaseApp.database()
-					.ref('topics')
-					//.orderByChild('created')
-					//.startAt(1)
-					//.endAt(3)
-					.once('value')
-					.then((snapshot) => {
-						this.setState({topics: snapshot.val()});
-				});					
-		}
+		this.updateTopics(this.state.lastRow);
 	}
 	componentDidMount() {
 		firebaseApp.database()
@@ -62,6 +34,72 @@ class Home extends Component {
 	}
 	componentDidUpdate() {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
+	}
+	updateTopics(startAt, direction) {
+		//startAt = startAt.toString();
+		console.log(startAt);
+		if (this.props.params) {
+				firebaseApp.database()
+					.ref('topics')
+					.orderByChild('categoryUrl')
+					.equalTo(this.props.params.params.category)
+					.once('value', (snapshot) => {
+						if (snapshot.val()) {
+							this.setState({topics: snapshot.val()});
+						} else {
+							this.setState({redirect: true});
+						}
+				});
+		} else {
+				if (this.state.lastRow == '') {
+					firebaseApp.database()
+						.ref('topics')
+						.limitToLast(3)
+						.orderByKey()
+						.once('value')
+						.then((snapshot) => {
+							let obj = snapshot.val();
+							let arr = Object.keys(obj);
+							let key = arr[0];
+							if (arr.length > 2 ) delete obj[key];
+
+							this.setState({topics: obj, lastRow:arr[0]});
+					});
+				} else {
+					if (direction == 'next') {
+						firebaseApp.database()
+							.ref('topics')
+							.limitToLast(3)
+							.orderByKey()
+							.endAt(startAt)
+							.once('value')
+							.then((snapshot) => {
+								let obj = snapshot.val();
+								let arr = Object.keys(obj);
+								let key = arr[0];
+								if (arr.length > 2 ) delete obj[key];
+
+								this.setState({topics: obj, lastRow:arr[0], firstRow:arr[arr.length - 1]});
+						});	
+					} else {
+						firebaseApp.database()
+							.ref('topics')
+							.limitToLast(3)
+							.orderByKey()
+							.endAt(startAt)
+							.once('value')
+							.then((snapshot) => {
+								let obj = snapshot.val();
+								let arr = Object.keys(obj);
+								let key = arr[0];
+								if (arr.length > 2 ) delete obj[key];
+
+								this.setState({topics: obj, lastRow:arr[0], firstRow:arr[arr.length - 1]});
+						});	
+					}			
+				}
+
+		}	
 	}
 	expand(component) {
 		if (component.forumContent.clientHeight > 0) {
@@ -93,6 +131,7 @@ class Home extends Component {
 		}
 		return returnString;																				
 	}
+
 	render() {
 		const { topics } = this.state;
 		const { isLoggedIn } = this.props;
@@ -122,8 +161,9 @@ class Home extends Component {
 									</div>
 									<div className="fl_c" />
 									<div ref={input => (this.forumContent = input)} className="forum-content">
+										<Pagination updateTopics={this.updateTopics} last={this.state.firstRow} last={this.state.firstRow}/>
 										<div ref={input => (this.forumContentInner = input)} className="forum-coontent-inner" >
-											{Object.keys(topics).reverse().map(topic => {
+											{topics && Object.keys(topics).reverse().map(topic => {
 												return <TopicRow key={topic} topicId={topic} convertDate={this.convertDate} topic={topics[topic]} />;
 											})}
 										</div>

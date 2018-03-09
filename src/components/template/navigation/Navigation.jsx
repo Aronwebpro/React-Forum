@@ -6,6 +6,9 @@ class Navigation extends Component {
 		super();
 		this.logOut = this.logOut.bind(this);
 	}
+	componentDidMount() {
+		if ( this.props.user && !this.props.user.authorAvatar) this.setState({});
+	}
 	logOut() {
 		firebaseApp.auth().signOut().then(function() {
 		 	let msg = 'GoodBye! You\'ve logged out successfully!';

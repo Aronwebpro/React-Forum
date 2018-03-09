@@ -31,14 +31,23 @@ class Home extends Component {
 		const key = firebaseApp.database().ref().child('topics').push().key;
 		let updates = {};
 		updates[key] = input;
-		this.postsRef = firebaseApp.database().ref('topics').update(updates)
+		const db = firebaseApp.database();
+			db.ref('topics').update(updates)
 			.then(() => {
 				let category = this.category.value;
-				firebaseApp.database().ref('categories/'+categoryUrl+'/count').once('value', (snapshot) => {
+				db.ref('categories/'+categoryUrl+'/count').once('value', (snapshot) => {
 					let count = snapshot.val() + 1;
-					firebaseApp.database().ref('/categories/'+ categoryUrl).update({count:count});
+					db.ref('/categories/'+ categoryUrl).update({count:count});
 				});
-				firebaseApp.database().ref('flash').update({status:true, msg:'Congrats! Your Post Created!', msgStatus:'success', redirect:false, redirectUrl:''});
+			})
+			.then(() => {
+				db.ref('config/topicsCount').once('value', (snapshot) => {
+					let postCount = snapshot.val() + 1;
+					db.ref('config').update({topicsCount:postCount});
+				});
+			})
+			.then(() => {
+				db.ref('flash').update({status:true, msg:'Congrats! Your Post Created!', msgStatus:'success', redirect:false, redirectUrl:''});
 				this.setState({url:'/post/'+key, redirect:true});
 			})
 			.catch( err => {

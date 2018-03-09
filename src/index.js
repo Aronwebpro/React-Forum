@@ -25,7 +25,7 @@ import './css/styles.css'
 firebaseApp.auth().onAuthStateChanged( user => {
   if (user) {
   		const date = new Date(Number.parseInt(user.metadata.a));	
-  		let createdDate = ''
+  		let createdDate = '';
 		if (date != 'Invalid Date') {
 			createdDate = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();
 		}

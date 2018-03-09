@@ -25,12 +25,14 @@ class Register extends Component {
 					displayName:nickname,
 					photoURL: photo
 				});
-				
+				return user;			  	
+			})
+			.then((user) => {
 				const input = {
 						authorAvatar: photo,
 						authorName: nickname,
-						userID: userData.uid,
-						memberSince: userData.metadata.a
+						userID: user.uid,
+						memberSince: user.metadata.a
 				};	
 				const key = firebaseApp.database().ref().child('users').push().key;
 				let updates = {};
@@ -38,16 +40,15 @@ class Register extends Component {
 				this.postRef = firebaseApp.database()
 								.ref('users')
 								.update(updates)
-								.then(() => {
-									
-								})
 								.catch( err => {
 									console.log('Error!');
 									console.log(err);
 								});
-			  	this.setState({redirect:true});
+			 })
+			.then(() => {
+				this.setState({redirect:true});
 			}) 
-		    .catch(function(error) {
+		    .catch((error) => {
 			  // Handle Errors here.
 			  var errorCode = error.code;
 			  var errorMessage = error.message;
