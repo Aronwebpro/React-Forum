@@ -9,13 +9,14 @@ import firebaseApp from '../../../firebase';
 class Home extends Component {
 	constructor() {
 		super();
-		this.state = {topics: {}, redirect:false, flash:false, lastRow:''};
+		this.state = {topics: {}, redirect:false, flash:false, loadHide:false, amount:1};
 		this.flash = this.flash.bind(this);
 		this.convertDate = this.convertDate.bind(this);
 		this.updateTopics = this.updateTopics.bind(this);
+		this.byrka = this.byrka.bind(this);
 	}
 	componentWillMount() {
-		this.updateTopics(this.state.lastRow);
+		this.updateTopics();
 	}
 	componentDidMount() {
 		firebaseApp.database()
@@ -35,70 +36,35 @@ class Home extends Component {
 	componentDidUpdate() {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
 	}
-	updateTopics(startAt, direction) {
-		//startAt = startAt.toString();
-		console.log(startAt);
+	updateTopics(amount) {
+		let number = amount || this.state.amount;
 		if (this.props.params) {
 				firebaseApp.database()
 					.ref('topics')
 					.orderByChild('categoryUrl')
 					.equalTo(this.props.params.params.category)
+					.limitToLast(number)
 					.once('value', (snapshot) => {
 						if (snapshot.val()) {
-							this.setState({topics: snapshot.val()});
+							let loadHide = false;
+							if (Object.keys(snapshot.val()).length !== number ) loadHide = true;
+							this.setState({topics: snapshot.val(), loadHide:loadHide});
 						} else {
 							this.setState({redirect: true});
 						}
 				});
 		} else {
-				if (this.state.lastRow == '') {
-					firebaseApp.database()
-						.ref('topics')
-						.limitToLast(3)
-						.orderByKey()
-						.once('value')
-						.then((snapshot) => {
-							let obj = snapshot.val();
-							let arr = Object.keys(obj);
-							let key = arr[0];
-							if (arr.length > 2 ) delete obj[key];
-
-							this.setState({topics: obj, lastRow:arr[0]});
-					});
-				} else {
-					if (direction == 'next') {
-						firebaseApp.database()
-							.ref('topics')
-							.limitToLast(3)
-							.orderByKey()
-							.endAt(startAt)
-							.once('value')
-							.then((snapshot) => {
-								let obj = snapshot.val();
-								let arr = Object.keys(obj);
-								let key = arr[0];
-								if (arr.length > 2 ) delete obj[key];
-
-								this.setState({topics: obj, lastRow:arr[0], firstRow:arr[arr.length - 1]});
-						});	
-					} else {
-						firebaseApp.database()
-							.ref('topics')
-							.limitToLast(3)
-							.orderByKey()
-							.endAt(startAt)
-							.once('value')
-							.then((snapshot) => {
-								let obj = snapshot.val();
-								let arr = Object.keys(obj);
-								let key = arr[0];
-								if (arr.length > 2 ) delete obj[key];
-
-								this.setState({topics: obj, lastRow:arr[0], firstRow:arr[arr.length - 1]});
-						});	
-					}			
-				}
-
+			firebaseApp.database()
+				.ref('topics')
+				.limitToLast(number)
+				.orderByKey()
+				.once('value')
+				.then((snapshot) => {
+					let loadHide = false;
+					if (Object.keys(snapshot.val()).length !== number ) loadHide = true;
+					this.setState({topics: snapshot.val(), loadHide: loadHide });
+					
+			});
 		}	
 	}
 	expand(component) {
@@ -131,7 +97,11 @@ class Home extends Component {
 		}
 		return returnString;																				
 	}
-
+	byrka() {
+		const b = this.state.amount + 1;
+		this.updateTopics(b);
+		this.setState({amount: b});
+	}
 	render() {
 		const { topics } = this.state;
 		const { isLoggedIn } = this.props;
@@ -161,13 +131,16 @@ class Home extends Component {
 									</div>
 									<div className="fl_c" />
 									<div ref={input => (this.forumContent = input)} className="forum-content">
-										<Pagination updateTopics={this.updateTopics} last={this.state.firstRow} last={this.state.firstRow}/>
+										{ /* Pagination
+										<Pagination updateTopics={this.updateTopics} first={this.state.firstRow} last={this.state.lastRow}/>
+										*/}
 										<div ref={input => (this.forumContentInner = input)} className="forum-coontent-inner" >
 											{topics && Object.keys(topics).reverse().map(topic => {
 												return <TopicRow key={topic} topicId={topic} convertDate={this.convertDate} topic={topics[topic]} />;
 											})}
 										</div>
 									</div>
+									{!this.state.loadHide && (<button onClick={ this.byrka }>Load More</button>)}
 								</div>
 	          				</div>
 	          		</div>

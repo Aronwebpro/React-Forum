@@ -20,7 +20,7 @@ class Pagination extends Component {
 		return (
 			<div>
 				<div>
-					<span onClick={() => { this.props.updateTopics(this.props.last, 'prev') } } className="fl_l">Prev</span>
+					<span onClick={() => { this.props.updateTopics(this.props.first, 'prev') } } className="fl_l">Prev</span>
 					<span onClick={() => { this.props.updateTopics(this.props.last, 'next') } } className="fl_r">Next</span>
 				</div>
 				<div className="fl_c" />
