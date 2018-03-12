@@ -30,7 +30,6 @@ class Navigation extends Component {
 			<div className="navigation-wrapper">
 				<nav className={!this.props.user || this.props.user && !this.props.user.authorAvatar ? 'nav-logged-out' : undefined }>
 					<a href="/">Home</a>
-					<a href="/community">Community</a>
 					<a href="/about">About</a>
 					{ log }
 					{ !this.props.user && <a href="/register">Sign Up</a>}
