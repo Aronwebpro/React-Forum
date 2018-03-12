@@ -47,7 +47,7 @@ class Home extends Component {
 					.once('value', (snapshot) => {
 						if (snapshot.val()) {
 							let loadHide = true;
-							if (Object.keys(snapshot.val()).length + 1 > number ) loadHide = null;
+							if (Object.keys(snapshot.val()).length == number ) loadHide = null;
 							this.setState({topics: snapshot.val(), loadHide:loadHide});
 						} else {
 							this.setState({redirect: true});
@@ -61,7 +61,8 @@ class Home extends Component {
 				.once('value')
 				.then((snapshot) => {
 					let loadHide = true;
-					if (Object.keys(snapshot.val()).length > number + 1 ) loadHide = null;
+					console.log();
+					if (Object.keys(snapshot.val()).length == number) loadHide = null;
 					this.setState({topics: snapshot.val(), loadHide: loadHide });
 					
 			});
@@ -103,7 +104,6 @@ class Home extends Component {
 		this.setState({amount: amount});
 	}
 	render() {
-		console.log(this.state.loadHide);
 		const { topics } = this.state;
 		const { isLoggedIn } = this.props;
 		if (this.state.redirect ) { return <Redirect to="/" /> }
@@ -141,7 +141,9 @@ class Home extends Component {
 											})}
 										</div>
 									</div>
-									{!this.state.loadHide && (<button className="btn" onClick={ this.loadMoreTopics }>Load More</button>)}
+									<div className="load-more-wrapper">
+										{!this.state.loadHide && (<button className="btn" onClick={ this.loadMoreTopics }>Load More</button>)}
+									</div>
 								</div>
 	          				</div>
 	          		</div>
