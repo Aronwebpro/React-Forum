@@ -81,7 +81,7 @@ class Home extends Component {
 													<option value="Card Games">Card Games</option>
 													<option value="PC Games">PC Games</option>
 													<option value="Console Games">Console Games</option>
-													<option value="Handheld Games">Handheld Gamess</option>
+													<option value="Handle Games">Handle Games</option>
 												</select>
 											</div>
 											<div className="category-select">

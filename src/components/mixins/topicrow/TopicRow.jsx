@@ -26,7 +26,7 @@ class TopicRow extends Component {
 				return PcGm;
 			case 'Console Games':
 				return ConsGm;
-			case 'Handheld Games':
+			case 'Handle Games':
 				return HandGm;
 			default:
 				return defGm;

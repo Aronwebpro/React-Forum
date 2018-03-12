@@ -9,11 +9,11 @@ import firebaseApp from '../../../firebase';
 class Home extends Component {
 	constructor() {
 		super();
-		this.state = {topics: {}, redirect:false, flash:false, loadHide:false, amount:1};
+		this.state = {topics: {}, redirect:false, flash:false, loadHide:true, amount:10};
 		this.flash = this.flash.bind(this);
 		this.convertDate = this.convertDate.bind(this);
 		this.updateTopics = this.updateTopics.bind(this);
-		this.byrka = this.byrka.bind(this);
+		this.loadMoreTopics = this.loadMoreTopics.bind(this);
 	}
 	componentWillMount() {
 		this.updateTopics();
@@ -46,8 +46,8 @@ class Home extends Component {
 					.limitToLast(number)
 					.once('value', (snapshot) => {
 						if (snapshot.val()) {
-							let loadHide = false;
-							if (Object.keys(snapshot.val()).length !== number ) loadHide = true;
+							let loadHide = true;
+							if (Object.keys(snapshot.val()).length + 1 > number ) loadHide = null;
 							this.setState({topics: snapshot.val(), loadHide:loadHide});
 						} else {
 							this.setState({redirect: true});
@@ -60,8 +60,8 @@ class Home extends Component {
 				.orderByKey()
 				.once('value')
 				.then((snapshot) => {
-					let loadHide = false;
-					if (Object.keys(snapshot.val()).length !== number ) loadHide = true;
+					let loadHide = true;
+					if (Object.keys(snapshot.val()).length > number + 1 ) loadHide = null;
 					this.setState({topics: snapshot.val(), loadHide: loadHide });
 					
 			});
@@ -97,12 +97,13 @@ class Home extends Component {
 		}
 		return returnString;																				
 	}
-	byrka() {
-		const b = this.state.amount + 1;
-		this.updateTopics(b);
-		this.setState({amount: b});
+	loadMoreTopics() {
+		const amount = this.state.amount + 10;
+		this.updateTopics(amount);
+		this.setState({amount: amount});
 	}
 	render() {
+		console.log(this.state.loadHide);
 		const { topics } = this.state;
 		const { isLoggedIn } = this.props;
 		if (this.state.redirect ) { return <Redirect to="/" /> }
@@ -140,7 +141,7 @@ class Home extends Component {
 											})}
 										</div>
 									</div>
-									{!this.state.loadHide && (<button onClick={ this.byrka }>Load More</button>)}
+									{!this.state.loadHide && (<button className="btn" onClick={ this.loadMoreTopics }>Load More</button>)}
 								</div>
 	          				</div>
 	          		</div>
