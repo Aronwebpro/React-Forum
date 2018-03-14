@@ -13,6 +13,7 @@ import Post from './components/pages/post/Post';
 import NewTopic from './components/pages/newtopic/NewTopic';
 import Login from './components/pages/login/Login';
 import Register from './components/pages/register/Register.jsx';
+import About from './components/pages/about/about.jsx';
 
 //Template parts
 import Header from './components/template/header/Header';
@@ -50,7 +51,8 @@ firebaseApp.auth().onAuthStateChanged( user => {
 							<Match exactly pattern="/category/" render={ () => <Redirect to="/" /> } />
 							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
 							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
-							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } /> 
+							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } />
+							<Match exactly pattern="/about" component={ About } /> 
 							<Miss component={NotFound} />
 						</div>
 						<Footer />
@@ -73,7 +75,8 @@ firebaseApp.auth().onAuthStateChanged( user => {
 							<Match exactly pattern="/category/" render={ () => <Redirect to="/" /> } />
 							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } /> } />
 							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } /> } />
-							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } /> 
+							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } />
+							<Match exactly pattern="/about" component={ About } /> 
 							<Miss component={NotFound} />
 						</div>
 						<Footer />
