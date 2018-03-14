@@ -197,6 +197,9 @@ class Post extends Component {
 			this.respond();
 		}
 	}
+	qouteAsk() {
+		
+	}
 	flash(status=true, msg, msgStatus, redirect=false, url='/', back='/') {
 		firebaseApp.database().ref('flash').update({status:status, msg:msg, msgStatus:msgStatus, redirect: redirect, redirectUrl: url, back:back });
 	}

@@ -7,15 +7,15 @@ class CommentRow extends Component {
 	}
 	render() {
 
-		const { comment, createdDate, createdTime, quote, commentId, clickedId, user, respondText  } = this.props;
+		const { comment, createdDate, createdTime, quote, commentId, clickedId, user, respondText, qouteAsk  } = this.props;
 		let clickedStyle = {display: 'none' }
 		if (commentId === clickedId) clickedStyle = this.props.replyStyleInit
 		return (
 			<div className="topic">
-				<div className="full-post" onClick={ () => {  respondText({text: comment.text, user:comment.authorName, clickedId:commentId, commentId:commentId }) } }>
+				<div className="full-post">
 					<div className="reply-to-this" style={ clickedStyle } >
 						<div className="reply-to-this_text">
-							<div className="reply-to-this-text-inner" style={ this.props.replyStyle }>Qoute this Comment?</div>
+							<div className="reply-to-this-text-inner" style={ this.props.replyStyle } onClick={ () => {  respondText({text: comment.text, user:comment.authorName, clickedId:commentId, commentId:commentId }) } }>Qoute this Comment?</div>
 						</div>
 					</div>
 					<div className="post">
@@ -30,7 +30,7 @@ class CommentRow extends Component {
 							
 						</div>
 						<div className="quote-comment theme-color_txt">
-							<p>Click to qoute</p>
+							<p onClick={ () => {  respondText({text: comment.text, user:comment.authorName, clickedId:commentId, commentId:commentId }) } }>Click to qoute</p>
 						</div>
 					</div>
 					<div className="author-info">

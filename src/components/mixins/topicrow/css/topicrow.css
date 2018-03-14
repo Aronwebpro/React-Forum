@@ -3,7 +3,7 @@
   min-height: 80px;
   margin-top: 20px; 
 }
-.topic:hover {
+#home .topic:hover {
   background-color: rgba(0, 0, 0, 0.05);
   cursor: pointer; 
 }
