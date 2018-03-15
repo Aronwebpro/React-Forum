@@ -3,6 +3,26 @@ import firebaseApp from '../../../firebase.js';
 import { Redirect } from 'react-router';
 import Flash from '../../mixins/flash/Flash';
 
+//Avatar Images
+import face1 from '../../../img/1face.png';
+import face2 from '../../../img/2face.png';
+import face3 from '../../../img/3face.png';
+import face4 from '../../../img/4face.png';
+import face5 from '../../../img/5face.png';
+import face6 from '../../../img/6face.png';
+import face7 from '../../../img/7face.png';
+import face8 from '../../../img/8face.png';
+import face9 from '../../../img/9face.png';
+import face10 from '../../../img/10face.png';
+import face11 from '../../../img/11face.png';
+import face12 from '../../../img/12face.png';
+import face13 from '../../../img/13face.png';
+import face14 from '../../../img/14face.png';
+import face15 from '../../../img/15face.png';
+import face16 from '../../../img/16face.png';
+
+
+
 class Register extends Component {
 	constructor() {
 		super();
@@ -78,70 +98,70 @@ class Register extends Component {
 							<form className="register-avatar-form" ref={input => this.avatar = input}>
 								<div className="avatar-row">
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img1" value="https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png" />
-										<label id="" htmlFor="img1" onClick={this.checked.bind(this)}><img src="https://cdn0.iconfinder.com/data/icons/iconshock_guys/512/andrew.png" alt=""/></label>
+										<input type="radio" name="avatar" id="img1" value={face1} />
+										<label id="" htmlFor="img1" onClick={this.checked.bind(this)}><img src={face1} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img2" value="http://www.iconarchive.com/download/i47414/hopstarter/face-avatars/Female-Face-FC-4.ico"/>
-										<label id="" htmlFor="img2" onClick={this.checked.bind(this)}><img src="http://www.iconarchive.com/download/i47414/hopstarter/face-avatars/Female-Face-FC-4.ico" alt=""/></label>
+										<input type="radio" name="avatar" id="img2" value={face2}/>
+										<label id="" htmlFor="img2" onClick={this.checked.bind(this)}><img src={face2} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img3" value="http://www.iconarchive.com/download/i47456/hopstarter/face-avatars/Male-Face-D1.ico"/>
-										<label id="" htmlFor="img3" onClick={this.checked.bind(this)}><img src="http://www.iconarchive.com/download/i47456/hopstarter/face-avatars/Male-Face-D1.ico" alt=""/></label>
+										<input type="radio" name="avatar" id="img3" value={face3}/>
+										<label id="" htmlFor="img3" onClick={this.checked.bind(this)}><img src={face3} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img4" value="http://static.iconarchive.com/download/i47437/hopstarter/face-avatars/Female-Face-FI-2.ico"/>
-										<label id="" htmlFor="img4" onClick={this.checked.bind(this)}><img src="http://static.iconarchive.com/download/i47437/hopstarter/face-avatars/Female-Face-FI-2.ico" alt=""/></label>
+										<input type="radio" name="avatar" id="img4" value={face4}/>
+										<label id="" htmlFor="img4" onClick={this.checked.bind(this)}><img src={face4} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img5" value="http://www.iconarchive.com/download/i47432/hopstarter/face-avatars/Female-Face-FH-2-slim.ico"/>
-										<label id="" htmlFor="img5" onClick={this.checked.bind(this)}><img src="http://www.iconarchive.com/download/i47432/hopstarter/face-avatars/Female-Face-FH-2-slim.ico" alt=""/></label>
+										<input type="radio" name="avatar" id="img5" value={face5}/>
+										<label id="" htmlFor="img5" onClick={this.checked.bind(this)}><img src={face5} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img6" value="http://www.iconarchive.com/download/i47459/hopstarter/face-avatars/Male-Face-D4.ico"/>
-										<label id="" htmlFor="img6" onClick={this.checked.bind(this)}><img src="http://www.iconarchive.com/download/i47459/hopstarter/face-avatars/Male-Face-D4.ico" alt=""/></label>
+										<input type="radio" name="avatar" id="img6" value={face6}/>
+										<label id="" htmlFor="img6" onClick={this.checked.bind(this)}><img src={face6} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img7" value="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-H1-icon.png"/>
-										<label id="" htmlFor="img7" onClick={this.checked.bind(this)}><img src="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-H1-icon.png" alt=""/></label>
+										<input type="radio" name="avatar" id="img7" value={face7}/>
+										<label id="" htmlFor="img7" onClick={this.checked.bind(this)}><img src={face7} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img8" value="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Female-Face-FD-1-dark-icon.png"/>
-										<label id="" htmlFor="img8" onClick={this.checked.bind(this)}><img src="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Female-Face-FD-1-dark-icon.png" alt=""/></label>
+										<input type="radio" name="avatar" id="img8" value={face8}/>
+										<label id="" htmlFor="img8" onClick={this.checked.bind(this)}><img src={face8} alt=""/></label>
 									</div>	
 								</div>
 								<div className="avatar-row">
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img9" value="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-M3-icon.png" />
-										<label id="" htmlFor="img9" onClick={this.checked.bind(this)}><img src="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-M3-icon.png" alt=""/></label>
+										<input type="radio" name="avatar" id="img9" value={face9} />
+										<label id="" htmlFor="img9" onClick={this.checked.bind(this)}><img src={face9} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img10" value="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-A2-icon.png"/>
-										<label id="" htmlFor="img10" onClick={this.checked.bind(this)}><img src="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-A2-icon.png" alt=""/></label>
+										<input type="radio" name="avatar" id="img10" value={face10}/>
+										<label id="" htmlFor="img10" onClick={this.checked.bind(this)}><img src={face10} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img11" value="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Female-Face-FB-3-icon.png"/>
-										<label id="" htmlFor="img11" onClick={this.checked.bind(this)}><img src="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Female-Face-FB-3-icon.png" alt=""/></label>
+										<input type="radio" name="avatar" id="img11" value={face11}/>
+										<label id="" htmlFor="img11" onClick={this.checked.bind(this)}><img src={face11} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img12" value="http://www.iconarchive.com/download/i47473/hopstarter/face-avatars/Male-Face-G3.ico"/>
-										<label id="" htmlFor="img12" onClick={this.checked.bind(this)}><img src="http://www.iconarchive.com/download/i47473/hopstarter/face-avatars/Male-Face-G3.ico" alt=""/></label>
+										<input type="radio" name="avatar" id="img12" value={face12}/>
+										<label id="" htmlFor="img12" onClick={this.checked.bind(this)}><img src={face12} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img13" value="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Female-Face-FI-4-icon.png"/>
-										<label id="" htmlFor="img13" onClick={this.checked.bind(this)}><img src="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Female-Face-FI-4-icon.png" alt=""/></label>
+										<input type="radio" name="avatar" id="img13" value={face13}/>
+										<label id="" htmlFor="img13" onClick={this.checked.bind(this)}><img src={face13} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img14" value="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-M4-icon.png"/>
-										<label id="" htmlFor="img14" onClick={this.checked.bind(this)}><img src="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-M4-icon.png" alt=""/></label>
+										<input type="radio" name="avatar" id="img14" value={face14}/>
+										<label id="" htmlFor="img14" onClick={this.checked.bind(this)}><img src={face14} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img15" value="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Female-Face-FH-5-slim-icon.png"/>
-										<label id="" htmlFor="img15" onClick={this.checked.bind(this)}><img src="http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Female-Face-FH-5-slim-icon.png" alt=""/></label>
+										<input type="radio" name="avatar" id="img15" value={face15}/>
+										<label id="" htmlFor="img15" onClick={this.checked.bind(this)}><img src={face15} alt=""/></label>
 									</div>
 									<div className="avatar-square">
-										<input type="radio" name="avatar" id="img16" value="http://www.iconarchive.com/download/i47406/hopstarter/face-avatars/Female-Face-FB-1.ico"/>
-										<label id="" htmlFor="img16" onClick={this.checked.bind(this)}><img src="http://www.iconarchive.com/download/i47406/hopstarter/face-avatars/Female-Face-FB-1.ico" alt=""/></label>
+										<input type="radio" name="avatar" id="img16" value={face16}/>
+										<label id="" htmlFor="img16" onClick={this.checked.bind(this)}><img src={face16} alt=""/></label>
 									</div>	
 								</div>																									
 							</form>
