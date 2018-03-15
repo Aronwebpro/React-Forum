@@ -10,7 +10,7 @@ const NavigationBnt = (props) => {
 		switch(props.page) {
 			case 'home' :
 			if(props.isLoggedIn) {
-				actionBnt = (<a href="/new" className="new-topic-button btn">New Post</a> );
+				actionBnt = (<a href="/new" className="new-topic-button btn">New Discussion</a> );
 			} else {
 		   		actionBnt = (<a href="/login" onClick={() => props.flash(true, 'Sorry! You have to login to start new Discussion!', 'error', false, '', window.location.href) } className="new-topic-button btn">New Discussion</a> );
 			}

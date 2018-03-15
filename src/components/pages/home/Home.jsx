@@ -3,7 +3,6 @@ import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import TopicRow from '../../mixins/topicrow/TopicRow';
 import { Redirect } from 'react-router';
 import Flash from '../../mixins/flash/Flash';
-import Pagination from '../../mixins/pagination/pagination';
 import firebaseApp from '../../../firebase';
 
 class Home extends Component {
@@ -132,9 +131,6 @@ class Home extends Component {
 									</div>
 									<div className="fl_c" />
 									<div ref={input => (this.forumContent = input)} className="forum-content">
-										{ /* Pagination
-										<Pagination updateTopics={this.updateTopics} first={this.state.firstRow} last={this.state.lastRow}/>
-										*/}
 										<div ref={input => (this.forumContentInner = input)} className="forum-coontent-inner" >
 											{topics && Object.keys(topics).reverse().map(topic => {
 												return <TopicRow key={topic} topicId={topic} convertDate={this.convertDate} topic={topics[topic]} />;

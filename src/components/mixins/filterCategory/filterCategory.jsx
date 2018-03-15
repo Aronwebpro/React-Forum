@@ -1,16 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class FilterCategory extends Component {
-	constructor() {
-		super();
-	}
-	render() {
-		const { category } = this.props;
-		const url = /category/+category.categoryUrl;
-		return (
-			<a href={url} ><li>{category.name}<span className="filter-count">({category.count})</span></li></a>
-		)
-	}
+const FilterCategory = (props) => {
+	const { category } = props;
+	const url = /category/+category.categoryUrl;
+	return (
+		<a href={url} ><li>{category.name}<span className="filter-count">({category.count})</span></li></a>
+	)
 }
-
 export default FilterCategory

@@ -56,6 +56,8 @@ a, a:hover, a:active, a:visited {
 .left > div {
   position: fixed;
   width: 240px;
+/*  top:94px;*/
+  transition: top 0.25s;
 }
 img {
   max-width: 100%;
@@ -308,6 +310,9 @@ input#img16  {
 }
 .forum-content h2 {
   margin-top: 0px; 
+}
+.forum-coontent-inner {
+  padding-bottom: 20px;
 }
 .forum-header {
   background-color: #20232a;
