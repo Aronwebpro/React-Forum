@@ -4,6 +4,7 @@ import TopicRow from '../../mixins/topicrow/TopicRow';
 import { Redirect } from 'react-router';
 import Flash from '../../mixins/flash/Flash';
 import firebaseApp from '../../../firebase';
+import PropTypes from 'prop-types';
 
 class Home extends Component {
 	constructor() {
@@ -147,6 +148,11 @@ class Home extends Component {
 			</div>
 		)
 	}
+}
+
+Home.propTypes = {
+	isLoggedIn: PropTypes.bool.isRequired,
+	params:PropTypes.object
 }
 
 export default Home;
