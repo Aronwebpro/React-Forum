@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import firebaseApp from  '../../../firebase';
+import PropTypes from 'prop-types';
 
-class Home extends Component {
+class NewTopic extends Component {
 	constructor() {
 		super();
 		this.post = this.post.bind(this);
 		this.state = { topics: [], redirect: false};
 	}
+	/*
+	* This method creates new Post, updates Posts Count, Creates new Flash Message in DB
+	*/
 	post() {
 		const created = Date.now();
 		const categoryUrl = this.category.value.replace(/\s/g, '').toLowerCase();
@@ -32,7 +36,9 @@ class Home extends Component {
 		let updates = {};
 		updates[key] = input;
 		const db = firebaseApp.database();
+			//Create new Topic in DB topic object
 			db.ref('topics').update(updates)
+			//Increase Category count by 1 in DB categories object by getting existing value and then update
 			.then(() => {
 				let category = this.category.value;
 				db.ref('categories/'+categoryUrl+'/count').once('value', (snapshot) => {
@@ -40,16 +46,19 @@ class Home extends Component {
 					db.ref('/categories/'+ categoryUrl).update({count:count});
 				});
 			})
+			//Increase Topic count for DB Config object by getting existing value and then update
 			.then(() => {
 				db.ref('config/topicsCount').once('value', (snapshot) => {
 					let postCount = snapshot.val() + 1;
 					db.ref('config').update({topicsCount:postCount});
 				});
 			})
+			//Create Flash message in DB Flash object
 			.then(() => {
 				db.ref('flash').update({status:true, msg:'Congrats! Your Post Created!', msgStatus:'success', redirect:false, redirectUrl:''});
 				this.setState({url:'/post/'+key, redirect:true});
 			})
+			//Console log errors if exists 
 			.catch( err => {
 				console.log('Error!');
 				console.log(err);
@@ -111,4 +120,9 @@ class Home extends Component {
 	}
 }
 
-export default Home;
+NewTopic.propTypes = {
+	isLoggedIn: PropTypes.bool.isRequired,
+	user:PropTypes.object
+}
+
+export default NewTopic;

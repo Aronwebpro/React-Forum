@@ -23,9 +23,35 @@ import Footer from './components/template/footer/Footer';
 import './css/styles.css'
 
 
+const Root = (props) => {
+	const {isLoggedIn, userMeta }= props;
+	return (
+		<BrowserRouter>
+			<div className="page">
+				<Header isLoggedIn={ isLoggedIn } user={ userMeta } />
+				<div className="content">	
+					<Match exactly pattern="/" render={ () => userMeta ?  <Home isLoggedIn={ isLoggedIn } user={ userMeta } /> : <Home isLoggedIn={ isLoggedIn } />} />
+					<Match pattern="/post/:postId" render={(params) => userMeta ? <Post params={ params } isLoggedIn={ isLoggedIn } user={ userMeta } /> : <Post params={ params } isLoggedIn={ isLoggedIn } />} />
+					<Match exactly pattern="/category/:category" render={ (params) => userMeta ? <Home isLoggedIn={ isLoggedIn } params={params} /> : <Home isLoggedIn={ isLoggedIn } params={params}/> } />
+					<Match exactly pattern="/category/" render={ () => <Redirect to="/" /> } />
+					<Match exactly pattern="/login" render={ () => userMeta ? <Login isLoggedIn={ isLoggedIn } user={ userMeta } /> : <Login isLoggedIn={ isLoggedIn } /> } />
+					<Match exactly pattern="/new" render={ () => userMeta ? <NewTopic isLoggedIn={ isLoggedIn } user={ userMeta } /> : <NewTopic isLoggedIn={ isLoggedIn } /> } />
+					<Match exactly pattern="/register" render={ () => userMeta ? <Register isLoggedIn={ isLoggedIn } /> : <Register isLoggedIn={ isLoggedIn } /> } />
+					<Match exactly pattern="/about" component={ About } /> 
+					<Miss component={NotFound} />
+				</div>
+				<Footer />
+			</div>
+		</BrowserRouter>		
+	);
+};
+
+
+
+
 firebaseApp.auth().onAuthStateChanged( user => {
-  if (user) {
-  		const date = new Date(Number.parseInt(user.metadata.a));	
+	if (user) {
+		const date = new Date(Number.parseInt(user.metadata.a));	
   		let createdDate = '';
 		if (date != 'Invalid Date') {
 			createdDate = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();
@@ -37,65 +63,11 @@ firebaseApp.auth().onAuthStateChanged( user => {
   			authorAvatar: user.photoURL,
   			memberSince: createdDate
   		}
-
-	    const Root = () => {
-			const isLoggedIn = true;
-			return (
-				<BrowserRouter>
-					<div className="page">
-						<Header isLoggedIn={ isLoggedIn } user={ userMeta } />
-						<div className="content">	
-							<Match exactly pattern="/" render={ () => <Home isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
-							<Match pattern="/post/:postId" render={(params) => <Post params={ params } isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
-							<Match exactly pattern="/category/:category" render={ (params) => <Home isLoggedIn={ isLoggedIn } params={params}/> } />
-							<Match exactly pattern="/category/" render={ () => <Redirect to="/" /> } />
-							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
-							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } user={ userMeta } /> } />
-							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } />
-							<Match exactly pattern="/about" component={ About } /> 
-							<Miss component={NotFound} />
-						</div>
-						<Footer />
-					</div>
-				</BrowserRouter>		
-			);
-		};
-		ReactDOM.render(<Root />, document.getElementById('root'));
-  } else {
-	    const Root = () => {
-			const isLoggedIn = false;
-			return (
-				<BrowserRouter>
-					<div className="page">
-						<Header />
-						<div className="content">	
-							<Match exactly pattern="/" render={ () => <Home isLoggedIn={ isLoggedIn } /> } />
-							<Match pattern="/post/:postId" render={(params) => <Post params={ params } isLoggedIn={ isLoggedIn } /> } />
-							<Match exactly pattern="/category/:category" render={ (params) => <Home isLoggedIn={ isLoggedIn } params={params}/> } />
-							<Match exactly pattern="/category/" render={ () => <Redirect to="/" /> } />
-							<Match exactly pattern="/login" render={ () => <Login isLoggedIn={ isLoggedIn } /> } />
-							<Match exactly pattern="/new" render={ () => <NewTopic isLoggedIn={ isLoggedIn } /> } />
-							<Match exactly pattern="/register" render={ () => <Register isLoggedIn={ isLoggedIn } /> } />
-							<Match exactly pattern="/about" component={ About } /> 
-							<Miss component={NotFound} />
-						</div>
-						<Footer />
-					</div>
-				</BrowserRouter>		
-			);
-		};
-		ReactDOM.render(<Root />, document.getElementById('root'));
-  }
+		ReactDOM.render(<Root userMeta={userMeta} isLoggedIn={true} />, document.getElementById('root'));
+	} else {
+		ReactDOM.render(<Root isLoggedIn={false} />, document.getElementById('root'));
+	} 
 });
 
-
-
-
-
-
-
-
-
-
-
+//Disable for now
 //registerServiceWorker();
