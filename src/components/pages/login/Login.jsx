@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Redirect } from 'react-router';
 import firebaseApp from '../../../firebase.js';
 import Flash from '../../mixins/flash/Flash';
+import PropTypes from 'prop-types';
 
 //Styles
 import './css/login.css';
@@ -13,47 +14,43 @@ class Login extends Component {
 		this.login = this.login.bind(this);
 		this.state = {flash: false, redirect: false, back:false }
 	}
-	componentDidMount() {
-		this.refFlash = firebaseApp.database()
-							.ref('flash')
-							.once('value')
-							.then((snapshot) => {
-								let data = snapshot.val();
-								if (data && data.redirect === true) {
-									firebaseApp.database().ref('flash').update({redirect: false, redirectUrl: ''});
-									this.setState({redirect:true});
-								}
-								if (data && data.redirect === false && data.status === true && this.props.isLoggedIn ) {	
-									firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'' });
-									this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus, redirect:true});
-								}
-								if (data && data.redirect === false && data.status === true && !this.props.isLoggedIn ) {	
-									firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'' });
-									this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus, redirect:false});
-								}
-								if (data && data.back) {
-									this.setState({back: data.back});
-									// firebaseApp.database().ref('flash').update({back:'/'});
-								} 							
-							});						
+	async componentDidMount() {
+		//Handle Flash message if it was set in DB 
+		const snapshot = await firebaseApp.database().ref('flash').once('value');
+		let data = snapshot.val();
+		if (data) {
+			if (data.redirect === true) {
+				firebaseApp.database().ref('flash').update({redirect: false, redirectUrl: ''});
+				this.setState({redirect:true});
+			}
+			if (data.redirect === false && data.status === true && this.props.isLoggedIn ) {	
+				firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'' });
+				this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus, redirect:true});
+			}
+			if (data.redirect === false && data.status === true && !this.props.isLoggedIn ) {	
+				firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'' });
+				this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus, redirect:false});
+			}
+			if (data.back) {
+				this.setState({back: data.back});
+			} 
+		}							
 	}
-	login(e) {
+	//Login User 
+	async login(e) {
 		e.preventDefault();
-		let _this = this;
-		const email = this.email.value;
-		const password = this.password.value;
-		firebaseApp.auth().signInWithEmailAndPassword(email, password)
-		.then((user) => {
+		const { email, password } = this;
+		try {
+			//Sign In User and get user's data
+			const user = await firebaseApp.auth().signInWithEmailAndPassword(email.value, password.value);
+			//Set Flash message and save to DB
 			let msg = 'Welcome back ' + user.displayName + '! You\'ve logged in successfully!';
 			firebaseApp.database().ref('flash').update({status:true, msg:msg, msgStatus:'success', redirect: true, redirectUrl: '/'});
-		})
-		.catch(function(error) {
-		  // Handle Errors here.
-		  let errorCode = error.code;
-		  let errorMessage = error.message;
-		  _this.setState({flash:true, flashMsg:errorMessage, flashStatus:'error'});
-		  // ...
-		});
+			this.setState({redirect:true});
+		}
+		catch(error) {
+			this.setState({flash:true, flashMsg: error.message, flashStatus:'error'});
+		}
 	}
 	render() {
 		if (this.state.redirect) {
@@ -90,6 +87,9 @@ class Login extends Component {
 			)
 		}
 	}
+}
+Login.propTypes = {
+	isLoggedIn: PropTypes.bool.isRequired,
 }
 
 export default Login;

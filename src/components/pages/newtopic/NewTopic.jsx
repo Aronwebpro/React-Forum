@@ -13,9 +13,10 @@ class NewTopic extends Component {
 	/*
 	* This method creates new Post, updates Posts Count, Creates new Flash Message in DB
 	*/
-	post() {
+	async post() {
 		const created = Date.now();
 		const categoryUrl = this.category.value.replace(/\s/g, '').toLowerCase();
+		//Data object to save to DB
 		const input = {
 			title: this.title.value,
 			text: this.text.value,
@@ -32,37 +33,33 @@ class NewTopic extends Component {
 			lastDate: created
 
 		}
+		//Generate unique Firebase DB key
 		const key = firebaseApp.database().ref().child('topics').push().key;
 		let updates = {};
 		updates[key] = input;
 		const db = firebaseApp.database();
-			//Create new Topic in DB topic object
-			db.ref('topics').update(updates)
-			//Increase Category count by 1 in DB categories object by getting existing value and then update
-			.then(() => {
-				let category = this.category.value;
-				db.ref('categories/'+categoryUrl+'/count').once('value', (snapshot) => {
-					let count = snapshot.val() + 1;
-					db.ref('/categories/'+ categoryUrl).update({count:count});
-				});
-			})
-			//Increase Topic count for DB Config object by getting existing value and then update
-			.then(() => {
-				db.ref('config/topicsCount').once('value', (snapshot) => {
-					let postCount = snapshot.val() + 1;
-					db.ref('config').update({topicsCount:postCount});
-				});
-			})
-			//Create Flash message in DB Flash object
-			.then(() => {
-				db.ref('flash').update({status:true, msg:'Congrats! Your Post Created!', msgStatus:'success', redirect:false, redirectUrl:''});
-				this.setState({url:'/post/'+key, redirect:true});
-			})
-			//Console log errors if exists 
-			.catch( err => {
-				console.log('Error!');
-				console.log(err);
+		try {
+			//Create new Topic in DB topic 
+			await db.ref('topics').update(updates);
+			//Increase Category count by 1 in DB categories  by getting existing value and then update
+			let category = this.category.value;
+			db.ref('categories/'+categoryUrl+'/count').once('value', (snapshot) => {
+				let count = snapshot.val() + 1;
+				db.ref('/categories/'+ categoryUrl).update({count:count});
 			});
+			//Increase Topic count for DB Config  by getting existing value and then update
+			db.ref('config/topicsCount').once('value', (snapshot) => {
+				let postCount = snapshot.val() + 1;
+				db.ref('config').update({topicsCount:postCount});
+			});
+			//})
+			//Create Flash message in DB Flash 
+			db.ref('flash').update({status:true, msg:'Congrats! Your Post Created!', msgStatus:'success', redirect:false, redirectUrl:''});
+			this.setState({url:'/post/'+key, redirect:true});
+		} catch(errors) {
+			console.log(errors);
+		}
+
 	}
 	render() {
 		const { isLoggedIn } = this.props;

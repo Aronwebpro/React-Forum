@@ -18,24 +18,24 @@ class Home extends Component {
 	componentWillMount() {
 		this.updateTopics();
 	}
-	componentDidMount() {
-		firebaseApp.database()
-			.ref('flash')
-			.once('value')
-			.then((snapshot) => {
-				let data = snapshot.val();
-				if (data && data.status === true ) {	
-					firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'', redirect:false, redirectUrl:''});
-					this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus});
-				}							
-			if (data && data.back) {
-					firebaseApp.database().ref('flash').update({back:false});
+	async componentDidMount() {
+		const snapshot = await firebaseApp.database().ref('flash').once('value');
+		const data = snapshot.val();
+		if (data) {
+			if (data.status === true ) {	
+				firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'', redirect:false, redirectUrl:''});
+				this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus});
+			}							
+			if (data.back) {
+				firebaseApp.database().ref('flash').update({back:false});
 			}
-		});		
+		}
+	
 	}
 	componentDidUpdate() {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
 	}
+	//Retrieve Topics from DB
 	updateTopics(amount) {
 		let number = amount || this.state.amount;
 		if (this.props.params) {
@@ -68,6 +68,7 @@ class Home extends Component {
 			});
 		}	
 	}
+	//Expand Widget Header on Click
 	expand(component) {
 		if (component.forumContent.clientHeight > 0) {
 			component.forumContent.style.height = 0 + 'px';
@@ -77,6 +78,7 @@ class Home extends Component {
 			component.changeBtn();
 		}
 	}
+	//Change arrow up or down
 	changeBtn(position) {
 		if (position === 'down') {
 			this.arrow.style.transform = 'rotateZ(-90deg) translate(7%, 40%)';
@@ -84,6 +86,7 @@ class Home extends Component {
 			this.arrow.style.transform = 'rotateZ(0deg) translate(20%, 0%)';
 		}
 	}
+	//Save flash message to DB
 	flash(status=true, msg, msgStatus, redirect=false, url='/', back='/') {
 		firebaseApp.database().ref('flash').update({status:status, msg:msg, msgStatus:msgStatus, redirect: redirect, redirectUrl: url, back:back});
 	}
