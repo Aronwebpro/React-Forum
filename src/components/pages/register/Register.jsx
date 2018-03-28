@@ -28,11 +28,11 @@ class Register extends Component {
 	constructor() {
 		super();
 		this.createUser = this.createUser.bind(this);
+		this.checked = this.checked.bind(this);
 		this.state = {avatar: '', redirect:false, flash:false}
 
 	}
 	async createUser() {
-		let _this = this; 
 		this.setState({spinner: true});
 		const nickname = this.nickname.value;
 		const photo = this.state.avatar;
@@ -67,15 +67,16 @@ class Register extends Component {
 			var errorCode = error.code;
 			var errorMessage = error.message;
 			if (errorCode == 'auth/weak-password') {
-			_this.setState({flash:true, flashMsg:'The password is too weak!', flashStatus:'error'});
+			this.setState({flash:true, flashMsg:'The password is too weak!', flashStatus:'error'});
 			} else {
-			_this.setState({flash:true, flashMsg:errorMessage, flashStatus:'error'});
+			this.setState({flash:true, flashMsg:errorMessage, flashStatus:'error'});
 			}		
 		}
 
 	}
-	checked(event) {
-		this.setState({avatar: event.target.src, flash:false});
+	checked(url) {
+		this.setState({avatar: url, flash:false});
+		console.dir(url);
 	}
 	render() {
 		const facesRow1 = [face1, face2, face3, face4, face5, face6, face7, face8 ];
@@ -96,7 +97,7 @@ class Register extends Component {
 										return (
 											<div key={face} className="avatar-square">
 												<input type="radio" name="avatar" id={`img${i+1}`} value={face} />
-												<label id="" htmlFor={`img${i+1}`} onClick={this.checked.bind(this)}><img src={face} alt=""/></label>
+												<label id="" htmlFor={`img${i+1}`} onClick={ () => this.checked(face) }><img src={face} alt=""/></label>
 											</div>														
 										)
 									}) }
@@ -106,7 +107,7 @@ class Register extends Component {
 										return (
 											<div key={face} className="avatar-square">
 												<input type="radio" name="avatar" id={`img${i+9}`} value={face} />
-												<label id="" htmlFor={`img${i+9}`} onClick={this.checked.bind(this)}><img src={face} alt=""/></label>
+												<label id="" htmlFor={`img${i+9}`} onClick={ () => this.checked(face) }><img src={face} alt=""/></label>
 											</div>														
 										)
 									}) }		
