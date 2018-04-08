@@ -36,7 +36,7 @@ class Home extends Component {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
 	}
 	//Retrieve Topics from DB
-	updateTopics(amount) {
+	async updateTopics(amount) {
 		let number = amount || this.state.amount;
 		if (this.props.params) {
 				firebaseApp.database()
@@ -47,7 +47,7 @@ class Home extends Component {
 					.once('value', (snapshot) => {
 						if (snapshot.val()) {
 							let loadHide = true;
-							if (Object.keys(snapshot.val()).length == number ) loadHide = null;
+							if (Object.keys(snapshot.val()).length === number ) loadHide = null;
 							this.setState({topics: snapshot.val(), loadHide:loadHide});
 						} else {
 							this.setState({redirect: true});
@@ -62,7 +62,7 @@ class Home extends Component {
 				.then((snapshot) => {
 					let loadHide = true;
 					console.log();
-					if (Object.keys(snapshot.val()).length == number) loadHide = null;
+					if (Object.keys(snapshot.val()).length === number) loadHide = null;
 					this.setState({topics: snapshot.val(), loadHide: loadHide });
 					
 			});

@@ -12,6 +12,7 @@ html {
   padding: 0;
   background-color: #ededed; 
 }
+
 .container {
   max-width: 1200px;
   margin: auto;
@@ -33,9 +34,11 @@ a, a:hover, a:active, a:visited {
   margin-top: 95px; 
 }
 .left {
+  position: relative;
   width: 20%;
   float: left; 
-  height: 200px;
+  height: 100vh;
+  z-index: 2;
 }
 .right {
   width: 80%;
@@ -56,13 +59,15 @@ a, a:hover, a:active, a:visited {
 .left > div {
   position: fixed;
   width: 240px;
-/*  top:94px;*/
+  height: 100vh;
+  padding-right: 10px;
+  box-sizing: content-box;
+  background-color: #ededed;
   transition: top 0.25s;
 }
 img {
   max-width: 100%;
 }
-
 form {
   width: 100%;
   display: block; 
@@ -95,26 +100,20 @@ form textarea {
 .register-page .btn {
   margin-top:20px;
 }
-
 .avatar-square {
   float:left;
   width: 12.5%;
-
 }
 .avatar-square img {
   max-width: 100%;
   cursor:pointer;
   opacity:0.7;
 }
-.avatar-wrapper {
-
-}
 .avatar-wrapper:after {
   content: '';
   display: block;
   clear:both;
 }
-
 input#img1,
 input#img2,
 input#img3,
@@ -141,12 +140,9 @@ input#img16  {
 .avatar-title {
   padding: 20px 0 0;
 }
-
 .avatar-wrapper .avatar-row {
   margin: 5px auto;
 }
-
-
 /*
 ***********Post Page****************
 */
@@ -182,7 +178,6 @@ input#img16  {
   margin: auto;
   margin-bottom: 15px; 
 }
-
 .btn {
   padding: 10px 20px;
   border: 1px solid rgb(97, 218, 251);
@@ -250,7 +245,6 @@ input#img16  {
 .reply-to-this-text-inner {
   transition: all 0.6s;
 }
-
 .comments-wrapper .full-post:before {
   content: "";
   position: absolute;
@@ -283,7 +277,6 @@ input#img16  {
 .post-page .full-post:active .click-to-reply p {
   opacity: 0;
 }
-
 .quote-comment {
   margin:10px;
   padding: 5px;
@@ -297,7 +290,6 @@ input#img16  {
 /*
 *************Home Page***************
 */
-
 .forum {
   padding: 0 15px;
   box-sizing: border-box; 

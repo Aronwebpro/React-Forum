@@ -29,7 +29,7 @@ class Register extends Component {
 		super();
 		this.createUser = this.createUser.bind(this);
 		this.checked = this.checked.bind(this);
-		this.state = {avatar: '', redirect:false, flash:false}
+		this.state = {avatar: '', redirect:false, flash:false, spinner: false}
 
 	}
 	async createUser() {
@@ -66,7 +66,7 @@ class Register extends Component {
 			// Handle Errors here.
 			var errorCode = error.code;
 			var errorMessage = error.message;
-			if (errorCode == 'auth/weak-password') {
+			if (errorCode === 'auth/weak-password') {
 			this.setState({flash:true, flashMsg:'The password is too weak!', flashStatus:'error'});
 			} else {
 			this.setState({flash:true, flashMsg:errorMessage, flashStatus:'error'});
@@ -82,8 +82,9 @@ class Register extends Component {
 		const facesRow1 = [face1, face2, face3, face4, face5, face6, face7, face8 ];
 		const facesRow2 = [face9, face10, face11, face12, face13, face14, face15, face16 ];
 		if (this.state.redirect === true || this.props.user ) return ( <Redirect to="/" />)
-		let spinner;	
-		if(this.state.spinner === true)  spinner = (<span><img src="https://linkjuice.io/img/loading.gif" alt="" style={ {width: '30px', transform:'translateY(11px)' } }/></span> )	
+		//TODO: Before redirect to home page show spinner image for user
+		//let spinner;	
+		//if(this.state.spinner === true)  spinner = (<span><img src="https://linkjuice.io/img/loading.gif" alt="" style={ {width: '30px', transform:'translateY(11px)' } }/></span> )	
 		return (
 			<div className="register-page">
 				{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
 
 //Components
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
@@ -166,7 +167,7 @@ class Post extends Component {
 					<div className="post">
 						<div className="full-post new-post-body">
 							{	//Return comment text if quote
-								this.state.replyText != '' &&  
+								this.state.replyText !== '' &&  
 								( <div><span className="theme-color_txt">Replying to...</span><br /><div className="quote"><p>{ this.state.replyText.user } said: </p><p>"{this.state.replyText.text}"</p></div></div>)
 							}
 							<form>
@@ -191,7 +192,7 @@ class Post extends Component {
 		this.setState({replyStyle: { width: '100%', height: '100%'}, replyStyleInit: {display: 'block' }, reply: true, clickedId:data.clickedId });
 		if( this.state.reply === true) {
 
-			if (this.state.clickedId != data.commentId) { console.log('shit happen'); return }
+			if (this.state.clickedId !== data.commentId) { console.log('shit happen'); return }
 			if (!this.props.user) { this.setState({redirect:true}); this.flash(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href ); window.scrollTo(0, 0); return; }
 			this.setState({replyText: {text:data.text, user:data.user}, reply: false, replyStyleInit: {display: 'none'} });
 			this.respond();
@@ -225,9 +226,20 @@ class Post extends Component {
 				<div className="post-page">
 					<div className="content">
 						<div className="container">
-							{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
+							{ this.state.flash && 
+								<Flash 
+								status={this.state.flashStatus} 
+								text={this.state.flashMsg}
+								/> 
+							}
 							<div className="left">
-								<SearchFilter page="post" isLoggedIn={ isLoggedIn } respond={ this.respond } clearReply={ this.clearReply } flash={this.flash}/>
+								<SearchFilter 
+									page="post" 
+									isLoggedIn={ isLoggedIn } 
+									respond={ this.respond } 
+									clearReply={ this.clearReply } 
+									flash={this.flash}
+								/>
 							</div>
 							<div className="right post-container">
 								<div className="post-title forum-header">
@@ -251,21 +263,16 @@ class Post extends Component {
 									<h2>{ Object.keys(comments).length || 0 } Responses </h2>
 								</div>
 								<div className="comments-wrapper">
-									{Object.keys(comments).map(comment => {
-										let date = new Date(comments[comment].posted);
-										let createdDate = date.getMonth()+1 + '/' + date.getDate() + ' ' + date.getFullYear();
-										let createdTime = date.getHours() + ':' + date.getMinutes();	
+									{Object.keys(comments).map(comment => {	
 										return <CommentRow 
 													key={ comment } 
-													comment={comments[comment]} 
-													createdTime={createdTime}  
-													createdDate={createdDate}
+													commentId={comment}
+													comment={comments[comment]}
+													postedDate = {comments[comment].posted}
+													clickedId={this.state.clickedId}
 													respondText={this.respondText}
 													replyStyle={this.state.replyStyle}
 													replyStyleInit={this.state.replyStyleInit}
-													commentId={comment}
-													clickedId={this.state.clickedId}
-													user={this.props.user}
 												/>;
 									}) }
 								</div>
@@ -284,4 +291,9 @@ class Post extends Component {
 	}
 }
 
+PropTypes.Post = {
+	user: PropTypes.object.isRequired,
+	params: PropTypes.object.isRequired,
+	isLoggedIn: PropTypes.bool
+}
 export default Post;

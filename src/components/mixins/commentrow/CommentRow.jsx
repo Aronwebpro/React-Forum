@@ -1,15 +1,33 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
+//Comment Layout Component
 const CommentRow = (props) => {
-	const { comment, createdDate, createdTime, quote, commentId, clickedId, user, respondText, qouteAsk  } = props;
+	const {
+		commentId,
+		comment,
+		postedDate,
+		clickedId,
+		respondText,
+		replyStyle,
+		replyStyleInit
+	} = props;
+
+	//Show comment overlay style if somebody clicked to quote
 	let clickedStyle = {display: 'none'};
-	if (commentId === clickedId) clickedStyle = props.replyStyleInit;
+	if (commentId === clickedId) clickedStyle = replyStyleInit;
+	
+	//Date and time comments was created
+	const date = new Date(postedDate);
+	const createdDate = date.getMonth()+1 + '/' + date.getDate() + ' ' + date.getFullYear();
+	const createdTime = date.getHours() + ':' + date.getMinutes();
+
 	return (
 		<div className="topic">
 			<div className="full-post">
 				<div className="reply-to-this" style={ clickedStyle } >
 					<div className="reply-to-this_text">
-						<div className="reply-to-this-text-inner" style={ props.replyStyle } onClick={ () => {  respondText({text: comment.text, user:comment.authorName, clickedId:commentId, commentId:commentId }) } }>Qoute this Comment?</div>
+						<div className="reply-to-this-text-inner" style={ replyStyle } onClick={ () => {  respondText({text: comment.text, user:comment.authorName, clickedId:commentId, commentId:commentId }) } }>Qoute this Comment?</div>
 					</div>
 				</div>
 				<div className="post">
@@ -37,6 +55,15 @@ const CommentRow = (props) => {
 			<div className="fl_c" />
 		</div>
 	)
-}
+};
+PropTypes.CommentRow = {
+		commentId: PropTypes.string.isRequired,
+		comment: PropTypes.string.isRequired,
+		postedDate: PropTypes.number.isRequired,
+		clickedId: PropTypes.string,
+		respondText: PropTypes.string,
+		replyStyleInit: PropTypes.object,
+		replyStyle: PropTypes.object
+};
 
 export default  CommentRow;

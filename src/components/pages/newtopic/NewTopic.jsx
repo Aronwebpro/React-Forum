@@ -42,7 +42,6 @@ class NewTopic extends Component {
 			//Create new Topic in DB topic 
 			await db.ref('topics').update(updates);
 			//Increase Category count by 1 in DB categories  by getting existing value and then update
-			let category = this.category.value;
 			db.ref('categories/'+categoryUrl+'/count').once('value', (snapshot) => {
 				let count = snapshot.val() + 1;
 				db.ref('/categories/'+ categoryUrl).update({count:count});

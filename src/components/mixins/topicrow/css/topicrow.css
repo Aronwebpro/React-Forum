@@ -29,10 +29,13 @@ background:linear-gradient(transparent 80px, transparent);
 }
 
 .row-left .topic-category img {
+  position: relative;
+  padding: 5px;
   width: 100%;
   max-width: 50px;
-  padding: 5px;
-  transform: translate(40%, 25%); 
+  transform: translate(40%, 25%);
+  z-index: 1;
+  
 }
 .row-left .topic-category p {
   padding-top: 5px;

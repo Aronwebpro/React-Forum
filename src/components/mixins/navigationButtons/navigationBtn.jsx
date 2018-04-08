@@ -1,32 +1,39 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './css/navigationBtn.css';
-import arrow from './img/back-arrow.png';
+import PropTypes from 'prop-types';
 
 const NavigationBnt = (props) => {
+	const {
+		flash,
+		respond,
+		clearReply,
+		reset,
+		isLoggedIn
+	} = props;
 	let BackBtn;
-	let actionBnt;
-	let btnLink;	
+	let actionBnt;	
 	if (props.hasOwnProperty('page')) {
 		switch(props.page) {
 			case 'home' :
-			if(props.isLoggedIn) {
+			if (props.isLoggedIn) {
 				actionBnt = (<a href="/new" className="new-topic-button btn">New Discussion</a> );
 			} else {
-		   		actionBnt = (<a href="/login" onClick={() => props.flash(true, 'Sorry! You have to login to start new Discussion!', 'error', false, '', window.location.href) } className="new-topic-button btn">New Discussion</a> );
+		   		actionBnt = (<a href="/login" onClick={() => flash(true, 'Sorry! You have to login to start new Discussion!', 'error', false, '', window.location.href) } className="new-topic-button btn">New Discussion</a> );
 			}
 			break;
 			case 'post' :
-			if(props.isLoggedIn) {
+			if (isLoggedIn) {
 				BackBtn = (<a href="/" className="back-button btn">Back</a> );
-				actionBnt = (<a onClick={ () => {props.respond(); props.clearReply();} } className="new-comment-button btn">Reply</a> );
+				actionBnt = (<a onClick={ () => {respond(); clearReply();} } className="new-comment-button btn">Reply</a> );
 			} else {
 				BackBtn = (<a href="/" className="back-button btn">Back</a> );
-				actionBnt = (<a href="/login" onClick={() => props.flash(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href) } className="new-comment-button btn">Reply</a> );
+				actionBnt = (<a href="/login" onClick={() => flash(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href) } className="new-comment-button btn">Reply</a> );
 			}
 			break;
 			case 'new' :
 				BackBtn = (<a href="/" className="back-button btn">Back</a> );
-				actionBnt = (<a onClick={props.reset} className="new-comment-button btn">Reset</a> );
+				actionBnt = (<a onClick={reset} className="new-comment-button btn">Reset</a> );
+			break;
 			default :
 			break;
 		}
@@ -39,4 +46,12 @@ const NavigationBnt = (props) => {
 	)
 };
 
+PropTypes.NavigationBnt = {
+	page: PropTypes.string,
+	flash: PropTypes.object,
+	respond: PropTypes.func,
+	clearReply: PropTypes.func,
+	reset: PropTypes.func,
+	isLoggedIn: PropTypes.bool
+}
 export default NavigationBnt;

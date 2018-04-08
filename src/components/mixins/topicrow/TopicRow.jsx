@@ -33,7 +33,7 @@ class TopicRow extends Component {
 		}
 	}
 	render() {
-		const { topic, since, topicId, convertDate } = this.props;
+		const { topic, topicId, convertDate } = this.props;
 
 		const createdDate = convertDate(topic.created, 'date');
 		const createdTime = convertDate(topic.created, 'time');

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navigation from '../navigation/Navigation'
 import './css/header.css';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   constructor() {
@@ -38,5 +39,7 @@ class Header extends Component {
     );
   }
 }
-
+PropTypes.Header = {
+  user: PropTypes.Object
+}
 export default Header;

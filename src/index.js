@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Match, Miss } from 'react-router';
 import firebaseApp from './firebase.js';
 import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
 //import registerServiceWorker from './registerServiceWorker';
 
 
@@ -24,7 +25,10 @@ import './css/styles.css'
 
 
 const Root = (props) => {
-	const {isLoggedIn, userMeta }= props;
+	const {
+		isLoggedIn,
+		userMeta 
+	} = props;
 	return (
 		<BrowserRouter>
 			<div className="page">
@@ -45,15 +49,16 @@ const Root = (props) => {
 		</BrowserRouter>		
 	);
 };
-
-
-
+PropTypes.Root = {
+	userMeta: PropTypes.object,
+	isLoggedIn: PropTypes.bool
+}
 
 firebaseApp.auth().onAuthStateChanged( user => {
 	if (user) {
-		const date = new Date(Number.parseInt(user.metadata.a));	
+		const date = new Date(Number.parseInt(user.metadata.a, 10));	
   		let createdDate = '';
-		if (date != 'Invalid Date') {
+		if (date !== 'Invalid Date') {
 			createdDate = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();
 		}
 

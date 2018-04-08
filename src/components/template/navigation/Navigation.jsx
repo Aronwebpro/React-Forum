@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebaseApp from '../../../firebase.js';
+import PropTypes from 'prop-types';
 
 class Navigation extends Component {
 	constructor() {
@@ -28,7 +29,7 @@ class Navigation extends Component {
 		}
 		return (
 			<div className="navigation-wrapper">
-				<nav className={!this.props.user || this.props.user && !this.props.user.authorAvatar ? 'nav-logged-out' : undefined }>
+				<nav className={ !this.props.user || (this.props.user && !this.props.user.authorAvatar)  ? 'nav-logged-out' : undefined }>
 					<a href="/">Home</a>
 					<a href="/about">About</a>
 					{ log }
@@ -39,6 +40,10 @@ class Navigation extends Component {
 
 		);
 	}
+};
+
+PropTypes.Navigation = {
+	user: PropTypes.object
 }
 
 export default Navigation;
