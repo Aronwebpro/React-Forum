@@ -1,8 +1,10 @@
 .footer {
-	margin-top:2%;
+	position: relative;
+	margin-top: 2%;
 	min-height: 180px;
 	background-color: #20232a;
 	color:#fff;
+	z-index: 2;
 	text-align: center;
 }
 .footer h1 {
