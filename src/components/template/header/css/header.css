@@ -10,7 +10,6 @@ header {
   transition: all 0.25s ease;
   z-index: 3; 
 }
-
 .shrink {
   height: 50px;
   font-size: 0.8em; 

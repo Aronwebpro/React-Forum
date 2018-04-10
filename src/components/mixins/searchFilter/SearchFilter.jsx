@@ -33,6 +33,7 @@ class SearchFilter extends Component {
 	//     header.style.top = '94px';
 	//   }
 	// }
+	
 	render() {
 		const {
 			isLoggedIn,

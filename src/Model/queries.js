@@ -16,6 +16,7 @@ export const getPostByCategory = (category, limit) => {
                 .limitToLast(limit)
                 .once('value');
 }
+
 export const flash = {
     getFlashMessage: () => {
         return firebaseApp.database().ref('flash').once('value');

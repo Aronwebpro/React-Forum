@@ -10,6 +10,7 @@ const NavigationBnt = (props) => {
 		reset,
 		isLoggedIn
 	} = props;
+	
 	let BackBtn;
 	let actionBnt;	
 	if (props.hasOwnProperty('page')) {

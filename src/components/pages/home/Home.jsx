@@ -32,6 +32,7 @@ class Home extends Component {
 		}
 	
 	}
+	
 	componentDidUpdate() {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
 	}
