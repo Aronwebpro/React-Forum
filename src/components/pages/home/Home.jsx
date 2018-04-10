@@ -3,31 +3,31 @@ import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import TopicRow from '../../mixins/topicrow/TopicRow';
 import { Redirect } from 'react-router';
 import Flash from '../../mixins/flash/Flash';
-import firebaseApp from '../../../firebase';
 import PropTypes from 'prop-types';
+import { getPosts, getPostByCategory, flash } from '../../../Model/queries.js';
 
 class Home extends Component {
 	constructor() {
 		super();
-		this.state = {topics: {}, redirect:false, flash:false, loadHide:true, amount:10};
-		this.flash = this.flash.bind(this);
+		this.state = {topics: {}, redirect:false, flash:false, hideLoadBtn:true};
 		this.convertDate = this.convertDate.bind(this);
 		this.updateTopics = this.updateTopics.bind(this);
 		this.loadMoreTopics = this.loadMoreTopics.bind(this);
 	}
-	componentWillMount() {
-		this.updateTopics();
-	}
 	async componentDidMount() {
-		const snapshot = await firebaseApp.database().ref('flash').once('value');
-		const data = snapshot.val();
-		if (data) {
-			if (data.status === true ) {	
-				firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'', redirect:false, redirectUrl:''});
-				this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus});
+		//Retrieve Topics from DB
+		this.updateTopics();
+
+		//Show Flash Message If it was set in DB
+		const snapshot =  await flash.getFlashMessage();
+		const {status, msg, msgStatus, back}  = snapshot.val();
+		if (msg) {
+			if (status === true ) {	
+				flash.resetFlashMessage();
+				this.setState({flash: status, flashMsg: msg, flashStatus: msgStatus});
 			}							
-			if (data.back) {
-				firebaseApp.database().ref('flash').update({back:false});
+			if (back) {
+				flash.updateFlashMessage({back:false})
 			}
 		}
 	
@@ -36,36 +36,19 @@ class Home extends Component {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
 	}
 	//Retrieve Topics from DB
-	async updateTopics(amount) {
-		let number = amount || this.state.amount;
+	async updateTopics(limit=10) {
 		if (this.props.params) {
-				firebaseApp.database()
-					.ref('topics')
-					.orderByChild('categoryUrl')
-					.equalTo(this.props.params.params.category)
-					.limitToLast(number)
-					.once('value', (snapshot) => {
-						if (snapshot.val()) {
-							let loadHide = true;
-							if (Object.keys(snapshot.val()).length === number ) loadHide = null;
-							this.setState({topics: snapshot.val(), loadHide:loadHide});
-						} else {
-							this.setState({redirect: true});
-						}
-				});
+			const snapshot = await getPostByCategory(this.props.params.params.category, limit);
+			//Handle load more button		
+			let hideLoadBtn = true;
+			if (Object.keys(snapshot.val()).length === limit ) hideLoadBtn = null;
+			this.setState({topics: snapshot.val(), hideLoadBtn:hideLoadBtn});
 		} else {
-			firebaseApp.database()
-				.ref('topics')
-				.limitToLast(number)
-				.orderByKey()
-				.once('value')
-				.then((snapshot) => {
-					let loadHide = true;
-					console.log();
-					if (Object.keys(snapshot.val()).length === number) loadHide = null;
-					this.setState({topics: snapshot.val(), loadHide: loadHide });
-					
-			});
+			const snapshot = await getPosts(limit);
+			//Handle load more button
+			let hideLoadBtn = true;
+			if (Object.keys(snapshot.val()).length === limit) hideLoadBtn = null;
+			this.setState({topics: snapshot.val(), hideLoadBtn: hideLoadBtn });
 		}	
 	}
 	//Expand Widget Header on Click
@@ -78,17 +61,13 @@ class Home extends Component {
 			component.changeBtn();
 		}
 	}
-	//Change arrow up or down
+	//Change header arrow position up or down
 	changeBtn(position) {
 		if (position === 'down') {
 			this.arrow.style.transform = 'rotateZ(-90deg) translate(7%, 40%)';
 		} else {
 			this.arrow.style.transform = 'rotateZ(0deg) translate(20%, 0%)';
 		}
-	}
-	//Save flash message to DB
-	flash(status=true, msg, msgStatus, redirect=false, url='/', back='/') {
-		firebaseApp.database().ref('flash').update({status:status, msg:msg, msgStatus:msgStatus, redirect: redirect, redirectUrl: url, back:back});
 	}
 	convertDate(unixTime, type) {
 		var date = new Date(unixTime);
@@ -120,7 +99,7 @@ class Home extends Component {
 					{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
 	          		<div id="home">
 	          				<div className="left">
-	          					<SearchFilter page="home" isLoggedIn={ isLoggedIn } flash={ this.flash } /> 
+	          					<SearchFilter page="home" isLoggedIn={ isLoggedIn } /> 
 	          				</div>
 	          				<div className="right">
 								<div className="forum">
@@ -142,7 +121,7 @@ class Home extends Component {
 										</div>
 									</div>
 									<div className="load-more-wrapper">
-										{!this.state.loadHide && (<button className="btn" onClick={ this.loadMoreTopics }>Load More</button>)}
+										{!this.state.hideLoadBtn && (<button className="btn" onClick={ this.loadMoreTopics }>Load More</button>)}
 									</div>
 								</div>
 	          				</div>

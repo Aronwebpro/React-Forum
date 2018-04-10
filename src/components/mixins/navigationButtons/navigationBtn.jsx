@@ -1,10 +1,10 @@
 import React from 'react';
 import './css/navigationBtn.css';
 import PropTypes from 'prop-types';
+import {flash} from '../../../Model/queries';
 
 const NavigationBnt = (props) => {
 	const {
-		flash,
 		respond,
 		clearReply,
 		reset,
@@ -18,7 +18,12 @@ const NavigationBnt = (props) => {
 			if (props.isLoggedIn) {
 				actionBnt = (<a href="/new" className="new-topic-button btn">New Discussion</a> );
 			} else {
-		   		actionBnt = (<a href="/login" onClick={() => flash(true, 'Sorry! You have to login to start new Discussion!', 'error', false, '', window.location.href) } className="new-topic-button btn">New Discussion</a> );
+				   actionBnt = (<a href="/login" 
+									onClick={() => flash.createFlashMessage(true, 'Sorry! You have to login to start new Discussion!', 'error', false, '', window.location.href) } 
+									className="new-topic-button btn"
+								>
+									New Discussion
+								</a>);
 			}
 			break;
 			case 'post' :
@@ -27,7 +32,12 @@ const NavigationBnt = (props) => {
 				actionBnt = (<a onClick={ () => {respond(); clearReply();} } className="new-comment-button btn">Reply</a> );
 			} else {
 				BackBtn = (<a href="/" className="back-button btn">Back</a> );
-				actionBnt = (<a href="/login" onClick={() => flash(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href) } className="new-comment-button btn">Reply</a> );
+				actionBnt = (<a href="/login" 
+								onClick={() => flash.createFlashMessage(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href) } 
+								className="new-comment-button btn"
+							>
+								Reply
+							</a> );
 			}
 			break;
 			case 'new' :
@@ -48,7 +58,6 @@ const NavigationBnt = (props) => {
 
 PropTypes.NavigationBnt = {
 	page: PropTypes.string,
-	flash: PropTypes.object,
 	respond: PropTypes.func,
 	clearReply: PropTypes.func,
 	reset: PropTypes.func,
