@@ -17,6 +17,9 @@ export const getPostByCategory = (category, limit) => {
                 .once('value');
 }
 
+export const signIn = (email, password) => {
+    return firebaseApp.auth().signInWithEmailAndPassword(email, password);
+}
 export const flash = {
     getFlashMessage: () => {
         return firebaseApp.database().ref('flash').once('value');

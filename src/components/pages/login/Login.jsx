@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import { Redirect } from 'react-router';
-import firebaseApp from '../../../firebase.js';
 import Flash from '../../mixins/flash/Flash';
 import PropTypes from 'prop-types';
-
+import {flash, signIn} from '../../../Model/queries';
 //Styles
 import './css/login.css';
 
@@ -16,19 +15,19 @@ class Login extends Component {
 	}
 	async componentDidMount() {
 		//Handle Flash message if it was set in DB 
-		const snapshot = await firebaseApp.database().ref('flash').once('value');
+		const snapshot = await flash.getFlashMessage();
 		let data = snapshot.val();
 		if (data) {
 			if (data.redirect === true) {
-				firebaseApp.database().ref('flash').update({redirect: false, redirectUrl: ''});
+				flash.updateFlashMessage({redirect: false, redirectUrl: ''});
 				this.setState({redirect:true});
 			}
 			if (data.redirect === false && data.status === true && this.props.isLoggedIn ) {	
-				firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'' });
+				flash.updateFlashMessage({status:false, msg:'', msgStatus:'' });
 				this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus, redirect:true});
 			}
 			if (data.redirect === false && data.status === true && !this.props.isLoggedIn ) {	
-				firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'' });
+				flash.updateFlashMessage({status:false, msg:'', msgStatus:'' });
 				this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus, redirect:false});
 			}
 			if (data.back) {
@@ -42,10 +41,10 @@ class Login extends Component {
 		const { email, password } = this;
 		try {
 			//Sign In User and get user's data
-			const user = await firebaseApp.auth().signInWithEmailAndPassword(email.value, password.value);
+			const user = await signIn(email.value, password.value);
 			//Set Flash message and save to DB
 			let msg = 'Welcome back ' + user.displayName + '! You\'ve logged in successfully!';
-			firebaseApp.database().ref('flash').update({status:true, msg:msg, msgStatus:'success', redirect: true, redirectUrl: '/'});
+			await flash.updateFlashMessage({status:true, msg:msg, msgStatus:'success', redirect: true, redirectUrl: '/'});
 			this.setState({redirect:true});
 		}
 		catch(error) {
