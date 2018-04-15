@@ -20,7 +20,7 @@ class Home extends Component {
 
 		//Show Flash Message If it was set in DB
 		const snapshot =  await flash.getFlashMessage();
-		const {status, msg, msgStatus, back}  = snapshot.val();
+		const {status, msg, msgStatus, back}  = snapshot;
 		if (msg) {
 			if (status === true ) {	
 				flash.resetFlashMessage();
