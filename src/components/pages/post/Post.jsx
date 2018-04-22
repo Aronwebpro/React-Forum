@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 //Components
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import CommentRow from '../../mixins/commentrow/CommentRow';
-import FlashMessage from '../../mixins/FlashMessage/FlashMessage';
+import FlashMessage, { FlashMessageHandler } from '../../mixins/FlashMessage/FlashMessage';
 
 //Database
 import firebaseApp from '../../../firebase';
@@ -22,7 +22,7 @@ class Post extends Component {
 		this.comClick = this.comClick.bind(this);
 		this.escClick = this.escClick.bind(this);
 		this.clearReply = this.clearReply.bind(this);
-		this.flash = this.flash.bind(this);
+		this.displayFlashMessageIfItSet = this.displayFlashMessageIfItSet.bind(this);
 
 		this.Id = this.props.params.params.postId;
 		const defaultState = { 
@@ -34,7 +34,9 @@ class Post extends Component {
 					replyStyleInit: {display: 'none' },
 					clickedId:'',
 					redirect:false,
-					isReply:false
+					isReply:false,
+					flashMessage:{}, 
+					displayFlashMessage: false,
 				};
 		defaultState.post[this.Id] = {
 			topicId: '',
@@ -55,6 +57,8 @@ class Post extends Component {
 	componentDidMount() {
 		document.addEventListener('click', this.comClick);
 		document.addEventListener('keydown', this.escClick);
+		const flashMessage = FlashMessageHandler.fetch();
+		if (flashMessage.msg) this.setState({displayFlashMessage: true, flashMessage });
 		firebaseApp.database()
 			.ref('flash')
 			.once('value')
@@ -201,8 +205,14 @@ class Post extends Component {
 	qouteAsk() {
 		
 	}
-	flash(status=true, msg, msgStatus, redirect=false, url='/', back='/') {
-		firebaseApp.database().ref('flash').update({status:status, msg:msg, msgStatus:msgStatus, redirect: redirect, redirectUrl: url, back:back });
+	displayFlashMessageIfItSet() {
+		if (this.state.displayFlashMessage) {
+			setTimeout(() => {
+				this.setState({displayFlashMessage:false});
+				FlashMessageHandler.reset();
+			}, 2500);
+			return ( <FlashMessage {...this.state.flashMessage} /> )
+		}
 	}
 	render() {
 		const post = this.state.post[this.Id];
@@ -226,9 +236,7 @@ class Post extends Component {
 				<div className="post-page">
 					<div className="content">
 						<div className="container">
-							{ this.state.flash && 
-								<FlashMessage /> 
-							}
+						{ this.displayFlashMessageIfItSet()  }
 							<div className="left">
 								<SearchFilter 
 									page="post" 

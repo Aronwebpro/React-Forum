@@ -7,15 +7,15 @@ const FlashMessage = (props) => {
             msg,
             status
         } = props;
-       // const {msg, status } = JSON.parse(localStorage.getItem('flashMessage')) || {};
-        
+    
         //Reset Flash Animation
         let flash;
         setTimeout(() => { 
             if (!flash) return
-            flash.style.animation = 'none';
-            flash.style.animation = null; 
-        }, 100);
+            //flash.style.animation = 'none';
+            flash.style.animation = null;
+            FlashMessageHandler.reset();
+        }, 50);
 
         //Flash boarder color by status
         let color;
@@ -43,10 +43,14 @@ const FlashMessage = (props) => {
 
 export default FlashMessage;
 
+//Manage Flash Message in Local Storage
 export const FlashMessageHandler = {
     create: (msg, status, redirect=false, redirectUrl='/', back='/') => {
         const data = {msg, status, redirect, redirectUrl, back}
         localStorage.setItem('flashMessage', JSON.stringify(data));
+    },
+    fetch: () => {
+        return JSON.parse(localStorage.getItem('flashMessage')) || {};
     },
     update: (update={}) => {
         const data = {msg: '', status: '', redirect: false, redirectUrl: '', back: ''};

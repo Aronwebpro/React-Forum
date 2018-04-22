@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/navigationBtn.css';
 import PropTypes from 'prop-types';
-import {flash} from '../../../Model/queries';
+import { FlashMessageHandler } from '../FlashMessage/FlashMessage';
 
 const NavigationBnt = (props) => {
 	const {
@@ -20,7 +20,7 @@ const NavigationBnt = (props) => {
 				actionBnt = (<a href="/new" className="new-topic-button btn">New Discussion</a> );
 			} else {
 				   actionBnt = (<a href="/login" 
-									onClick={() => flash.createFlashMessage(true, 'Sorry! You have to login to start new Discussion!', 'error', false, '', window.location.href) } 
+									onClick={() => FlashMessageHandler.create('Sorry! You have to login to start new Discussion!', 'error', false, '', window.location.href) } 
 									className="new-topic-button btn"
 								>
 									New Discussion
@@ -34,7 +34,7 @@ const NavigationBnt = (props) => {
 			} else {
 				BackBtn = (<a href="/" className="back-button btn">Back</a> );
 				actionBnt = (<a href="/login" 
-								onClick={() => flash.createFlashMessage(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href) } 
+								onClick={() => FlashMessageHandler.create('Sorry! You have to login to Reply!', 'error', false, '', window.location.href) } 
 								className="new-comment-button btn"
 							>
 								Reply

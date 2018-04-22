@@ -3,15 +3,17 @@ import { Redirect } from 'react-router';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import firebaseApp from  '../../../firebase';
 import PropTypes from 'prop-types';
+import FlashMessage, { FlashMessageHandler } from '../../mixins/FlashMessage/FlashMessage';
 
 class NewTopic extends Component {
 	constructor() {
 		super();
 		this.post = this.post.bind(this);
-		this.state = { topics: [], redirect: false};
+		this.displayFlashMessageIfItSet = this.displayFlashMessageIfItSet.bind(this);
+		this.state = { topics: [], redirect: false, flashMessage:{}, displayFlashMessage: false};
 	}
 	/*
-	* This method creates new Post, updates Posts Count, Creates new Flash Message in DB
+	* This method creates new Post, updates Posts Count, Creates new Flash Message in localStorage
 	*/
 	async post() {
 		const created = Date.now();
@@ -39,26 +41,42 @@ class NewTopic extends Component {
 		updates[key] = input;
 		const db = firebaseApp.database();
 		try {
+
 			//Create new Topic in DB topic 
 			await db.ref('topics').update(updates);
+
 			//Increase Category count by 1 in DB categories  by getting existing value and then update
 			db.ref('categories/'+categoryUrl+'/count').once('value', (snapshot) => {
 				let count = snapshot.val() + 1;
 				db.ref('/categories/'+ categoryUrl).update({count:count});
 			});
+
 			//Increase Topic count for DB Config  by getting existing value and then update
 			db.ref('config/topicsCount').once('value', (snapshot) => {
 				let postCount = snapshot.val() + 1;
 				db.ref('config').update({topicsCount:postCount});
 			});
-			//})
+			
 			//Create Flash message in DB Flash 
-			db.ref('flash').update({status:true, msg:'Congrats! Your Post Created!', msgStatus:'success', redirect:false, redirectUrl:''});
+			FlashMessageHandler.create('Congrats! Your Post is Created!', 'success');
+			
+			//Redirect to New Post 
 			this.setState({url:'/post/'+key, redirect:true});
-		} catch(errors) {
-			console.log(errors);
+		} catch(error) {
+			//FlashMessageHandler.create('Something Went wrong, please refresh page and try again!', 'error');
+			this.setState({displayFlashMessage: true, flashMessage: {msg: 'Something Went wrong, please refresh page and try again!', status: 'error'}});
+			
 		}
 
+	}
+	displayFlashMessageIfItSet() {
+		if (this.state.displayFlashMessage) {
+			setTimeout(() => {
+				this.setState({displayFlashMessage:false});
+				FlashMessageHandler.reset();
+			}, 4000);
+			return ( <FlashMessage {...this.state.flashMessage} /> )
+		}
 	}
 	render() {
 		const { isLoggedIn } = this.props;
@@ -67,6 +85,7 @@ class NewTopic extends Component {
 			return (
 				<div id="home">
 		          		<div className="container">
+						  { this.displayFlashMessageIfItSet()  }
 		          				<div className="left">
 		          					<SearchFilter page="new" isLoggedIn={ isLoggedIn } /> 
 		          				</div>

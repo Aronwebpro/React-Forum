@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import TopicRow from '../../mixins/topicrow/TopicRow';
 import { Redirect } from 'react-router';
-import FlashMessage, {FlashMessageHandler} from '../../mixins/FlashMessage/FlashMessage';
+import FlashMessage, { FlashMessageHandler } from '../../mixins/FlashMessage/FlashMessage';
 import PropTypes from 'prop-types';
 import { getPosts, getPostByCategory } from '../../../Model/queries.js';
 
@@ -13,11 +13,12 @@ class Home extends Component {
 		this.convertDate = this.convertDate.bind(this);
 		this.updateTopics = this.updateTopics.bind(this);
 		this.loadMoreTopics = this.loadMoreTopics.bind(this);
+		this.displayFlashMessageIfItSet = this.displayFlashMessageIfItSet.bind(this);
 	}
 	componentDidMount() {
 		//Retrieve Topics from DB
 		this.updateTopics();
-		const flashMessage = JSON.parse(localStorage.getItem('flashMessage'));
+		const flashMessage = FlashMessageHandler.fetch();
 		if (flashMessage.msg) this.setState({displayFlashMessage: true, flashMessage });
 	}
 
@@ -65,7 +66,6 @@ class Home extends Component {
 			returnString = date.getMonth()+1 + '/' + date.getDate() + ' ' + date.getFullYear();
 		} else if (type === 'time') {
 			returnString = date.getHours() + ':' + date.getMinutes();
-			
 		}
 		return returnString;																				
 	}
@@ -74,17 +74,22 @@ class Home extends Component {
 		this.updateTopics(amount);
 		this.setState({amount: amount});
 	}
+	displayFlashMessageIfItSet() {
+		if (this.state.displayFlashMessage) {
+			setTimeout(() => {
+				this.setState({displayFlashMessage:false});
+				FlashMessageHandler.reset();
+			}, 2500);
+			return ( <FlashMessage {...this.state.flashMessage} /> )
+		}
+	}
 	render() {
 		const { topics } = this.state;
 		const { isLoggedIn } = this.props;
-		if (this.state.redirect ) return <Redirect to="/" />
-		if (this.state.displayFlashMessage) setTimeout(() => {
-			this.setState({displayFlashMessage:false});
-			FlashMessageHandler.reset();
-		}, 2500);			
+		if (this.state.redirect ) return <Redirect to="/" />		
 		return (
 			<div className="container">
-				{ this.state.displayFlashMessage && <FlashMessage {...this.state.flashMessage}/> }
+				{ this.displayFlashMessageIfItSet()  }
 	          		<div id="home">
 	          				<div className="left">
 	          					<SearchFilter page="home" isLoggedIn={ isLoggedIn } /> 

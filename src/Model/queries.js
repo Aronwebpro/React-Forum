@@ -20,18 +20,4 @@ export const getPostByCategory = (category, limit) => {
 export const signIn = (email, password) => {
     return firebaseApp.auth().signInWithEmailAndPassword(email, password);
 }
-export const flash = {
-    getFlashMessage: () => {
-        return firebaseApp.database().ref('flash').once('value');
-    },
-    createFlashMessage: (status=true, msg, msgStatus, redirect=false, url='/', back='/') => {
-        return firebaseApp.database().ref('flash').update({status:status, msg:msg, msgStatus:msgStatus, redirect: redirect, redirectUrl: url, back:back});
-    },
-    updateFlashMessage: (update) => {
-        return firebaseApp.database().ref('flash').update(update);
-    },
-    resetFlashMessage: () => {
-        return firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'', redirect:false, redirectUrl:''});
 
-    }
-}
