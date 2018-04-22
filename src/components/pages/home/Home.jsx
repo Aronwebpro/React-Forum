@@ -9,7 +9,7 @@ import { getPosts, getPostByCategory } from '../../../Model/queries.js';
 class Home extends Component {
 	constructor() {
 		super();
-		this.state = {topics: {}, redirect:false, flashMessage:{}, displayFlashMessage: false, hideLoadBtn:true};
+		this.state = {topics: {}, redirect:false, flashMessage:{}, displayFlashMessage: false, hideLoadBtn:true, amount: 10,};
 		this.convertDate = this.convertDate.bind(this);
 		this.updateTopics = this.updateTopics.bind(this);
 		this.loadMoreTopics = this.loadMoreTopics.bind(this);
@@ -72,7 +72,7 @@ class Home extends Component {
 	loadMoreTopics() {
 		const amount = this.state.amount + 10;
 		this.updateTopics(amount);
-		this.setState({amount: amount});
+		this.setState({amount});
 	}
 	displayFlashMessageIfItSet() {
 		if (this.state.displayFlashMessage) {

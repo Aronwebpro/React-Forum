@@ -72,8 +72,7 @@ PropTypes.SearchFilter = {
 	isLoggedIn: PropTypes.bool,
 	page: PropTypes.string,
 	respond: PropTypes.func,
-	clearReply: PropTypes.func,
-	flash: PropTypes.object 
+	clearReply: PropTypes.func, 
 }
 
 export default SearchFilter;
