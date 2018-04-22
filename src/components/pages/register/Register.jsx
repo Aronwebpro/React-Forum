@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import firebaseApp from '../../../firebase.js';
 import { Redirect } from 'react-router';
-import Flash from '../../mixins/flash/Flash';
+import FlashMessage from '../../mixins/FlashMessage/FlashMessage';
 import PropTypes from 'prop-types';
 
 //Avatar Images
@@ -87,7 +87,7 @@ class Register extends Component {
 		//if(this.state.spinner === true)  spinner = (<span><img src="https://linkjuice.io/img/loading.gif" alt="" style={ {width: '30px', transform:'translateY(11px)' } }/></span> )	
 		return (
 			<div className="register-page">
-				{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
+				{ this.state.flash && <FlashMessage /> }
 				<h1>Please fill register form:</h1>
 				<div className="form-wrapper">
 					<div className="avatar-wrapper">

@@ -2,37 +2,25 @@ import React, { Component } from 'react';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import TopicRow from '../../mixins/topicrow/TopicRow';
 import { Redirect } from 'react-router';
-import Flash from '../../mixins/flash/Flash';
+import FlashMessage, {FlashMessageHandler} from '../../mixins/FlashMessage/FlashMessage';
 import PropTypes from 'prop-types';
-import { getPosts, getPostByCategory, flash } from '../../../Model/queries.js';
+import { getPosts, getPostByCategory } from '../../../Model/queries.js';
 
 class Home extends Component {
 	constructor() {
 		super();
-		this.state = {topics: {}, redirect:false, flash:false, hideLoadBtn:true};
+		this.state = {topics: {}, redirect:false, flashMessage:{}, displayFlashMessage: false, hideLoadBtn:true};
 		this.convertDate = this.convertDate.bind(this);
 		this.updateTopics = this.updateTopics.bind(this);
 		this.loadMoreTopics = this.loadMoreTopics.bind(this);
 	}
-	async componentDidMount() {
+	componentDidMount() {
 		//Retrieve Topics from DB
 		this.updateTopics();
-
-		//Show Flash Message If it was set in DB
-		const snapshot =  await flash.getFlashMessage();
-		const {status, msg, msgStatus, back}  = snapshot;
-		if (msg) {
-			if (status === true ) {	
-				flash.resetFlashMessage();
-				this.setState({flash: status, flashMsg: msg, flashStatus: msgStatus});
-			}							
-			if (back) {
-				flash.updateFlashMessage({back:false})
-			}
-		}
-	
+		const flashMessage = JSON.parse(localStorage.getItem('flashMessage'));
+		if (flashMessage.msg) this.setState({displayFlashMessage: true, flashMessage });
 	}
-	
+
 	componentDidUpdate() {
 		window.addEventListener('load', () => { this.forumContent.style.height = this.forumContentInner.clientHeight+'px'; });
 	}
@@ -89,15 +77,14 @@ class Home extends Component {
 	render() {
 		const { topics } = this.state;
 		const { isLoggedIn } = this.props;
-		if (this.state.redirect ) { return <Redirect to="/" /> }
-		if(this.state.flash) {
-			setTimeout(() => {
-				this.setState({flash:false});
-			}, 2500);
-		}			
+		if (this.state.redirect ) return <Redirect to="/" />
+		if (this.state.displayFlashMessage) setTimeout(() => {
+			this.setState({displayFlashMessage:false});
+			FlashMessageHandler.reset();
+		}, 2500);			
 		return (
 			<div className="container">
-					{ this.state.flash && <Flash status={this.state.flashStatus} text={this.state.flashMsg}/> }
+				{ this.state.displayFlashMessage && <FlashMessage {...this.state.flashMessage}/> }
 	          		<div id="home">
 	          				<div className="left">
 	          					<SearchFilter page="home" isLoggedIn={ isLoggedIn } /> 

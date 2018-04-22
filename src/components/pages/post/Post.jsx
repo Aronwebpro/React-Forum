@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 //Components
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import CommentRow from '../../mixins/commentrow/CommentRow';
-import Flash from '../../mixins/flash/Flash';
+import FlashMessage from '../../mixins/FlashMessage/FlashMessage';
 
 //Database
 import firebaseApp from '../../../firebase';
@@ -227,10 +227,7 @@ class Post extends Component {
 					<div className="content">
 						<div className="container">
 							{ this.state.flash && 
-								<Flash 
-								status={this.state.flashStatus} 
-								text={this.state.flashMsg}
-								/> 
+								<FlashMessage /> 
 							}
 							<div className="left">
 								<SearchFilter 
