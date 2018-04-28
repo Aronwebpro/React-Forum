@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import CommentRow from '../../mixins/commentrow/CommentRow';
 import FlashMessage, { FlashMessageHandler } from '../../mixins/FlashMessage/FlashMessage';
+import { getSinglePost } from '../../../Model/queries';
 
 //Database
 import firebaseApp from '../../../firebase';
@@ -13,17 +14,6 @@ import firebaseApp from '../../../firebase';
 class Post extends Component {
 	constructor(props) {
 		super(props);
-		this.respond = this.respond.bind(this);
-		this.respondForm = this.respondForm.bind(this);
-		this.postComment = this.postComment.bind(this);
-		this.respondText = this.respondText.bind(this);
-		this.getPost = this.getPost.bind(this);
-		this.getComments = this.getComments.bind(this);
-		this.comClick = this.comClick.bind(this);
-		this.escClick = this.escClick.bind(this);
-		this.clearReply = this.clearReply.bind(this);
-		this.displayFlashMessageIfItSet = this.displayFlashMessageIfItSet.bind(this);
-
 		this.Id = this.props.params.params.postId;
 		const defaultState = { 
 					post: {},
@@ -50,53 +40,36 @@ class Post extends Component {
 		};
 		this.state = defaultState;
 	}
-	componentWillMount() {
-		this.getPost();
-		this.getComments();
-	}
 	componentDidMount() {
+		this.getPost(this.Id);
+		this.getComments();
 		document.addEventListener('click', this.comClick);
 		document.addEventListener('keydown', this.escClick);
 		const flashMessage = FlashMessageHandler.fetch();
 		if (flashMessage.msg) this.setState({displayFlashMessage: true, flashMessage });
-		firebaseApp.database()
-			.ref('flash')
-			.once('value')
-			.then((snapshot) => {
-				let data = snapshot.val();
-				if (data && data.status === true ) {	
-					firebaseApp.database().ref('flash').update({status:false, msg:'', msgStatus:'', redirect:false, redirectUrl:''});
-					this.setState({flash:data.status, flashMsg:data.msg, flashStatus:data.msgStatus});
-				}							
-		});
-
 	}
 	componentWillUnmount() {
 		document.removeEventListener('click', this.comClick);
 		document.removeEventListener('keydown', this.escClick);
 	}
-	comClick(e) {
+	comClick = (e) => {
 		if (e.target.classList.value === 'container' || e.target.classList.value === 'content') {
 				this.setState({reply: false, replyStyleInit: {display: 'none'}});
 		}
 	}
-	escClick(e, obj) {
+	escClick = (e, obj) => {
 		if (e.keyCode === 27) {
 			this.setState({reply: false, replyStyleInit: {display: 'none'}});
 		}
 	}
-	getPost() {
-		this.topicRef = firebaseApp.database()
-							.ref('/topics/'+this.Id)
-							.once('value', (snapshot) => {
-								if (snapshot.val()) {
-									let post = {};
-									post[this.Id] = snapshot.val();
-									this.setState({post});
-								}
-							});		
+	getPost = async (ID) => {
+		const postData = await getSinglePost(ID);
+		let post = {};
+		post[ID] = postData;
+		this.setState({post});
 	}
-	getComments() {
+
+	getComments = () => {
 		this.commentRef = firebaseApp.database()
 							.ref('/comments/')
 							.orderByChild('topicId')
@@ -107,7 +80,7 @@ class Post extends Component {
 								}
 							});		
 	}
-	postComment() {
+	postComment = () => {
 		const time = Date.now();
 		const input = {
 			text: this.respText.value,
@@ -141,7 +114,7 @@ class Post extends Component {
 		this.setState({respond:'', reply:false, replyStyleInit: {display: 'none' }});
 		this.respText.value = '';
 	}
-	updatePost(id, input) {
+	updatePost = (id, input) => {
 		const db = firebaseApp.database().ref('topics/'+id);		
 			db.once('value', (snapshot) => {
 				input['repliesCount'] = snapshot.val().repliesCount + 1;
@@ -154,17 +127,17 @@ class Post extends Component {
 				});	
 			});				
 	}
-	respond(user) {
+	respond = (user) => {
 		this.setState({
 			respond: true,
 			user: user
 		});
 		setTimeout(() => this.respondDiv.scrollIntoView({ behavior:'smooth'}), 200 );
 	}
-	clearReply() {
+	clearReply = () => {
 		this.setState({replyText:''});
 	}
-	respondForm() {
+	respondForm = () => {
 		if (this.state.respond === true ) {
 			return ( 
 				<div className="full-post" style={ {marginTop:'20px'} } >
@@ -191,7 +164,7 @@ class Post extends Component {
 				);
 		}
 	}
-	respondText(data) {
+	respondText = (data) => {
 		console.log(this.state.reply);
 		this.setState({replyStyle: { width: '100%', height: '100%'}, replyStyleInit: {display: 'block' }, reply: true, clickedId:data.clickedId });
 		if( this.state.reply === true) {
@@ -202,10 +175,7 @@ class Post extends Component {
 			this.respond();
 		}
 	}
-	qouteAsk() {
-		
-	}
-	displayFlashMessageIfItSet() {
+	displayFlashMessageIfItSet = () => {
 		if (this.state.displayFlashMessage) {
 			setTimeout(() => {
 				this.setState({displayFlashMessage:false});
@@ -216,8 +186,7 @@ class Post extends Component {
 	}
 	render() {
 		const post = this.state.post[this.Id];
-		let createdDate = '';
-		let createdTime = '';
+		let createdDate, createdTime = '';
 		if (post.created !== 'loading' && post && post.hasOwnProperty('created')) {
 			let date = new Date(post.created);
 			createdDate = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();

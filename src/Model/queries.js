@@ -21,3 +21,9 @@ export const signIn = (email, password) => {
     return firebaseApp.auth().signInWithEmailAndPassword(email, password);
 }
 
+export const getSinglePost = async (ID) => {
+    const snapshot = await  firebaseApp.database()
+                        .ref('/topics/'+ ID)
+                        .once('value');
+    return  snapshot.val();                  
+}
