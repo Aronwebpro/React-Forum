@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 //Components
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import CommentRow from '../../mixins/commentrow/CommentRow';
-import FlashMessage, { FlashMessageHandler } from '../../mixins/FlashMessage/FlashMessage';
+import { FlashMessage } from '../../mixins/FlashMessage/FlashMessage';
+import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 import { getSinglePost } from '../../../api/lookups';
 
 //Database

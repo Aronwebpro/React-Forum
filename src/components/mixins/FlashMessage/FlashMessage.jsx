@@ -1,7 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 import './css/flash.css';
 
-//Flash component shows Flash messages to user
+
+
+/**
+ * Flash Message Component shows messages to user
+ */
 const FlashMessage = (props) => {
         const {
             msg,
@@ -11,7 +17,7 @@ const FlashMessage = (props) => {
         //Reset Flash Animation
         let flash;
         setTimeout(() => { 
-            if (!flash) return
+            if (!flash) return;
             //flash.style.animation = 'none';
             flash.style.animation = null;
             FlashMessageHandler.reset();
@@ -41,24 +47,11 @@ const FlashMessage = (props) => {
         )
 };
 
-export default FlashMessage;
+FlashMessage.propTypes = {
+    msg: PropTypes.string.isRequired,
+    status: PropTypes.string,
+};
 
-//Manage Flash Message in Local Storage
-export const FlashMessageHandler = {
-    create: (msg, status, redirect=false, redirectUrl='/', back='/') => {
-        const data = {msg, status, redirect, redirectUrl, back}
-        localStorage.setItem('flashMessage', JSON.stringify(data));
-    },
-    fetch: () => {
-        return JSON.parse(localStorage.getItem('flashMessage')) || {};
-    },
-    update: (update={}) => {
-        const data = {msg: '', status: '', redirect: false, redirectUrl: '', back: ''};
-        Object.keys(update).forEach((e) => update[e] !== undefined ?  data[e] = update[e] : '');
-        localStorage.setItem('flashMessage', JSON.stringify(data));
-    },
-    reset: () => {
-        const data = {msg:'', status:'', redirect:false, redirectUrl:'', back: ''}
-        localStorage.setItem('flashMessage', JSON.stringify(data));
-    }
+export {
+    FlashMessage,
 }

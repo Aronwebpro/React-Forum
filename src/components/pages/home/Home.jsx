@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import TopicRow from '../../mixins/topicrow/TopicRow';
 import { Redirect } from 'react-router';
-import FlashMessage, { FlashMessageHandler } from '../../mixins/FlashMessage/FlashMessage';
+import {FlashMessage } from '../../mixins/FlashMessage/FlashMessage';
+import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 import PropTypes from 'prop-types';
 import { getPosts, getPostByCategory } from '../../../api/lookups.js';
 

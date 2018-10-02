@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import firebaseApp from '../../../firebase.js';
 import { Redirect } from 'react-router';
-import FlashMessage from '../../mixins/FlashMessage/FlashMessage';
+import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import PropTypes from 'prop-types';
 
 //Avatar Images

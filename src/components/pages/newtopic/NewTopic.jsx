@@ -3,7 +3,8 @@ import { Redirect } from 'react-router';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import firebaseApp from  '../../../firebase';
 import PropTypes from 'prop-types';
-import FlashMessage, { FlashMessageHandler } from '../../mixins/FlashMessage/FlashMessage';
+import {FlashMessage } from '../../mixins/FlashMessage/FlashMessage';
+import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 
 class NewTopic extends Component {
 	constructor() {

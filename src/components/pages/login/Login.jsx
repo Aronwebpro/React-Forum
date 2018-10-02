@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Redirect} from 'react-router';
 import PropTypes from 'prop-types';
-import FlashMessage, {FlashMessageHandler} from '../../mixins/FlashMessage/FlashMessage';
+import  {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
+import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 import {signIn} from '../../../api/auth';
 
 //Styles

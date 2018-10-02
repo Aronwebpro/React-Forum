@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import firebaseApp from '../../../firebase.js';
 import PropTypes from 'prop-types';
 import {signOut} from "../../../api/auth";
+import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 
 class Navigation extends Component {
     constructor() {
@@ -14,28 +14,14 @@ class Navigation extends Component {
     }
 
     async logOut() {
-        //TODO: Message Handling throug handler
         try {
             await signOut();
             let msg = 'GoodBye! You\'ve logged out successfully!';
-            firebaseApp.database().ref('flash').update({
-                status: true,
-                msg: msg,
-                msgStatus: 'success',
-                redirect: false,
-                redirectUrl: ''
-            });
+            FlashMessageHandler.create(msg, 'success');
         } catch (e) {
             let msg = 'Ups! Something happen, you didn\'t log out!';
-            firebaseApp.database().ref('flash').update({
-                status: true,
-                msg: msg,
-                msgStatus: 'error',
-                redirect: false,
-                redirectUrl: ''
-            });
+            FlashMessageHandler.create(msg, 'error');
         }
-        window.scrollTo(0, 0);
         window.scrollTo(0, 0);
     }
 

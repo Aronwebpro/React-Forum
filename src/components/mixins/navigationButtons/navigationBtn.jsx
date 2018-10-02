@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/navigationBtn.css';
 import PropTypes from 'prop-types';
-import {FlashMessageHandler} from '../FlashMessage/FlashMessage';
+import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 
 const NavigationBnt = (props) => {
     const {
