@@ -21,7 +21,7 @@ import Header from './components/template/header/Header';
 import Footer from './components/template/footer/Footer';
 
 //Styles
-import './css/styles.css'
+import './css/theme.css'
 
 
 const Root = (props) => {

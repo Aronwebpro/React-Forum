@@ -4,7 +4,7 @@ import TopicRow from '../../mixins/topicrow/TopicRow';
 import { Redirect } from 'react-router';
 import FlashMessage, { FlashMessageHandler } from '../../mixins/FlashMessage/FlashMessage';
 import PropTypes from 'prop-types';
-import { getPosts, getPostByCategory } from '../../../Model/queries.js';
+import { getPosts, getPostByCategory } from '../../../api/lookups.js';
 
 class Home extends Component {
 	constructor() {

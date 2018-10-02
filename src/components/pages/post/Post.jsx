@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import SearchFilter from '../../mixins/searchFilter/SearchFilter';
 import CommentRow from '../../mixins/commentrow/CommentRow';
 import FlashMessage, { FlashMessageHandler } from '../../mixins/FlashMessage/FlashMessage';
-import { getSinglePost } from '../../../Model/queries';
+import { getSinglePost } from '../../../api/lookups';
 
 //Database
 import firebaseApp from '../../../firebase';
