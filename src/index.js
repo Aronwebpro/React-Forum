@@ -56,17 +56,11 @@ PropTypes.Root = {
 
 firebaseApp.auth().onAuthStateChanged( user => {
 	if (user) {
-		const date = new Date(Number.parseInt(user.metadata.a, 10));	
-  		let createdDate = '';
-		if (date !== 'Invalid Date') {
-			createdDate = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();
-		}
-
   		const userMeta = {
   			uid: user.uid,
   			authorName: user.displayName,
   			authorAvatar: user.photoURL,
-  			memberSince: createdDate
+  			memberSince: '',
   		}
 		ReactDOM.render(<Root userMeta={userMeta} isLoggedIn={true} />, document.getElementById('root'));
 	} else {
