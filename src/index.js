@@ -4,7 +4,7 @@ import {BrowserRouter, Match, Miss} from 'react-router';
 import {Redirect} from 'react-router';
 import PropTypes from 'prop-types';
 
-import {auth} from 'firebase';
+import {auth} from 'firebase/index';
 
 
 //Page Components

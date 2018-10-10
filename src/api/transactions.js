@@ -1,11 +1,11 @@
-import firebaseApp from '../firebase.js';
+import {auth} from 'firebase';
 
 const createUser = async ({email, password, avatar, nickname}) => {
     //Create New User in Firebase Auth and instantly login
-    await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
+    await auth().createUserWithEmailAndPassword(email, password);
 
     //Get current logged in user
-    const user = await firebaseApp.auth().currentUser;
+    const user = await auth().currentUser;
 
     //Update User Profile in Firebase Auth
     await user.updateProfile({
@@ -25,7 +25,8 @@ const createUser = async ({email, password, avatar, nickname}) => {
     };
 
     //Save new user Object to Users Collection
-    await firebaseApp.database().ref('users').update(userObj);
+    //TODO: Update to Firestore
+    // await firebaseApp.database().ref('users').update(userObj);
 
     return {status: 'success', msg: 'User Created Successfully!'}
 };

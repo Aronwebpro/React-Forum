@@ -1,4 +1,4 @@
-import {db} from '../firebase.js';
+import db from '../firebase.js';
 
 /**
  * Get Post List from FireBase DB
