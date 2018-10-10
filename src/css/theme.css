@@ -327,7 +327,7 @@ input#img16  {
   height: 35px;
   float: right;
   cursor: pointer;
-  transform: rotateZ(0deg) translate(20%, 0%); 
+  transform: rotateZ(0deg) translate(10%, 0%);
 }
 .leftArrow {
   position: absolute;
