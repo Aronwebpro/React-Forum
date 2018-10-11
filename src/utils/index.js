@@ -3,8 +3,8 @@
  * @param unixTime
  * @returns String
  */
-const formatToDateString = (firestoreObj) => {
-    const date = new Date(firestoreObj.toDate());
+const formatToDateString = (unixtime) => {
+    const date = new Date(unixtime);
     return `${date.getMonth() + 1}/${date.getDate()} ${date.getFullYear()}`;
 };
 /**
@@ -12,8 +12,8 @@ const formatToDateString = (firestoreObj) => {
  * @param unixTime
  * @returns String
  */
-const formatToTimeString = (firestoreObj) => {
-    const date = new Date(firestoreObj.toDate());
+const formatToTimeString = (unixtime) => {
+    const date = new Date(unixtime);
     return `${date.getHours()} : ${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
 };
 

@@ -1,90 +1,76 @@
 import React, {Component} from 'react';
-import {Redirect} from 'react-router';
-import SearchFilter from '../../mixins/searchFilter/SearchFilter';
-import firebaseApp from '../../../firebase';
 import PropTypes from 'prop-types';
+import {Redirect} from 'react-router';
+
+//Api
+import API from '../../../api/transactions';
+
+//Components
+import SearchFilter from '../../mixins/searchFilter/SearchFilter';
+
+//Flash Message Handlers
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 
-class NewTopic extends Component {
+class CreatePost extends Component {
     constructor() {
         super();
         this.post = this.post.bind(this);
         this.displayFlashMessageIfItSet = this.displayFlashMessageIfItSet.bind(this);
         this.state = {topics: [], redirect: false, flashMessage: {}, displayFlashMessage: false};
     }
-
+    state = {
+        topics: [],
+        redirect: false,
+        flashMessage: {},
+        displayFlashMessage: false,
+        loading: false,
+    };
     /*
     * This method creates new Post, updates Posts Count, Creates new Flash Message in localStorage
     */
     async post() {
-        const created = Date.now();
-        const categoryUrl = this.category.value.replace(/\s/g, '').toLowerCase();
-        //Data object to save to DB
-        const input = {
-            title: this.title.value,
-            text: this.text.value,
-            category: this.category.value,
-            categoryUrl: categoryUrl,
-            authorAvatar: this.props.user.authorAvatar,
-            authorName: this.props.user.authorName,
-            memberSince: this.props.user.memberSince,
-            type: this.type.value,
-            created: created,
-            last: this.props.user.authorName,
-            lastAvatar: this.props.user.authorAvatar,
-            repliesCount: 0,
-            lastDate: created
+        const date = Date.now();
+        const {uid} = this.props.user;
+        const categoryId = this.category.value.replace(/\s/g, '').toLowerCase();
 
+        //Data object to save to DB
+        const post = {
+            category: this.category.value,
+            categoryId: categoryId,
+            created:  date,
+            lastReply: date,
+            lastUserId: uid,
+            repliesCount: 0,
+            text: this.text.value,
+            title: this.title.value,
+            type: this.type.value,
+            userId: uid,
+        };
+
+        const {error, result} = await API.createPost(post);
+        if (error) {
+            this.setState({displayFlashMessage: true, flashMessage: {msg: 'Creating Post Failed :( ', status: 'error'} });
+        } else {
+            //Create Flash message in DB Flash
+            FlashMessageHandler.create('Congrats! Your Post is Created!', 'success');
+
+            //Redirect to New Post
+            this.setState({url: '/post/' + result.postId, redirect: true});
         }
-        //TODO: Update to Fire Store
-        // //Generate unique Firebase DB key
-        // const key = firebaseApp.database().ref().child('topics').push().key;
-        // let updates = {};
-        // updates[key] = input;
-        // const db = firebaseApp.database();
-        // try {
-        //
-        //     //Create new Topic in DB topic
-        //     await db.ref('topics').update(updates);
-        //
-        //     //Increase Category count by 1 in DB categories  by getting existing value and then update
-        //     db.ref('categories/' + categoryUrl + '/count').once('value', (snapshot) => {
-        //         let count = snapshot.val() + 1;
-        //         db.ref('/categories/' + categoryUrl).update({count: count});
-        //     });
-        //
-        //     //Increase Topic count for DB Config  by getting existing value and then update
-        //     db.ref('config/topicsCount').once('value', (snapshot) => {
-        //         let postCount = snapshot.val() + 1;
-        //         db.ref('config').update({topicsCount: postCount});
-        //     });
-        //
-        //     //Create Flash message in DB Flash
-        //     FlashMessageHandler.create('Congrats! Your Post is Created!', 'success');
-        //
-        //     //Redirect to New Post
-        //     this.setState({url: '/post/' + key, redirect: true});
-        // } catch (error) {
-        //     //FlashMessageHandler.create('Something Went wrong, please refresh page and try again!', 'error');
-        //     this.setState({
-        //         displayFlashMessage: true,
-        //         flashMessage: {msg: 'Something Went wrong, please refresh page and try again!', status: 'error'}
-        //     });
-        //
-        // }
 
     }
 
-    displayFlashMessageIfItSet() {
-        if (this.state.displayFlashMessage) {
+    displayFlashMessageIfItSet = () => {
+        const {displayFlashMessage, flashMessage} = this.state;
+        if (displayFlashMessage) {
             setTimeout(() => {
                 this.setState({displayFlashMessage: false});
                 FlashMessageHandler.reset();
             }, 4000);
-            return (<FlashMessage {...this.state.flashMessage} />)
+            return (<FlashMessage {...flashMessage} />)
         }
-    }
+    };
 
     render() {
         const {isLoggedIn} = this.props;
@@ -128,7 +114,7 @@ class NewTopic extends Component {
                                         </select>
                                     </div>
                                     <label htmlFor=""><h3>Text:</h3></label>
-                                    <textarea name="" id="" cols="30" rows="10"
+                                    <textarea name="Text" id="" cols="30" rows="10"
                                               ref={(input => this.text = input)}></textarea>
                                 </form>
                                 <button className="btn" onClick={this.post} style={{marginTop: '20px'}}>Post</button>
@@ -146,9 +132,9 @@ class NewTopic extends Component {
     }
 }
 
-NewTopic.propTypes = {
+CreatePost.propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     user: PropTypes.object
 }
 
-export default NewTopic;
+export default CreatePost;

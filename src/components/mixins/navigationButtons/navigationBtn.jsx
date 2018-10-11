@@ -1,5 +1,5 @@
 import React from 'react';
-import './css/navigationBtn.css';
+import './navigationBtn.css';
 import PropTypes from 'prop-types';
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 
@@ -17,7 +17,7 @@ const NavigationBnt = (props) => {
         switch (props.page) {
             case 'home' :
                 if (props.isLoggedIn) {
-                    actionBnt = (<a href="/new" className="new-topic-button btn">New Discussion</a>);
+                    actionBnt = (<a href="/newPost" className="new-topic-button btn">New Discussion</a>);
                 } else {
                     actionBnt = (<a href="/login"
                                     onClick={() => FlashMessageHandler.create('Sorry! You have to login to start new Discussion!', 'error', false, '', window.location.href)}

@@ -11,7 +11,7 @@ import {auth} from 'firebase/index';
 import Home from './components/pages/home/Home.jsx';
 import NotFound from './components/pages/404/notfound.jsx';
 import Post from './components/pages/post/Post';
-import NewTopic from './components/pages/newtopic/NewTopic';
+import NewPost from './components/pages/CreatePost/CreatePost';
 import Login from './components/pages/login/Login';
 import Register from './components/pages/register/Register.jsx';
 import About from './components/pages/about/about.jsx';
@@ -35,21 +35,25 @@ const Root = (props) => {
                 <Header isLoggedIn={isLoggedIn} user={userMeta}/>
                 <div className="content">
                     <Match exactly pattern="/"
-                           render={() => userMeta ? <Home isLoggedIn={isLoggedIn} user={userMeta}/> :
+                           render={() => userMeta ?
+                               <Home isLoggedIn={isLoggedIn} user={userMeta}/> :
                                <Home isLoggedIn={isLoggedIn}/>}/>
                     <Match pattern="/post/:postId" render={(params) => userMeta ?
                         <Post params={params} isLoggedIn={isLoggedIn} user={userMeta}/> :
                         <Post params={params} isLoggedIn={isLoggedIn}/>}/>
                     <Match exactly pattern="/category/:category"
-                           render={(params) => userMeta ? <Home isLoggedIn={isLoggedIn} params={params}/> :
+                           render={(params) => userMeta ?
+                               <Home isLoggedIn={isLoggedIn} params={params}/> :
                                <Home isLoggedIn={isLoggedIn} params={params}/>}/>
                     <Match exactly pattern="/category/" render={() => <Redirect to="/"/>}/>
                     <Match exactly pattern="/login"
-                           render={() => userMeta ? <Login isLoggedIn={isLoggedIn} user={userMeta}/> :
+                           render={() => userMeta ?
+                               <Login isLoggedIn={isLoggedIn} user={userMeta}/> :
                                <Login isLoggedIn={isLoggedIn}/>}/>
-                    <Match exactly pattern="/new"
-                           render={() => userMeta ? <NewTopic isLoggedIn={isLoggedIn} user={userMeta}/> :
-                               <NewTopic isLoggedIn={isLoggedIn}/>}/>
+                    <Match exactly pattern="/newPost"
+                           render={() => userMeta ?
+                               <NewPost isLoggedIn={isLoggedIn} user={userMeta}/> :
+                               <NewPost isLoggedIn={isLoggedIn}/>}/>
                     <Match exactly pattern="/register" render={() => userMeta ? <Register isLoggedIn={isLoggedIn}/> :
                         <Register isLoggedIn={isLoggedIn}/>}/>
                     <Match exactly pattern="/about" component={About}/>
@@ -72,12 +76,10 @@ auth().onAuthStateChanged(user => {
             authorName: user.displayName,
             authorAvatar: user.photoURL,
             memberSince: '',
-        }
+        };
         ReactDOM.render(<Root userMeta={userMeta} isLoggedIn={true}/>, document.getElementById('root'));
     } else {
         ReactDOM.render(<Root isLoggedIn={false}/>, document.getElementById('root'));
     }
 });
 
-//Disable for now
-//registerServiceWorker();

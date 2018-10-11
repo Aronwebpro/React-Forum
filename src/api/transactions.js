@@ -1,4 +1,5 @@
 import {auth} from 'firebase';
+import db from '../firebase.js';
 
 const createUser = async ({email, password, avatar, nickname}) => {
     //Create New User in Firebase Auth and instantly login
@@ -25,8 +26,7 @@ const createUser = async ({email, password, avatar, nickname}) => {
     };
 
     //Save new user Object to Users Collection
-    //TODO: Update to Firestore
-    // await firebaseApp.database().ref('users').update(userObj);
+    db.collection('users').doc(user.uid).set(userObj);
 
     return {status: 'success', msg: 'User Created Successfully!'}
 };
@@ -35,18 +35,34 @@ const updateUser = async ({uid, data}) => {
 
 };
 
+const createPost = async (post) => {
+    //Update Categories Counter
+    const categoryDocRef = db.collection('categories').doc(post.categoryId);
+    const categoryDoc = await categoryDocRef.get();
+    const category = categoryDoc.data();
+    await categoryDocRef.update({count: category.count + 1});
+
+    //Create Post
+    const postDocRef = await db.collection('posts').add(post);
+    
+    return {postId: postDocRef.id}
+};
+
+
 const TransactionWrapper = async (func, {...args}) => {
     try {
-        return await func({...args});
+        const result = await func({...args});
+        return {result};
     } catch (e) {
         //console.log(e.message);
-        return {status: 'error', msg: e.message};
+        return {error: {msg: e.message}};
     }
 };
 
 const API = {
     createUser: TransactionWrapper.bind(this, createUser),
     updateUser: TransactionWrapper.bind(this, updateUser),
+    createPost: TransactionWrapper.bind(this, createPost),
 }
 
 export default API;

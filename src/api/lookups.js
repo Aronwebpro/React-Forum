@@ -55,8 +55,31 @@ const getSinglePost = async (postID) => {
     return { postID: postDoc.id, ...postDoc.data() };
 };
 
+/**
+ * Get User Data from FireBase DB
+ * @param userId -> String
+ * @returns Object of User's Profile
+ */
+const getUserProfile = async ({userId}) => {
+    const users = {};
+    if (users.userId) {
+        return users.userId;
+    } else {
+        const userDocRef = db.collection('users').doc(userId);
+        const userDoc = userDocRef.get();
+        if (!userDoc.exists) {
+            return undefined;
+        }
+        const user = {...userDoc.data()};
+        users[userId] = user;
+        return user;
+    }
+};
+
+
 export {
     getPosts,
     getPostByCategory,
     getSinglePost,
+    getUserProfile,
 }
