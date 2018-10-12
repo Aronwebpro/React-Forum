@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {signOut} from "../../../api/auth";
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
@@ -30,16 +31,16 @@ class Navigation extends Component {
         if (this.props.user) {
             log = (<a className="theme-color_txt log-out" onClick={this.logOut} style={{cursor: 'pointer'}}>Logout</a>);
         } else {
-            log = (<a className="theme-color_txt log-out" href="/login">Login</a>);
+            log = (<Link className="theme-color_txt log-out" to="/login">Login</Link>);
         }
         return (
             <div className="navigation-wrapper">
                 <nav
                     className={!this.props.user || (this.props.user && !this.props.user.authorAvatar) ? 'nav-logged-out' : undefined}>
-                    <a href="/">Home</a>
-                    <a href="/about">About</a>
+                    <Link to="/">Home</Link>
+                    <Link to="/about">About</Link>
                     {log}
-                    {!this.props.user && <a href="/register">Sign Up</a>}
+                    {!this.props.user && <Link to="/register">Sign Up</Link>}
                 </nav>
                 {this.props.user && this.props.user.authorAvatar && (
                     <div className="header-avatar"><a href="/user"><img src={this.props.user.authorAvatar} alt=""/></a>

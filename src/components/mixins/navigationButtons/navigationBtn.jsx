@@ -1,7 +1,12 @@
 import React from 'react';
-import './navigationBtn.css';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+
+//Api
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
+
+//Style
+import './navigationBtn.css';
 
 const NavigationBnt = (props) => {
     const {
@@ -17,35 +22,35 @@ const NavigationBnt = (props) => {
         switch (props.page) {
             case 'home' :
                 if (props.isLoggedIn) {
-                    actionBnt = (<a href="/newPost" className="new-topic-button btn">New Discussion</a>);
+                    actionBnt = (<Link to="/newPost" className="new-topic-button btn">New Discussion</Link>);
                 } else {
-                    actionBnt = (<a href="/login"
+                    actionBnt = (<Link to="/login"
                                     onClick={() => FlashMessageHandler.create('Sorry! You have to login to start new Discussion!', 'error', false, '', window.location.href)}
                                     className="new-topic-button btn"
                     >
                         New Discussion
-                    </a>);
+                    </Link>);
                 }
                 break;
             case 'post' :
                 if (isLoggedIn) {
-                    BackBtn = (<a href="/" className="back-button btn">Back</a>);
-                    actionBnt = (<a onClick={() => {
+                    BackBtn = (<Link to="/" className="back-button btn">Back</Link>);
+                    actionBnt = (<Link onClick={() => {
                         respond();
                         clearReply();
-                    }} className="new-comment-button btn">Reply</a>);
+                    }} className="new-comment-button btn">Reply</Link>);
                 } else {
-                    BackBtn = (<a href="/" className="back-button btn">Back</a>);
-                    actionBnt = (<a href="/login"
-                                    onClick={() => FlashMessageHandler.create('Sorry! You have to login to Reply!', 'error', false, '', window.location.href)}
+                    BackBtn = (<Link to="/" className="back-button btn">Back</Link>);
+                    actionBnt = (<Link to="/login"
+                                    onClick={() => FlashMessageHandler.create('Sorry! You have to login to Reply!', 'error', false, '', window.location.to)}
                                     className="new-comment-button btn"
                     >
                         Reply
-                    </a>);
+                    </Link>);
                 }
                 break;
             case 'new' :
-                BackBtn = (<a href="/" className="back-button btn">Back</a>);
+                BackBtn = (<Link to="/" className="back-button btn">Back</Link>);
                 actionBnt = (<a onClick={reset} className="new-comment-button btn">Reset</a>);
                 break;
             default :

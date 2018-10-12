@@ -2,7 +2,7 @@ import {auth} from 'firebase';
 import db from '../firebase.js';
 
 const createUser = async ({email, password, avatar, nickname}) => {
-    //Create New User in Firebase Auth and instantly login
+    //Create New User in Firebase Auth and instantly Login
     await auth().createUserWithEmailAndPassword(email, password);
 
     //Get current logged in user
@@ -44,7 +44,7 @@ const createPost = async (post) => {
 
     //Create Post
     const postDocRef = await db.collection('posts').add(post);
-    
+
     return {postId: postDocRef.id}
 };
 

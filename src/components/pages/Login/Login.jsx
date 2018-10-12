@@ -1,20 +1,56 @@
 import React, {Component} from 'react';
-import {Redirect} from 'react-router';
 import PropTypes from 'prop-types';
+import {Redirect, Link} from 'react-router-dom';
+
+//Api
+import {signIn} from '../../../api/auth';
+
+//Components
 import  {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
-import {signIn} from '../../../api/auth';
 
 //Styles
 import './css/login.css';
 
 
 class Login extends Component {
-    constructor() {
-        super();
-        this.login = this.login.bind(this);
-        this.displayFlashMessageIfItSet = this.displayFlashMessageIfItSet.bind(this);
-        this.state = {redirect: false, redirectUrl: '/', back: false, flashMessage: {}, displayFlashMessage: false}
+    state = {
+        redirect: false,
+        redirectUrl: '/',
+        back: false,
+        flashMessage: {},
+        displayFlashMessage: false,
+    }
+    render() {
+        //this.displayFlashMessage();
+        return this.state.redirect ? (
+            <Redirect to={this.state.redirectUrl}/>
+        ) : (
+            <div id="login">
+                <div className="container">
+                    {this.displayFlashMessageIfItSet()}
+                    {this.state.back && <Link to={this.state.back}>
+                        <button className="btn">Back</button>
+                    </Link>}
+                    <div className="login-wrapper">
+                        <h1>Login: </h1>
+                        <div className="form-wrapper">
+                            <form>
+                                <label htmlFor="email">Email:</label>
+                                <input type="text" name="email" ref={input => this.email = input}/>
+                                <label htmlFor="">Password:</label>
+                                <input type="password" name="password" ref={input => this.password = input}/>
+                                <button className="btn" type="submit" name="submit" onClick={this.login}>Login</button>
+                            </form>
+                            <div className="dont-have-acc">
+                                <p>Don't have an account?</p>
+                                <p><Link to="/register">Click to <span className="bold">Sign Up.</span></Link></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     async componentDidMount() {
@@ -36,7 +72,7 @@ class Login extends Component {
     }
 
     //Login User
-    async login(e) {
+    login = async (e) => {
         e.preventDefault();
         const {email, password} = this;
         try {
@@ -53,9 +89,9 @@ class Login extends Component {
             this.password.value = '';
             this.setState({displayFlashMessage: true, flashMessage: {msg: error.message, status: 'error'}});
         }
-    }
+    };
 
-    displayFlashMessageIfItSet() {
+    displayFlashMessageIfItSet = () => {
         if (this.state.displayFlashMessage) {
             setTimeout(() => {
                 this.setState({displayFlashMessage: false});
@@ -63,38 +99,6 @@ class Login extends Component {
             }, 2500);
             return (<FlashMessage {...this.state.flashMessage} />)
         }
-    }
-
-    render() {
-        //this.displayFlashMessage();
-        return this.state.redirect ? (
-            <Redirect to={this.state.redirectUrl}/>
-        ) : (
-            <div id="login">
-                <div className="container">
-                    {this.displayFlashMessageIfItSet()}
-                    {this.state.back && <a href={this.state.back}>
-                        <button className="btn">Back</button>
-                    </a>}
-                    <div className="login-wrapper">
-                        <h1>Login: </h1>
-                        <div className="form-wrapper">
-                            <form>
-                                <label htmlFor="email">Email:</label>
-                                <input type="text" name="email" ref={input => this.email = input}/>
-                                <label htmlFor="">Password:</label>
-                                <input type="password" name="password" ref={input => this.password = input}/>
-                                <button className="btn" type="submit" name="submit" onClick={this.login}>Login</button>
-                            </form>
-                            <div className="dont-have-acc">
-                                <p>Don't have an account?</p>
-                                <p><a href="/register">Click to <span className="bold">Sign Up.</span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
     }
 }
 

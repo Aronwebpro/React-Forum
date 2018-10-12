@@ -188,7 +188,7 @@ class Post extends Component {
             }
             if (!this.props.user) {
                 this.setState({redirect: true});
-                this.flash(true, 'Sorry! You have to login to Reply!', 'error', false, '', window.location.href);
+                this.flash(true, 'Sorry! You have to Login to Reply!', 'error', false, '', window.location.href);
                 window.scrollTo(0, 0);
                 return;
             }

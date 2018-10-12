@@ -1,7 +1,7 @@
 import db from '../firebase.js';
 
 /**
- * Get Post List from FireBase DB
+ * Get Post List from FireStore DB
  * @param limit -> Number[optional]
  * @returns {Promise} -> Array of Posts
  */
@@ -21,7 +21,7 @@ const getPosts = async (limit = 10) => {
 };
 
 /**
- * Get Post List by Category from FireBase DB
+ * Get Post List by Category from FireStore DB
  * @param categoryId -> String
  * @param limit -> Number
  * @returns {Promise} -> Array of Posts
@@ -42,7 +42,7 @@ const getPostByCategory = async (categoryId, limit = 10) => {
 };
 
 /**
- * Get Single Post from FireBase DB
+ * Get Single Post from FireStore DB
  * @param postID -> String
  * @returns {Promise} -> Object of Post
  */
@@ -56,7 +56,7 @@ const getSinglePost = async (postID) => {
 };
 
 /**
- * Get User Data from FireBase DB
+ * Get User Data from FireStore DB
  * @param userId -> String
  * @returns Object of User's Profile
  */

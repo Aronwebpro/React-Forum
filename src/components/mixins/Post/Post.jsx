@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import './post.css';
 
 //Utils
@@ -18,7 +19,7 @@ class Post extends Component {
     };
 
     render() {
-        const {userId, created, repliesCount, category, text, title, type, lastUserId, lastReply} = this.props;
+        const {userId, postId, created, repliesCount, category, text, title, type, lastUserId, lastReply} = this.props;
         const lastAvatar = '';
         const lastCommentAuthor = '';
 
@@ -28,7 +29,7 @@ class Post extends Component {
 
         return (
             <div className="topic">
-                <a href={`/post/`}>
+                <Link to={`/post/${postId}`}>
                     <div className="row-left">
                         <div className="topic-category">
                             <div className="category-img">
@@ -107,7 +108,7 @@ class Post extends Component {
                             </p>
                         </div>
                     </div>
-                </a>
+                </Link>
                 <div className="fl_c"/>
             </div>
         );
