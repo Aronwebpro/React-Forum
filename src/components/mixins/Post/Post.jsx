@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+//Styles
 import './post.css';
-
+//Api
+import {getUserProfile} from '../../../api/lookups';
 //Utils
 import {formatToDateString, formatToTimeString} from '../../../utils'
+//Components
+import Spinner from '../Spinner';
+import UserView from '../UserView';
+
 //images
 import defGm from './img/forum_img.png';
 import brdGm from './img/board-games.png';
@@ -12,20 +19,15 @@ import PcGm from './img/pc-games.png';
 import ConsGm from './img/console-games.png';
 import HandGm from './img/handheld-games.png';
 
-
-class Post extends Component {
+export default class Post extends Component {
     state = {
-        users: [{post: 0}]
+        user: '',
+        lastUser: '',
     };
 
     render() {
-        const {userId, postId, created, repliesCount, category, text, title, type, lastUserId, lastReply} = this.props;
-        const lastAvatar = '';
-        const lastCommentAuthor = '';
-
-        const authorAvatar = '';
-        const authorName = '';
-        const memberSince = '';
+        const {postId, created, repliesCount, category, text, title, type, lastReply} = this.props;
+        const {user, lastUser} = this.state;
 
         return (
             <div className="topic">
@@ -55,36 +57,15 @@ class Post extends Component {
                                         <th width="20%">Replies:</th>
                                         <th style={{fontWeight: '600', fontSize: '1.1em'}}>{repliesCount}</th>
                                         <th rowSpan="2" style={{borderLeft: '1px solid #ededde'}}>
-                                            <table>
-                                                <tbody>
-                                                <tr>
-                                                    <th style={{
-                                                        textAlign: 'right',
-                                                        fontWeight: '600',
-                                                        fontSize: '1.1em'
-                                                    }}>Most Recent
-                                                    </th>
-                                                    <th rowSpan="3" width="50px">
-                                                        <img src={lastAvatar} alt=""/>
-                                                    </th>
-                                                </tr>
-                                                <tr>
-                                                    <td style={{textAlign: 'right'}}><span
-                                                        className="theme-color_txt">By:</span> <span style={{
-                                                        textAlign: 'right',
-                                                        fontWeight: '600'
-                                                    }}>{lastCommentAuthor}</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style={{textAlign: 'right'}}>{`${formatToDateString(lastReply)} ${formatToTimeString(lastReply)}`}</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                            {lastUser ? (
+                                                <UserView {...user} {...{lastReply}} type={'last'}/>
+                                            ) : (
+                                                <Spinner/>
+                                            )}
                                         </th>
                                     </tr>
                                     </tbody>
                                 </table>
-
                             </div>
                             <div className="fl_c"></div>
                         </div>
@@ -96,24 +77,46 @@ class Post extends Component {
                         </div>
                     </div>
                     <div className="row-right">
-                        <div className="author-avatar">
-                            <img src={authorAvatar} alt=""/>
-                        </div>
-                        <div className="topic-meta theme-color_txt">
-                            <p>
-                                By: <span className="author">{authorName} </span>
-                            </p>
-                            <p>
-                                Member Since: <span className="date">{memberSince}</span>
-                            </p>
-                        </div>
+                        {user ? (
+                            <UserView {...user}/>
+                        ) : (
+                            <Spinner/>
+                        )}
                     </div>
+
                 </Link>
                 <div className="fl_c"/>
             </div>
         );
     }
 
+    componentDidMount() {
+        this.getUsersForPost();
+    }
+
+    componentWillUnmount() {
+        //Setup Flag to know is component Unmounted
+        this.isUnmounted = true;
+    }
+    //Fetch Post from DB
+    getUsersForPost = async () => {
+        const {userId, lastUserId} = this.props;
+        if (userId === lastUserId) {
+            const user = await getUserProfile({userId});
+            if (!this.isUnmounted) {
+                this.setState({user, lastUser: user});
+            }
+        } else {
+            const [user, lastUser] = await Promise.all([
+                getUserProfile({userId}),
+                getUserProfile({userId: lastUserId})
+            ]);
+            if (!this.isUnmounted) {
+                this.setState({user, lastUser});
+            }
+        }
+    };
+    //Return Image by Post Category
     categoryImg = (category) => {
         switch (category) {
             case 'Board Games':
@@ -132,4 +135,15 @@ class Post extends Component {
     }
 }
 
-export default Post;
+Post.propTypes = {
+    userId: PropTypes.string.isRequired,
+    lastUserId: PropTypes.string.isRequired,
+    postId: PropTypes.string.isRequired,
+    created: PropTypes.number.isRequired,
+    repliesCount: PropTypes.number.isRequired,
+    category: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    lastReply: PropTypes.number.isRequired,
+};

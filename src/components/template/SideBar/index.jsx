@@ -1,27 +1,29 @@
 import React, {Component} from 'react';
-import FilterCategory from '../filterCategory/filterCategory';
-import './css/filter.css';
-import NavigationBnt from '../navigationButtons/navigationBtn.jsx';
-import firebaseApp from '../../../firebase';
 import PropTypes from 'prop-types';
+//Styles
+import './side-bar.css';
+//Components
+import SidebarButtons from '../../mixins/SidebarButtons';
+import FilterCategory from '../../mixins/filterCategory/filterCategory';
 
-class SearchFilter extends Component {
+export default class SideBar extends Component {
     state = {
         categories: []
-    }
+    };
 
     render() {
         const {
-            isLoggedIn,
             respond,
             page,
-            clearReply
+            clearReply,
+            user,
         } = this.props;
+
         const {categories} = this.state;
         let all = 0;
         return (
             <div ref={(input) => this.categoryBar = input}>
-                <NavigationBnt page={page} isLoggedIn={isLoggedIn} respond={respond} clearReply={clearReply}/>
+                <SidebarButtons {...{page, user, respond, clearReply}}/>
                 <div className="search-filter">
                     <h5>Select a Category</h5>
                     <ul>
@@ -61,13 +63,11 @@ class SearchFilter extends Component {
     //     header.style.top = '94px';
     //   }
     // }
-};
+}
 
-PropTypes.SearchFilter = {
-    isLoggedIn: PropTypes.bool,
+PropTypes.SideBar = {
+    user: PropTypes.object,
     page: PropTypes.string,
     respond: PropTypes.func,
     clearReply: PropTypes.func,
-}
-
-export default SearchFilter;
+};

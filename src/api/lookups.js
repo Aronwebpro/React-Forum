@@ -1,4 +1,5 @@
 import db from '../firebase.js';
+import {getUsersFromStorage, saveUsersToStorage} from '../utils'
 
 /**
  * Get Post List from FireStore DB
@@ -31,7 +32,7 @@ const getPostByCategory = async (categoryId, limit = 10) => {
     const postsDoc = await postsRef.limit(limit).get();
     const posts = postsDoc.docs.map(postDoc => {
         return {postId: postDoc.id, ...postDoc.data()}
-    }).sort((a, b) => a.created > b.created ? 1 : -1 );
+    }).sort((a, b) => a.created > b.created ? 1 : -1);
 
     if (posts.length > limit) {
         const {postId} = posts.pop();
@@ -52,7 +53,7 @@ const getSinglePost = async (postID) => {
     if (!postDoc.exists) {
         return undefined;
     }
-    return { postID: postDoc.id, ...postDoc.data() };
+    return {postID: postDoc.id, ...postDoc.data()};
 };
 
 /**
@@ -60,19 +61,22 @@ const getSinglePost = async (postID) => {
  * @param userId -> String
  * @returns Object of User's Profile
  */
+
 const getUserProfile = async ({userId}) => {
-    const users = {};
-    if (users.userId) {
-        return users.userId;
+    const users = getUsersFromStorage();
+    if (users[userId]) {
+        return users[userId];
     } else {
         const userDocRef = db.collection('users').doc(userId);
-        const userDoc = userDocRef.get();
+        const userDoc = await userDocRef.get();
         if (!userDoc.exists) {
             return undefined;
+        } else {
+            const user = userDoc.data()[userId];
+            users[userId] = user;
+            saveUsersToStorage(users);
+            return user;
         }
-        const user = {...userDoc.data()};
-        users[userId] = user;
-        return user;
     }
 };
 

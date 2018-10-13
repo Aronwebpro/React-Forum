@@ -3,14 +3,11 @@ import {Redirect} from 'react-router';
 import PropTypes from 'prop-types';
 
 //Components
-import SearchFilter from '../../mixins/searchFilter/SearchFilter';
+import SideBar from '../../template/SideBar/';
 import CommentRow from '../../mixins/commentrow/CommentRow';
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 import {getSinglePost} from '../../../api/lookups';
-
-//Database
-import firebaseApp from '../../../firebase';
 
 class Post extends Component {
     constructor(props) {
@@ -83,7 +80,8 @@ class Post extends Component {
         //             this.setState({comments: snapshot.val()});
         //         }
         //     });
-    }
+    };
+
     postComment = () => {
         // const time = Date.now();
         // const input = {
@@ -235,7 +233,7 @@ class Post extends Component {
                         <div className="container">
                             {this.displayFlashMessageIfItSet()}
                             <div className="left">
-                                <SearchFilter
+                                <SideBar
                                     page="post"
                                     isLoggedIn={isLoggedIn}
                                     respond={this.respond}

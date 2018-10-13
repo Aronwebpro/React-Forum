@@ -17,7 +17,31 @@ const formatToTimeString = (unixtime) => {
     return `${date.getHours()} : ${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
 };
 
+const getUsersFromStorage = (id) => {
+    const local = sessionStorage.getItem(id);
+    if (local) {
+        try {
+            return JSON.parse(local);
+        }catch(e) {
+            console.log(e);
+            return {};
+        }
+    } else {
+        return {};
+    }
+};
+
+const saveUsersToStorage = (data) => {
+      try {
+          sessionStorage.setItem('postsUsers', JSON.stringify(data));
+      }catch (e) {
+          console.log(e);
+      }
+};
+
 export {
     formatToDateString,
-    formatToTimeString
+    formatToTimeString,
+    getUsersFromStorage,
+    saveUsersToStorage,
 }

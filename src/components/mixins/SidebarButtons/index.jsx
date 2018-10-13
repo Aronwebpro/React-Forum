@@ -6,22 +6,22 @@ import {Link} from 'react-router-dom';
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 
 //Style
-import './navigationBtn.css';
+import './sidebarButtons.css';
 
-const NavigationBnt = (props) => {
+const SidebarButtons = (props) => {
     const {
         respond,
         clearReply,
         reset,
         isLoggedIn
     } = props;
-
     let BackBtn;
     let actionBnt;
+
     if (props.hasOwnProperty('page')) {
         switch (props.page) {
-            case 'home' :
-                if (props.isLoggedIn) {
+            case 'Home' :
+                if (!props.isLoggedIn) {
                     actionBnt = (<Link to="/newPost" className="new-topic-button btn">New Discussion</Link>);
                 } else {
                     actionBnt = (<Link to="/login"
@@ -65,11 +65,12 @@ const NavigationBnt = (props) => {
     )
 };
 
-PropTypes.NavigationBnt = {
+PropTypes.SidebarButtons = {
     page: PropTypes.string,
     respond: PropTypes.func,
     clearReply: PropTypes.func,
     reset: PropTypes.func,
     isLoggedIn: PropTypes.bool
 }
-export default NavigationBnt;
+
+export default SidebarButtons;

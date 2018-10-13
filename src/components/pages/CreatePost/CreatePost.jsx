@@ -6,7 +6,7 @@ import {Redirect} from 'react-router';
 import API from '../../../api/transactions';
 
 //Components
-import SearchFilter from '../../mixins/searchFilter/SearchFilter';
+import SideBar from '../../template/SideBar/';
 
 //Flash Message Handlers
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
@@ -83,7 +83,7 @@ class CreatePost extends Component {
                     <div className="container">
                         {this.displayFlashMessageIfItSet()}
                         <div className="left">
-                            <SearchFilter page="new" isLoggedIn={isLoggedIn}/>
+                            <SideBar page="new" isLoggedIn={isLoggedIn}/>
                         </div>
                         <div className="right post-container">
                             <div className="post-title forum-header">

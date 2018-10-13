@@ -1,6 +1,6 @@
 .topic {
     background-color: #fff;
-    min-height: 80px;
+    height: 140px;
     margin-top: 20px;
 }
 
@@ -52,7 +52,6 @@
     width: 70%;
     float: left;
     border-right: 1px solid #ededde;
-    height: 140px;
 }
 
 .row-middle .topic-title-wrapper {
@@ -90,9 +89,12 @@
 
 .row-right {
     width: 20%;
+    height: 100%;
     float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    /*border-left: 1px solid #ededed;*/
     padding: 10px 0;
 }
 

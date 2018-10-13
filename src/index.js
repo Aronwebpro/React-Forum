@@ -12,8 +12,8 @@ import PropTypes from 'prop-types';
 import {auth} from 'firebase/index';
 
 
-//Page Components
-import Home from './components/pages/home/Home.jsx';
+//PageLayout Components
+import Home from './components/pages/Home/Home.jsx';
 import NotFound from './components/pages/404/notfound.jsx';
 import Post from './components/pages/post/Post';
 import NewPost from './components/pages/CreatePost/CreatePost';
@@ -62,9 +62,15 @@ PropTypes.Root = {
     isLoggedIn: PropTypes.bool
 };
 
-auth().onAuthStateChanged(user => {
-    if (user) {
-        ReactDOM.render(<Root {...{user}} isLoggedIn={true}/>, document.getElementById('root'));
+auth().onAuthStateChanged(userObj => {
+    if (userObj) {
+
+        const user = {
+            uid: userObj.uid,
+            authorName: userObj.displayName,
+            authorAvatar: userObj.photoURL,
+        };
+        ReactDOM.render(<Root {...{user}} />, document.getElementById('root'));
     } else {
         ReactDOM.render(<Root isLoggedIn={false}/>, document.getElementById('root'));
     }

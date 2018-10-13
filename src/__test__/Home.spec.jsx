@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Home from '../components/pages/home/Home.jsx';
+import Home from '../components/pages/Home/Home.jsx';
 
 
 

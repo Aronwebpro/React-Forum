@@ -75,7 +75,7 @@ class Register extends Component {
 	render() {
 		//Redirect From the page
 		if (this.state.redirect === true || this.props.user ) return ( <Redirect to="/" />)
-		//TODO: Before redirect to home page show spinner image for user
+		//TODO: Before redirect to Home page show spinner image for user
 		//let spinner;	
 		return (
 			<div className="register-page">

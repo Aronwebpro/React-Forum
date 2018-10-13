@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import SearchFilter from '../../mixins/searchFilter/SearchFilter';
+import SideBar from '../../template/SideBar';
 import Post from '../../mixins/Post/Post';
 import {Redirect} from 'react-router';
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 import PropTypes from 'prop-types';
-import {getPosts, getPostByCategory, getSinglePost} from '../../../api/lookups.js';
+import {getPosts, getPostByCategory} from '../../../api/lookups.js';
 
-class Home extends Component {
+export default class Home extends Component {
     state = {
         posts: [],
         redirect: false,
@@ -19,14 +19,14 @@ class Home extends Component {
 
     render() {
         const {posts} = this.state;
-        const {isLoggedIn} = this.props;
+        const {user} = this.props;
         if (this.state.redirect) return <Redirect to="/"/>
         return (
             <div className="container">
                 {this.displayFlashMessageIfItSet()}
                 <div id="home">
                     <div className="left">
-                        <SearchFilter page="home" isLoggedIn={isLoggedIn}/>
+                        <SideBar page="home" {...{user}}/>
                     </div>
                     <div className="right">
                         <div className="forum">
@@ -107,8 +107,8 @@ class Home extends Component {
     };
 
     convertDate = (unixTime, type) => {
-        var date = new Date(unixTime);
-        var returnString;
+        const date = new Date(unixTime);
+        let returnString;
         if (type === 'date') {
             returnString = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();
         } else if (type === 'time') {
@@ -135,8 +135,10 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-    isLoggedIn: PropTypes.bool.isRequired,
+    user: PropTypes.shape({
+        uid: PropTypes.string.isRequired,
+        authorName: PropTypes.string.isRequired,
+        authorAvatar: PropTypes.string.isRequired,
+    }.isRequired),
     params: PropTypes.object
-}
-
-export default Home;
+};
