@@ -57,11 +57,7 @@ export default class Post extends Component {
                                         <th width="20%">Replies:</th>
                                         <th style={{fontWeight: '600', fontSize: '1.1em'}}>{repliesCount}</th>
                                         <th rowSpan="2" style={{borderLeft: '1px solid #ededde'}}>
-                                            {lastUser ? (
-                                                <UserView {...user} {...{lastReply}} type={'last'}/>
-                                            ) : (
-                                                <Spinner/>
-                                            )}
+                                            <UserView {...user} {...{lastReply}} type={'last'}/>
                                         </th>
                                     </tr>
                                     </tbody>
@@ -77,11 +73,7 @@ export default class Post extends Component {
                         </div>
                     </div>
                     <div className="row-right">
-                        {user ? (
-                            <UserView {...user}/>
-                        ) : (
-                            <Spinner/>
-                        )}
+                        <UserView {...user}/>
                     </div>
 
                 </Link>
@@ -98,25 +90,25 @@ export default class Post extends Component {
         //Setup Flag to know is component Unmounted
         this.isUnmounted = true;
     }
-    //Fetch Post from DB
+    //Fetch PostDetailsPage from DB
     getUsersForPost = async () => {
         const {userId, lastUserId} = this.props;
         if (userId === lastUserId) {
-            const user = await getUserProfile({userId});
+            const user = await getUserProfile(userId);
             if (!this.isUnmounted) {
                 this.setState({user, lastUser: user});
             }
         } else {
             const [user, lastUser] = await Promise.all([
-                getUserProfile({userId}),
-                getUserProfile({userId: lastUserId})
+                getUserProfile(userId),
+                getUserProfile(lastUserId)
             ]);
             if (!this.isUnmounted) {
                 this.setState({user, lastUser});
             }
         }
     };
-    //Return Image by Post Category
+    //Return Image by PostDetailsPage Category
     categoryImg = (category) => {
         switch (category) {
             case 'Board Games':

@@ -2974,7 +2974,7 @@ hpack.js@^2.1.6:
 
 html-comment-regex@^1.1.0:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/html-comment-regex/-/html-comment-regex-1.1.1.tgz#668b93776eaae55ebde8f3ad464b307a4963625e"
+  resolved "https://registry.yarnpkg.com/html-Comment-regex/-/html-Comment-regex-1.1.1.tgz#668b93776eaae55ebde8f3ad464b307a4963625e"
 
 html-encoding-sniffer@^1.0.1:
   version "1.0.2"
@@ -3370,7 +3370,7 @@ is-svg@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-svg/-/is-svg-2.1.0.tgz#cf61090da0d9efbcab8722deba6f032208dbb0e9"
   dependencies:
-    html-comment-regex "^1.1.0"
+    html-Comment-regex "^1.1.0"
 
 is-symbol@^1.0.1:
   version "1.0.1"

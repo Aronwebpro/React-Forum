@@ -1,13 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+//Utils
 import {formatToDateString, formatToTimeString} from "../../../utils";
-
+//Components
+import Spinner from '../Spinner';
 
 
 export default class UserView extends React.PureComponent {
     render() {
         const {authorAvatar, authorName, memberSince, type, lastReply} = this.props;
         const date = formatToDateString(memberSince);
+        if (!authorName || !authorAvatar) {
+            return (
+                <Spinner/>
+            )
+        }
         return type === 'last' ? (
             <table>
                 <tbody>
@@ -53,8 +60,8 @@ export default class UserView extends React.PureComponent {
 }
 
 UserView.propTypes = {
-    authorAvatar: PropTypes.string.isRequired,
-    authorName: PropTypes.string.isRequired,
+    authorAvatar: PropTypes.string,
+    authorName: PropTypes.string,
     memberSince: PropTypes.number,
     type: PropTypes.string,
     lastReply: PropTypes.number,

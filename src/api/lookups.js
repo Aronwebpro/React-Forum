@@ -2,7 +2,7 @@ import db from '../firebase.js';
 import {getUsersFromStorage, saveUsersToStorage} from '../utils'
 
 /**
- * Get Post List from FireStore DB
+ * Get PostDetailsPage List from FireStore DB
  * @param limit -> Number[optional]
  * @returns {Promise} -> Array of Posts
  */
@@ -22,7 +22,7 @@ const getPosts = async (limit = 10) => {
 };
 
 /**
- * Get Post List by Category from FireStore DB
+ * Get PostDetailsPage List by Category from FireStore DB
  * @param categoryId -> String
  * @param limit -> Number
  * @returns {Promise} -> Array of Posts
@@ -43,9 +43,9 @@ const getPostByCategory = async (categoryId, limit = 10) => {
 };
 
 /**
- * Get Single Post from FireStore DB
+ * Get Single PostDetailsPage from FireStore DB
  * @param postID -> String
- * @returns {Promise} -> Object of Post
+ * @returns {Promise} -> Object of PostDetailsPage
  */
 const getSinglePost = async (postID) => {
     const postDocRef = db.collection('posts').doc(postID);
@@ -53,7 +53,7 @@ const getSinglePost = async (postID) => {
     if (!postDoc.exists) {
         return undefined;
     }
-    return {postID: postDoc.id, ...postDoc.data()};
+    return {postId: postDoc.id, ...postDoc.data()};
 };
 
 /**
@@ -62,7 +62,7 @@ const getSinglePost = async (postID) => {
  * @returns Object of User's Profile
  */
 
-const getUserProfile = async ({userId}) => {
+const getUserProfile = async (userId) => {
     const users = getUsersFromStorage();
     if (users[userId]) {
         return users[userId];
@@ -79,11 +79,44 @@ const getUserProfile = async ({userId}) => {
         }
     }
 };
+/**
+ * Get All Comments Belonging to Post
+ * @param postID
+ * @returns Array -> of Objects
+ */
+const getCommentsBelongingToPost = async (postID) => {
+    const commentsDocRef = db.collection('posts').doc(postID).collection('comments');
+    const commentsDoc = await commentsDocRef.orderBy('created', 'desc').get();
+    const comments = await commentsDoc.docs.map(commentDoc => {
+        return {commentId: commentsDoc.id, ...commentDoc.data()}
+    });
+    const commentWithUser = await Promise.all(comments.map(async (comment) => {
+        comment.user = comment.userId && await getUserProfile(comment.userId);
+        return comment;
+    }));
+    return commentWithUser;//.sort((a, b) => a.created > b.created ? 1 : -1);
+};
 
+//TODO: Api
+const getPostDataForPostPage = async (postId) => {
+    const post = await getSinglePost(postId);
+    if (post && post.userId) {
+        const postUser = await getUserProfile(post.userId);
+        if (postUser) {
+            return {postUser, post}
+        } else {
+            return {}
+        }
+    } else {
+        return {}
+    }
+};
 
 export {
     getPosts,
     getPostByCategory,
     getSinglePost,
     getUserProfile,
+    getPostDataForPostPage,
+    getCommentsBelongingToPost,
 }

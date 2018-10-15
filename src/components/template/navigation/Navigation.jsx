@@ -1,20 +1,34 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+//Api
 import {signOut} from "../../../api/auth";
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 
-class Navigation extends Component {
-    constructor() {
-        super();
-        this.logOut = this.logOut.bind(this);
+class Navigation extends React.PureComponent {
+    render() {
+        const {user} = this.props;
+        return (
+            <div className="navigation-wrapper">
+                <nav
+                    className={!this.props.user || (this.props.user && !this.props.user.authorAvatar) ? 'nav-logged-out' : undefined}>
+                    <Link to="/">Home</Link>
+                    <Link to="/about">About</Link>
+                    {user ? (
+                        <a className="theme-color_txt log-out" onClick={this.logOut} style={{cursor: 'pointer'}}>Logout</a>
+                    ) : (
+                        <Link to="/login" className="theme-color_txt log-out">Login</Link>
+                    )}
+                    {!user && <Link to="/register">Sign Up</Link>}
+                </nav>
+                {user && user.authorAvatar && (
+                    <div className="header-avatar"><Link to="/user"><img src={user.authorAvatar} alt=""/></Link>
+                    </div>)}
+            </div>
+        );
     }
 
-    componentDidMount() {
-        if (this.props.user && !this.props.user.authorAvatar) this.setState({});
-    }
-
-    async logOut() {
+    logOut = async () => {
         try {
             await signOut();
             let msg = 'GoodBye! You\'ve logged out successfully!';
@@ -24,30 +38,6 @@ class Navigation extends Component {
             FlashMessageHandler.create(msg, 'error');
         }
         window.scrollTo(0, 0);
-    }
-
-    render() {
-        let log;
-        if (this.props.user) {
-            log = (<a className="theme-color_txt log-out" onClick={this.logOut} style={{cursor: 'pointer'}}>Logout</a>);
-        } else {
-            log = (<Link className="theme-color_txt log-out" to="/login">Login</Link>);
-        }
-        return (
-            <div className="navigation-wrapper">
-                <nav
-                    className={!this.props.user || (this.props.user && !this.props.user.authorAvatar) ? 'nav-logged-out' : undefined}>
-                    <Link to="/">Home</Link>
-                    <Link to="/about">About</Link>
-                    {log}
-                    {!this.props.user && <Link to="/register">Sign Up</Link>}
-                </nav>
-                {this.props.user && this.props.user.authorAvatar && (
-                    <div className="header-avatar"><a href="/user"><img src={this.props.user.authorAvatar} alt=""/></a>
-                    </div>)}
-            </div>
-
-        );
     }
 };
 

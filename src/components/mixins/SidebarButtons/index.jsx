@@ -8,69 +8,83 @@ import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 //Style
 import './sidebarButtons.css';
 
-const SidebarButtons = (props) => {
-    const {
-        respond,
-        clearReply,
-        reset,
-        isLoggedIn
-    } = props;
-    let BackBtn;
-    let actionBnt;
-
-    if (props.hasOwnProperty('page')) {
-        switch (props.page) {
-            case 'Home' :
-                if (!props.isLoggedIn) {
-                    actionBnt = (<Link to="/newPost" className="new-topic-button btn">New Discussion</Link>);
-                } else {
-                    actionBnt = (<Link to="/login"
-                                    onClick={() => FlashMessageHandler.create('Sorry! You have to login to start new Discussion!', 'error', false, '', window.location.href)}
-                                    className="new-topic-button btn"
-                    >
-                        New Discussion
-                    </Link>);
-                }
-                break;
-            case 'post' :
-                if (isLoggedIn) {
-                    BackBtn = (<Link to="/" className="back-button btn">Back</Link>);
-                    actionBnt = (<Link onClick={() => {
-                        respond();
-                        clearReply();
-                    }} className="new-comment-button btn">Reply</Link>);
-                } else {
-                    BackBtn = (<Link to="/" className="back-button btn">Back</Link>);
-                    actionBnt = (<Link to="/login"
-                                    onClick={() => FlashMessageHandler.create('Sorry! You have to login to Reply!', 'error', false, '', window.location.to)}
-                                    className="new-comment-button btn"
-                    >
-                        Reply
-                    </Link>);
-                }
-                break;
-            case 'new' :
-                BackBtn = (<Link to="/" className="back-button btn">Back</Link>);
-                actionBnt = (<a onClick={reset} className="new-comment-button btn">Reset</a>);
-                break;
-            default :
-                break;
-        }
+export default class SidebarButtons extends React.PureComponent {
+    render() {
+        return (
+            <div className="navigation-buttons">
+                {this.sidebarButtons()}
+            </div>
+        )
     }
 
-    return (
-        <div className="navigation-buttons">
-            {BackBtn} {actionBnt}
-        </div>
-    )
+    sidebarButtons = () => {
+        const {
+            reset,
+            user,
+            page,
+        } = this.props;
+        switch (page) {
+            case 'home' :
+                if (user) {
+                    return (<Link to="/newPost" className="new-topic-button btn">New Discussion</Link>);
+                } else {
+                    return (
+                        <Link to="/login" onClick={this.handleNewDiscussionWithouUser} className="new-topic-button btn">
+                            New Discussion
+                        </Link>
+                    );
+                }
+            case 'post' :
+                if (user) {
+                    return (
+                        <div>
+                            <Link to="/" className="back-button btn">Back</Link>
+                            <a onClick={this.handleReplyWithUser} className="new-comment-button btn">
+                                Write Comment
+                            </a>
+                        </div>
+                    )
+                } else {
+                    return (
+                        <div>
+                            <Link to="/" className="back-button btn">Back</Link>
+                            <Link to="/login" onClick={this.handleReplyWithoutUser} className="new-comment-button btn">
+                                Write Comment
+                            </Link>
+                        </div>
+                    )
+                }
+            case 'new' :
+                return (
+                    <div className="navigation-buttons">
+                        <Link to="/" className="back-button btn">Back</Link>
+                        <a onClick={reset} className="new-comment-button btn">Reset</a>
+                    </div>
+                );
+            default :
+                return (
+                    <div/>
+                )
+        }
+    };
+
+    handleReplyWithUser = () => {
+        const {respond, clearReply} = this.props;
+        respond();
+        clearReply();
+    };
+    handleReplyWithoutUser = () => {
+        FlashMessageHandler.create('Sorry! You have to login to Reply!', 'error', false, '', window.location.to)
+    };
+    handleNewDiscussionWithouUser = () => {
+        FlashMessageHandler.create('Sorry! You have to login If you want to start new Discussion!', 'error', false, '', '/')
+    };
 };
 
 PropTypes.SidebarButtons = {
+    user: PropTypes.object,
     page: PropTypes.string,
     respond: PropTypes.func,
     clearReply: PropTypes.func,
     reset: PropTypes.func,
-    isLoggedIn: PropTypes.bool
-}
-
-export default SidebarButtons;
+};

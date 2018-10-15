@@ -7,8 +7,9 @@ import Navigation from '../navigation/Navigation';
 import './css/header.css';
 
 
-class Header extends PureComponent {
+export default class Header extends PureComponent {
     render() {
+        const {user} = this.props;
         return (
             <header id="header" ref={input => this.header = input}>
                 <div className='app-header'>
@@ -19,7 +20,7 @@ class Header extends PureComponent {
                         <h1 className='app-title'>Games <span className="theme-color_txt">Forum</span></h1>
                     </Link>
                 </div>
-                <Navigation user={this.props.user}/>
+                <Navigation {...{user}}/>
             </header>
         );
     }
@@ -44,6 +45,5 @@ class Header extends PureComponent {
 }
 
 PropTypes.Header = {
-    user: PropTypes.Object
-}
-export default Header;
+    user: PropTypes.object
+};

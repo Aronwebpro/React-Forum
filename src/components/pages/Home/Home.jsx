@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import SideBar from '../../template/SideBar';
 import Post from '../../mixins/Post/Post';
-import {Redirect} from 'react-router';
+import {Redirect} from 'react-router-dom';
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 import PropTypes from 'prop-types';

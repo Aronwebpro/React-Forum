@@ -3,8 +3,8 @@
  * @param unixTime
  * @returns String
  */
-const formatToDateString = (unixtime) => {
-    const date = new Date(unixtime);
+const formatToDateString = (unixTime) => {
+    const date = new Date(unixTime);
     return `${date.getMonth() + 1}/${date.getDate()} ${date.getFullYear()}`;
 };
 /**
@@ -12,9 +12,18 @@ const formatToDateString = (unixtime) => {
  * @param unixTime
  * @returns String
  */
-const formatToTimeString = (unixtime) => {
-    const date = new Date(unixtime);
+const formatToTimeString = (unixTime) => {
+    const date = new Date(unixTime);
     return `${date.getHours()} : ${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
+};
+/**
+ * Function to Convert Unix Time to Readable Date and Time String
+ * @param unixTime
+ * @returns String
+ */
+const formatToDateAndTimeString = (unixTime) => {
+    const date = new Date(unixTime);
+    return `${date.getMonth() + 1}/${date.getDate()} ${date.getFullYear()} ${date.getHours()} : ${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
 };
 
 const getUsersFromStorage = (id) => {
@@ -44,4 +53,5 @@ export {
     formatToTimeString,
     getUsersFromStorage,
     saveUsersToStorage,
+    formatToDateAndTimeString,
 }

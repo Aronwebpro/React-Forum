@@ -1,7 +1,7 @@
 .page-spinner {
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
     flex: 1;
 }
 .page-spinner-wrapper {
@@ -10,7 +10,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
-.page-spinner-img {
-    padding: 2px,
+
+#page-spinner-img {
+    padding: 2px;
+    width: 100%;
 }

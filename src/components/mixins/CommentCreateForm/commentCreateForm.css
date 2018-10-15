@@ -1,0 +1,9 @@
+.quote-authorName {
+    font-style: italic;
+}
+
+.post-loader {
+    display: inline-block;
+    margin-left: 10px;
+    transform: translateY(10px);
+}
