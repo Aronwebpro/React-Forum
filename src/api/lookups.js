@@ -2,7 +2,7 @@ import db from '../firebase.js';
 import {getUsersFromStorage, saveUsersToStorage} from '../utils'
 
 /**
- * Get PostDetailsPage List from FireStore DB
+ * Get PostDetail List from FireStore DB
  * @param limit -> Number[optional]
  * @returns {Promise} -> Array of Posts
  */
@@ -22,7 +22,7 @@ const getPosts = async (limit = 10) => {
 };
 
 /**
- * Get PostDetailsPage List by Category from FireStore DB
+ * Get PostDetail List by Category from FireStore DB
  * @param categoryId -> String
  * @param limit -> Number
  * @returns {Promise} -> Array of Posts
@@ -43,9 +43,9 @@ const getPostByCategory = async (categoryId, limit = 10) => {
 };
 
 /**
- * Get Single PostDetailsPage from FireStore DB
+ * Get Single PostDetail from FireStore DB
  * @param postID -> String
- * @returns {Promise} -> Object of PostDetailsPage
+ * @returns {Promise} -> Object of PostDetail
  */
 const getSinglePost = async (postID) => {
     const postDocRef = db.collection('posts').doc(postID);

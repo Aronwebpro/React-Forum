@@ -60,7 +60,7 @@ const updateUser = async ({uid, data}) => {
 
 };
 /**
- * Create PostDetailsPage in FireStore DB
+ * Create PostDetail in FireStore DB
  * @param post -> Object
  * @returns Object -> shapeOf({postId: String})
  */
@@ -71,7 +71,7 @@ const createPost = async ({post}) => {
     const category = categoryDoc.data();
     await categoryDocRef.update({count: category.count + 1});
 
-    //Create PostDetailsPage
+    //Create PostDetail
     const postDocRef = await db.collection('posts').add(post);
 
     return {postId: postDocRef.id}

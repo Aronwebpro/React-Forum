@@ -49,18 +49,18 @@ export default class SideBar extends Component {
 
     }
 
-    //TODO: Move navigation bar up on scroll down
+    //TODO: Move Navigation bar up on scroll down
     // componentDidMount() {
     // 	window.addEventListener('scroll', this.moveBar);
     // }
     // moveBar() {
-    // const header = this.categoryBar;
-    // if (!header) return;
+    // const Header = this.categoryBar;
+    // if (!Header) return;
     // const distanceY = window.pageYOffset;
     //   if(distanceY > 101) {
-    //     header.style.top = '60px';
+    //     Header.style.top = '60px';
     //   } else {
-    //     header.style.top = '94px';
+    //     Header.style.top = '94px';
     //   }
     // }
 }

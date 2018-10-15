@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 //Components
-import Navigation from '../navigation/Navigation';
+import Navigation from '../Navigation/Navigation';
 //Styles
 import './css/header.css';
 
@@ -29,7 +29,7 @@ export default class Header extends PureComponent {
         window.addEventListener('scroll', this.shrinkHeader);
     }
 
-    //shrink the header when scroll down
+    //shrink the Header when scroll down
     shrinkHeader() {
         const header = this.header;
         if (!header) return;

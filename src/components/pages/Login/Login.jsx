@@ -59,7 +59,7 @@ class Login extends Component {
         if (flashMessage) {
             const {msg, status, redirect, redirectUrl, back} = flashMessage;
             if (msg) {
-                this.setState({displayFlashMessage: true, flashMessage: {msg, status}});
+                this.setState({displayFlashMessage: true, flashMessage: {msg, status}, back});
             }
             if (redirect === true) {
                 FlashMessageHandler.update({redirect: false, redirectUrl: ''});
@@ -96,14 +96,14 @@ class Login extends Component {
             setTimeout(() => {
                 this.setState({displayFlashMessage: false});
                 FlashMessageHandler.reset();
-            }, 2500);
+            }, 3500);
             return (<FlashMessage {...this.state.flashMessage} />)
         }
     }
 }
 
 Login.propTypes = {
-    isLoggedIn: PropTypes.bool.isRequired,
+
 }
 
 export default Login;

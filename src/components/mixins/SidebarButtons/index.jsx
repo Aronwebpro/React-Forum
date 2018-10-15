@@ -23,6 +23,7 @@ export default class SidebarButtons extends React.PureComponent {
             user,
             page,
         } = this.props;
+        console.log(this.props);
         switch (page) {
             case 'home' :
                 if (user) {
@@ -74,7 +75,7 @@ export default class SidebarButtons extends React.PureComponent {
         clearReply();
     };
     handleReplyWithoutUser = () => {
-        FlashMessageHandler.create('Sorry! You have to login to Reply!', 'error', false, '', window.location.to)
+        FlashMessageHandler.create('Sorry! If you want to write a comment, You have to Login!', 'error', false, '', window.location.to)
     };
     handleNewDiscussionWithouUser = () => {
         FlashMessageHandler.create('Sorry! You have to login If you want to start new Discussion!', 'error', false, '', '/')

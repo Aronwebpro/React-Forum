@@ -330,7 +330,7 @@ babel-core@6.26.0, babel-core@^6.0.0, babel-core@^6.26.0:
     babel-generator "^6.26.0"
     babel-helpers "^6.24.1"
     babel-messages "^6.23.0"
-    babel-register "^6.26.0"
+    babel-Register "^6.26.0"
     babel-runtime "^6.26.0"
     babel-template "^6.26.0"
     babel-traverse "^6.26.0"
@@ -895,7 +895,7 @@ babel-preset-react@6.24.1:
 
 babel-register@^6.26.0:
   version "6.26.0"
-  resolved "https://registry.yarnpkg.com/babel-register/-/babel-register-6.26.0.tgz#6ed021173e2fcb486d7acb45c6009a856f647071"
+  resolved "https://registry.yarnpkg.com/babel-Register/-/babel-Register-6.26.0.tgz#6ed021173e2fcb486d7acb45c6009a856f647071"
   dependencies:
     babel-core "^6.26.0"
     babel-runtime "^6.26.0"

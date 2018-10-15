@@ -90,7 +90,7 @@ export default class Post extends Component {
         //Setup Flag to know is component Unmounted
         this.isUnmounted = true;
     }
-    //Fetch PostDetailsPage from DB
+    //Fetch PostDetail from DB
     getUsersForPost = async () => {
         const {userId, lastUserId} = this.props;
         if (userId === lastUserId) {
@@ -108,7 +108,7 @@ export default class Post extends Component {
             }
         }
     };
-    //Return Image by PostDetailsPage Category
+    //Return Image by PostDetail Category
     categoryImg = (category) => {
         switch (category) {
             case 'Board Games':

@@ -97,7 +97,7 @@ export default class Home extends Component {
         }
     };
 
-    //Change header arrow position up or down
+    //Change Header arrow position up or down
     changeBtn = (position) => {
         if (position === 'down') {
             this.arrow.style.transform = 'rotateZ(-90deg) translate(7%, 40%)';

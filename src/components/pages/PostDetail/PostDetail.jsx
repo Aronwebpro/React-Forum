@@ -52,7 +52,7 @@ class CommentCreateFormView extends React.PureComponent {
         }
 }
 
-export default class PostDetailsPage extends React.Component {
+export default class PostDetail extends React.Component {
     state = {
         post: {},
         comments: [],
@@ -79,7 +79,7 @@ export default class PostDetailsPage extends React.Component {
         if (this.state.flash) {
             setTimeout(() => {
                 this.setState({flash: false});
-            }, 2500);
+            }, 3500);
         }
         const {user} = this.props;
         const {post, comments, postUser, clickedComment, replyStyle, replyStyleInit, quoteText, quoteAuthorName, loading, showCreateCommentView} = this.state;
@@ -242,8 +242,16 @@ export default class PostDetailsPage extends React.Component {
 
     addQuoteToComment = ({clickedComment, text, authorName} ) => {
         if (!this.props.user) {
+            const backButtonUrl = this.props.params.location.pathname;
+            FlashMessageHandler.create(
+                'Sorry! If you want to write a comment, You have to Login!',
+                'error',
+                false,
+                '/',
+                backButtonUrl
+            );
+
             this.setState({redirect: true});
-            this.flash(true, 'Sorry! You have to Login to Reply!', 'error', false, '', window.location.href);
             window.scrollTo(0, 0);
         } else {
             this.setState({

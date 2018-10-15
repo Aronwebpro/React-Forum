@@ -76,7 +76,7 @@ class CreatePost extends Component {
         )
     }
 
-    //This method creates new PostDetailsPage, updates Posts Count, Creates new Flash Message in localStorage
+    //This method creates new PostDetail, updates Posts Count, Creates new Flash Message in localStorage
     createPost = async () => {
         const date = Date.now();
         const {uid} = this.props.user;
@@ -100,14 +100,14 @@ class CreatePost extends Component {
         if (error) {
             this.setState({
                 displayFlashMessage: true,
-                flashMessage: {msg: 'Creating PostDetailsPage Failed :( ', status: 'error'}
+                flashMessage: {msg: 'Creating PostDetail Failed :( ', status: 'error'}
             });
         } else {
             //Create Flash message in DB Flash
-            FlashMessageHandler.create('Congrats! Your PostDetailsPage is Created!', 'success');
+            FlashMessageHandler.create('Congrats! Your PostDetail is Created!', 'success');
 
-            //Redirect to New PostDetailsPage
-            this.setState({url: '/PostDetailsPage/' + result.postId, redirect: true});
+            //Redirect to New PostDetail
+            this.setState({url: '/PostDetail/' + result.postId, redirect: true});
         }
 
     }
