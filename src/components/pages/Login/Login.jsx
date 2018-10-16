@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import {Redirect, Link} from 'react-router-dom';
 
 //Api
@@ -13,7 +12,7 @@ import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 import './css/login.css';
 
 
-class Login extends Component {
+export default class Login extends React.Component {
     state = {
         redirect: false,
         redirectUrl: '/',
@@ -35,12 +34,12 @@ class Login extends Component {
                     <div className="login-wrapper">
                         <h1>Login: </h1>
                         <div className="form-wrapper">
-                            <form>
+                            <form onSubmit={this.handleLogin}>
                                 <label htmlFor="email">Email:</label>
                                 <input type="text" name="email" ref={input => this.email = input}/>
                                 <label htmlFor="">Password:</label>
                                 <input type="password" name="password" ref={input => this.password = input}/>
-                                <button className="btn" type="submit" name="submit" onClick={this.login}>Login</button>
+                                <button className="btn" type="submit" name="submit">Login</button>
                             </form>
                             <div className="dont-have-acc">
                                 <p>Don't have an account?</p>
@@ -53,7 +52,7 @@ class Login extends Component {
         )
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         //Handle Flash message if it was set in DB
         const flashMessage = JSON.parse(localStorage.getItem('flashMessage'));
         if (flashMessage) {
@@ -72,7 +71,7 @@ class Login extends Component {
     }
 
     //Login User
-    login = async (e) => {
+    handleLogin = async (e) => {
         e.preventDefault();
         const {email, password} = this;
         try {
@@ -101,9 +100,3 @@ class Login extends Component {
         }
     }
 }
-
-Login.propTypes = {
-
-}
-
-export default Login;

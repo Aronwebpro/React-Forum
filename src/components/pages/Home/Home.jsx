@@ -1,13 +1,17 @@
-import React, {Component} from 'react';
-import SideBar from '../../template/SideBar';
-import Post from '../../mixins/Post/Post';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
+//User Messages
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
-import PropTypes from 'prop-types';
+//Api
 import {getPosts, getPostByCategory} from '../../../api/lookups.js';
+//Components
+import SideBar from '../../template/SideBar';
+import Post from '../../mixins/Post/Post';
+import Spinner from '../../mixins/Spinner';
 
-export default class Home extends Component {
+export default class Home extends React.Component {
     state = {
         posts: [],
         redirect: false,
@@ -43,14 +47,16 @@ export default class Home extends Component {
                             <div className="fl_c"/>
                             <div ref={input => (this.forumContent = input)} className="forum-content">
                                 <div ref={input => (this.forumContentInner = input)} className="forum-coontent-inner">
-                                    {posts.map(post => (
+                                    {posts.length > 0 ? posts.map(post => (
                                         <Post {...post} key={post.title} />
-                                    ))}
+                                    )) : (
+                                        <Spinner/>
+                                    )}
                                 </div>
                             </div>
                             <div className="load-more-wrapper">
                                 {!this.state.hideLoadBtn && (
-                                    <button className="btn" onClick={this.loadMoreTopics}>Load More</button>)}
+                                    <button className="btn" onClick={this.handleLoadMoreClick}>Load More</button>)}
                             </div>
                         </div>
                     </div>
@@ -73,16 +79,24 @@ export default class Home extends Component {
         });
     }
 
+    componentWillUnmount() {
+        this.isUnmount = true;
+    }
+
     //Retrieve Topics from DB
     getPosts = async (limit) => {
         const {params} = this.props;
         if (params) {
             const {category} = params.params;
             const {posts, nextPostId} = await getPostByCategory(category, limit);
-            this.setState({posts, hideLoadBtn: !nextPostId});
+            if (!this.isUnmount) {
+                this.setState({posts, hideLoadBtn: !nextPostId});
+            }
         } else {
             const {posts, nextPostId} = await getPosts(limit);
-            this.setState({posts, hideLoadBtn: !nextPostId});
+            if (!this.isUnmount) {
+                this.setState({posts, hideLoadBtn: !nextPostId});
+            }
         }
     };
 
@@ -106,18 +120,7 @@ export default class Home extends Component {
         }
     };
 
-    convertDate = (unixTime, type) => {
-        const date = new Date(unixTime);
-        let returnString;
-        if (type === 'date') {
-            returnString = date.getMonth() + 1 + '/' + date.getDate() + ' ' + date.getFullYear();
-        } else if (type === 'time') {
-            returnString = date.getHours() + ':' + date.getMinutes();
-        }
-        return returnString;
-    };
-
-    loadMoreTopics = () => {
+    handleLoadMoreClick = () => {
         const amount = this.state.amount + 10;
         this.getPosts(amount);
         this.setState({amount});

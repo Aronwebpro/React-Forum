@@ -77,9 +77,13 @@ const createPost = async ({post}) => {
     return {postId: postDocRef.id}
 };
 
-const createComment = async ({postId, comment}) => {
+const createComment = async ({postId, comment, userId}) => {
     const commentDocRef = await db.collection('posts').doc(postId).collection('comments').add(comment);
     const commentDoc = await commentDocRef.get();
+    const postDocRef = await db.collection('posts').doc(postId);
+    const postDoc = await postDocRef.get();
+    const post = postDoc.data();
+    postDocRef.update({lastUserId: userId, repliesCount: post.repliesCount + 1});
     return commentDoc.data();
 };
 

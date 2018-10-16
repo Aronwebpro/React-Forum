@@ -33,6 +33,7 @@ class Navigation extends React.PureComponent {
             await signOut();
             let msg = 'GoodBye! You\'ve logged out successfully!';
             FlashMessageHandler.create(msg, 'success');
+            window.location.reload();
         } catch (e) {
             let msg = 'Ups! Something happen, you didn\'t log out!';
             FlashMessageHandler.create(msg, 'error');

@@ -16,42 +16,6 @@ import CommentCreateForm from '../../mixins/CommentCreateForm';
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
 
-class CommentCreateFormView extends React.PureComponent {
-    render() {
-        const {authorAvatar, authorName, quoteText, quoteAuthorName, loading} = this.props;
-            return (
-                <div className="full-post" style={{marginTop: '50px'}}>
-                    <div className="post">
-                        <div className="full-post new-post-body">
-                            {quoteText && (
-                                <div><span className="theme-color_txt">Replying to...</span><br/>
-                                <div className="quote">
-                                    <p className="quote-authorName">{quoteAuthorName} said: </p>
-                                    <p>"{quoteText}"</p></div>
-                                </div>
-                            )}
-                            <form>
-                                <label htmlFor=""><h2>Write a Comment:</h2></label>
-                                <textarea name="" id="" cols="30" rows="10"
-                                          ref={(input) => this.respText = input}/>
-                            </form>
-                            <button onClick={this.handleCreateCommentClick} className="btn" style={{marginTop: '20px'}}>Post</button>
-                        </div>
-                    </div>
-                    <div className="author-info">
-                        <img src={authorAvatar} alt=""/>
-                        <p>Author: {authorName}</p>
-                    </div>
-                    <div className="fl_c"/>
-                </div>
-            );
-        }
-        handleCreateCommentClick = () => {
-            const {createComment} = this.props;
-            createComment(this.respText.value);
-        }
-}
-
 export default class PostDetail extends React.Component {
     state = {
         post: {},
@@ -62,7 +26,6 @@ export default class PostDetail extends React.Component {
         replyStyle: {width: '0', height: '0'},
         replyStyleInit: {display: 'none'},
         redirect: false,
-
         flashMessage: {},
         displayFlashMessage: false,
         clickedComment: '',
@@ -130,7 +93,6 @@ export default class PostDetail extends React.Component {
                 </div>
                 <div style={{height: '20px', marginTop: '-50px'}} ref={input => this.respondDiv = input}></div>
             </div>
-
         );
     }
 
@@ -141,6 +103,8 @@ export default class PostDetail extends React.Component {
     componentWillUnmount() {
         document.removeEventListener('click', this.comClick);
         document.removeEventListener('keydown', this.escClick);
+        //Setup Flag to know is component Unmounted
+        this.isUnmounted = true;
     }
 
     getScreenData = async () => {
@@ -160,9 +124,13 @@ export default class PostDetail extends React.Component {
         const flashMessage = FlashMessageHandler.fetch();
 
         if (flashMessage.msg) {
-            this.setState({post, postUser, comments, flashMessage, displayFlashMessage: true})
+            if (!this.isUnmounted) {
+                this.setState({post, postUser, comments, flashMessage, displayFlashMessage: true});
+            }
         } else {
-            this.setState({post, postUser, comments});
+            if (!this.isUnmounted) {
+                this.setState({post, postUser, comments});
+            }
         }
     };
 
@@ -199,7 +167,7 @@ export default class PostDetail extends React.Component {
             quoteAuthorName,
             userId: user.uid,
         };
-        const {error} = await API.createComment({postId, comment});
+        const {error} = await API.createComment({postId, comment, userId: user.uid});
 
         if (error) {
             this.setState({
@@ -208,15 +176,17 @@ export default class PostDetail extends React.Component {
             });
         } else {
             const comments = await getCommentsBelongingToPost(postId);
-            this.setState({
-                comments,
-                displayFlashMessage: true,
-                flashMessage: {msg: 'Congrats! You just Commented this Post!!! ', status: 'success'},
-                showCreateCommentView: false,
-                replyStyleInit: {display: 'none'},
-                loading: false,
-            });
-            window.scrollTo(0, 0);
+            if (!this.isUnmounted) {
+                this.setState({
+                    comments,
+                    displayFlashMessage: true,
+                    flashMessage: {msg: 'Congrats! You just Commented this Post!!! ', status: 'success'},
+                    showCreateCommentView: false,
+                    replyStyleInit: {display: 'none'},
+                    loading: false,
+                });
+                window.scrollTo(0, 0);
+            }
         }
     };
 
@@ -240,7 +210,7 @@ export default class PostDetail extends React.Component {
         });
     };
 
-    addQuoteToComment = ({clickedComment, text, authorName} ) => {
+    addQuoteToComment = ({clickedComment, text, authorName}) => {
         if (!this.props.user) {
             const backButtonUrl = this.props.params.location.pathname;
             FlashMessageHandler.create(
@@ -254,14 +224,16 @@ export default class PostDetail extends React.Component {
             this.setState({redirect: true});
             window.scrollTo(0, 0);
         } else {
-            this.setState({
-                showCreateCommentView: true,
-                quoteText: text,
-                quoteAuthorName: authorName,
-                reply: false,
-                replyStyleInit: {display: 'none'}
-            });
-            //this.handleQuoteClick();
+            if (!this.isUnmounted) {
+                this.setState({
+                    showCreateCommentView: true,
+                    quoteText: text,
+                    quoteAuthorName: authorName,
+                    reply: false,
+                    replyStyleInit: {display: 'none'}
+                });
+                setTimeout(() => this.respondDiv.scrollIntoView({behavior: 'smooth'}), 200);
+            }
         }
     };
 
@@ -273,7 +245,7 @@ export default class PostDetail extends React.Component {
             }, 2500);
             return (<FlashMessage {...this.state.flashMessage} />)
         }
-    }
+    };
 
     comClick = (e) => {
         if (e.target.classList.value === 'container' || e.target.classList.value === 'content') {
@@ -291,6 +263,5 @@ export default class PostDetail extends React.Component {
 PropTypes.Post = {
     user: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
-    isLoggedIn: PropTypes.bool
 };
 

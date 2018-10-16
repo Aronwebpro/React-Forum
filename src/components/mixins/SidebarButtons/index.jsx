@@ -23,7 +23,6 @@ export default class SidebarButtons extends React.PureComponent {
             user,
             page,
         } = this.props;
-        console.log(this.props);
         switch (page) {
             case 'home' :
                 if (user) {

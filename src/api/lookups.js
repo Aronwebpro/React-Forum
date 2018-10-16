@@ -9,9 +9,19 @@ import {getUsersFromStorage, saveUsersToStorage} from '../utils'
 const getPosts = async (limit = 10) => {
     const postsRef = db.collection('posts');
     const postsDoc = await postsRef.orderBy('created').limit(limit + 1).get();
-    const posts = postsDoc.docs.map(postDoc => {
+    const postsData = postsDoc.docs.map(postDoc => {
         return {postId: postDoc.id, ...postDoc.data()}
     });
+
+    const posts = await Promise.all(postsData.map(async (post) => {
+        const [user, lastUser] = await Promise.all([
+            await getUserProfile(post.userId),
+            await getUserProfile(post.lastUserId)
+        ]);
+        post.user = user;
+        post.lastUser = lastUser;
+        return post;
+    }));
 
     if (posts.length > limit) {
         const {postId} = posts.pop();
@@ -30,9 +40,19 @@ const getPosts = async (limit = 10) => {
 const getPostByCategory = async (categoryId, limit = 10) => {
     const postsRef = db.collection('posts').where('categoryId', '==', categoryId);
     const postsDoc = await postsRef.limit(limit).get();
-    const posts = postsDoc.docs.map(postDoc => {
+    const postsData = postsDoc.docs.map(postDoc => {
         return {postId: postDoc.id, ...postDoc.data()}
     }).sort((a, b) => a.created > b.created ? 1 : -1);
+
+    const posts = await Promise.all(postsData.map(async (post) => {
+        const [user, lastUser] = await Promise.all([
+            await getUserProfile(post.userId),
+            await getUserProfile(post.lastUserId)
+        ]);
+        post.user = user;
+        post.lastUser = lastUser;
+        return post;
+    }));
 
     if (posts.length > limit) {
         const {postId} = posts.pop();
@@ -96,8 +116,11 @@ const getCommentsBelongingToPost = async (postID) => {
     }));
     return commentWithUser;//.sort((a, b) => a.created > b.created ? 1 : -1);
 };
-
-//TODO: Api
+/**
+ * Get Post for PostDetails Page
+ * @param postId
+ * @returns Object -> of Post
+ */
 const getPostDataForPostPage = async (postId) => {
     const post = await getSinglePost(postId);
     if (post && post.userId) {

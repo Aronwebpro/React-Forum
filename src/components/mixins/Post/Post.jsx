@@ -8,7 +8,6 @@ import {getUserProfile} from '../../../api/lookups';
 //Utils
 import {formatToDateString, formatToTimeString} from '../../../utils'
 //Components
-import Spinner from '../Spinner';
 import UserView from '../UserView';
 
 //images
@@ -26,8 +25,7 @@ export default class Post extends Component {
     };
 
     render() {
-        const {postId, created, repliesCount, category, text, title, type, lastReply} = this.props;
-        const {user, lastUser} = this.state;
+        const {postId, created, repliesCount, category, text, title, type, lastReply, user, lastUser} = this.props;
 
         return (
             <div className="topic">
@@ -57,7 +55,7 @@ export default class Post extends Component {
                                         <th width="20%">Replies:</th>
                                         <th style={{fontWeight: '600', fontSize: '1.1em'}}>{repliesCount}</th>
                                         <th rowSpan="2" style={{borderLeft: '1px solid #ededde'}}>
-                                            <UserView {...user} {...{lastReply}} type={'last'}/>
+                                            <UserView {...lastUser} {...{lastReply}} type={'last'}/>
                                         </th>
                                     </tr>
                                     </tbody>
