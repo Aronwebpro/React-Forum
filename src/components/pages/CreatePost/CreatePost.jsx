@@ -4,15 +4,15 @@ import {Redirect} from 'react-router-dom';
 
 //Api
 import API from '../../../api/transactions';
-
+import {getCategories} from "../../../api/lookups";
 //Components
 import SideBar from '../../template/SideBar/';
 
 //Flash Message Handlers
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
-import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
+import {FlashMessageHandler} from '../../../utils/FlashMessageHandler';
 
-class CreatePost extends Component {
+export default class CreatePost extends Component {
     state = {
         topics: [],
         redirect: false,
@@ -20,11 +20,12 @@ class CreatePost extends Component {
         flashMessage: {},
         displayFlashMessage: false,
         loading: false,
+        categories: [],
     };
 
     render() {
         const {user} = this.props;
-        const {redirect, redirectUrl} = this.state;
+        const {redirect, redirectUrl, categories} = this.state;
         return !user || redirect ? (
             <Redirect to={redirectUrl || '/'} />
         ) : (
@@ -32,7 +33,7 @@ class CreatePost extends Component {
                 <div className="container">
                     {this.displayFlashMessageIfItSet()}
                     <div className="left">
-                        <SideBar page="new" {...{user}}/>
+                        <SideBar page="new" {...{user, categories}}/>
                     </div>
                     <div className="right post-container">
                         <div className="post-title forum-header">
@@ -74,6 +75,16 @@ class CreatePost extends Component {
                 <div className="fl_c"></div>
             </div>
         )
+    }
+    async componentDidMount() {
+        const categories = await getCategories();
+        if (!this.isUnmount) {
+            this.setState({categories});
+        }
+    };
+
+    componentWillUnmount() {
+        this.isUnmount = true;
     }
 
     //This method creates new PostDetail, updates Posts Count, Creates new Flash Message in localStorage
@@ -126,6 +137,5 @@ class CreatePost extends Component {
 
 CreatePost.propTypes = {
     user: PropTypes.object
-}
+};
 
-export default CreatePost;

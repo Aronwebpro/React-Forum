@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 //User Messages
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
-import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
+import {FlashMessageHandler} from '../../../utils/FlashMessageHandler';
 //Api
-import {getPosts, getPostByCategory} from '../../../api/lookups.js';
+import {getPosts, getPostByCategory, getCategories} from '../../../api/lookups.js';
 //Components
 import SideBar from '../../template/SideBar';
 import Post from '../../mixins/Post/Post';
@@ -14,6 +14,7 @@ import Spinner from '../../mixins/Spinner';
 export default class Home extends React.Component {
     state = {
         posts: [],
+        categories: [],
         redirect: false,
         flashMessage: {},
         displayFlashMessage: false,
@@ -22,7 +23,7 @@ export default class Home extends React.Component {
     };
 
     render() {
-        const {posts} = this.state;
+        const {posts, categories} = this.state;
         const {user} = this.props;
         if (this.state.redirect) return <Redirect to="/"/>
         return (
@@ -30,7 +31,7 @@ export default class Home extends React.Component {
                 {this.displayFlashMessageIfItSet()}
                 <div id="home">
                     <div className="left">
-                        <SideBar page="home" {...{user}}/>
+                        <SideBar page="home" {...{user, categories}} />
                     </div>
                     <div className="right">
                         <div className="forum">
@@ -68,9 +69,11 @@ export default class Home extends React.Component {
 
     async componentDidMount() {
         //Retrieve Topics from DB
-        this.getPosts();
+        this.getScreenData();
         const flashMessage = FlashMessageHandler.fetch();
-        if (flashMessage.msg) this.setState({displayFlashMessage: true, flashMessage});
+        if (flashMessage.msg && !this.isUnmount) {
+            this.setState({displayFlashMessage: true, flashMessage});
+        }
     }
 
     componentDidUpdate() {
@@ -83,19 +86,24 @@ export default class Home extends React.Component {
         this.isUnmount = true;
     }
 
-    //Retrieve Topics from DB
-    getPosts = async (limit) => {
+    //Retrieve Topics and categories from DB
+    getScreenData = async (limit) => {
         const {params} = this.props;
-        if (params) {
-            const {category} = params.params;
-            const {posts, nextPostId} = await getPostByCategory(category, limit);
+        if (params && params.match) {
+            const {category} = params.match.params;
+            const [postsObj, categories] = await Promise.all([
+                getPostByCategory(category, limit),
+                getCategories()
+            ]);
+            const {posts, nextPostId} = postsObj;
             if (!this.isUnmount) {
-                this.setState({posts, hideLoadBtn: !nextPostId});
+                this.setState({posts, categories, hideLoadBtn: !nextPostId});
             }
         } else {
             const {posts, nextPostId} = await getPosts(limit);
+            const categories = await getCategories();
             if (!this.isUnmount) {
-                this.setState({posts, hideLoadBtn: !nextPostId});
+                this.setState({posts, categories, hideLoadBtn: !nextPostId});
             }
         }
     };

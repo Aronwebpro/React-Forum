@@ -3,23 +3,24 @@ import {Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 //Api
-import {getCommentsBelongingToPost, getPostDataForPostPage} from '../../../api/lookups';
+import {getCategories, getCommentsBelongingToPost, getPostDataForPostPage} from '../../../api/lookups';
 import API from '../../../api/transactions';
 
 //Components
 import SideBar from '../../template/SideBar/';
 import PostDetails from '../../mixins/PostDetails';
 import CommentRow from '../../mixins/Comment/Comment';
-import CommentCreateForm from '../../mixins/CommentCreateForm';
+import CommentCreateForm from '../../mixins/CommentCreateForm/index';
 
 //TODO:
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
-import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
+import {FlashMessageHandler} from '../../../utils/FlashMessageHandler';
 
 export default class PostDetail extends React.Component {
     state = {
         post: {},
         comments: [],
+        categories: [],
         postUser: undefined,
         loading: false,
         replyText: {},
@@ -45,7 +46,7 @@ export default class PostDetail extends React.Component {
             }, 3500);
         }
         const {user} = this.props;
-        const {post, comments, postUser, clickedComment, replyStyle, replyStyleInit, quoteText, quoteAuthorName, loading, showCreateCommentView} = this.state;
+        const {post, comments, postUser, clickedComment, replyStyle, replyStyleInit, quoteText, quoteAuthorName, loading, showCreateCommentView, categories} = this.state;
         return (
             <div>
                 <div className="post-page">
@@ -55,10 +56,11 @@ export default class PostDetail extends React.Component {
                             <div className="left">
                                 <SideBar
                                     page="post"
-                                    user={user}
+                                    {...{categories, user}}
                                     respond={this.handleReplyClick}
                                     clearReply={this.clearReply}
                                     flash={this.flash}
+
                                 />
                             </div>
                             <div className="right post-container">
@@ -114,9 +116,10 @@ export default class PostDetail extends React.Component {
 
         const postId = this.getPostId();
 
-        const [postObj, comments] = await Promise.all([
+        const [postObj, comments, categories] = await Promise.all([
             getPostDataForPostPage(postId),
-            getCommentsBelongingToPost(postId)
+            getCommentsBelongingToPost(postId),
+            getCategories()
         ]);
 
         const {postUser, post} = postObj;
@@ -125,11 +128,11 @@ export default class PostDetail extends React.Component {
 
         if (flashMessage.msg) {
             if (!this.isUnmounted) {
-                this.setState({post, postUser, comments, flashMessage, displayFlashMessage: true});
+                this.setState({post, postUser, comments, categories, flashMessage, displayFlashMessage: true});
             }
         } else {
             if (!this.isUnmounted) {
-                this.setState({post, postUser, comments});
+                this.setState({post, postUser, comments, categories});
             }
         }
     };

@@ -38,8 +38,8 @@ const Root = (props) => {
                 <div className="content">
                     <Switch>
                         <Route path="/post/:postId" render={(params) => <PostDetail {...{params, user}} />} />
-                        <Route exact path="/category/:category" render={(params) => <Home {...{params, user}}/>} />
-                        <Route exact path="/category/" render={() => <Redirect to="/"/>}/>
+                        <Route exact path="/category/:category" render={(params) => <Home {...{params, user}} byrka={'byrka'}/>} />
+                        <Route exact path="/category" render={(params) => <Redirect to="/"/>}/>
                         <Route exact path="/login" render={() => <Login {...{user}}/>} />
                         <Route exact path="/newPost" render={() => <NewPost {...{user}}/>}/>
                         <Route exact path="/register" render={() => <Register {...{user}}/>}/>

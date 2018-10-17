@@ -6,7 +6,7 @@ import {signIn} from '../../../api/auth';
 
 //Components
 import  {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
-import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
+import {FlashMessageHandler} from '../../../utils/FlashMessageHandler';
 
 //Styles
 import './css/login.css';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 //Components
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
-import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
+import {FlashMessageHandler} from '../../../utils/FlashMessageHandler';
 //Api
 import API from '../../../api/transactions';
 //Avatar Images

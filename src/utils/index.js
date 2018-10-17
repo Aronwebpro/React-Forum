@@ -7,6 +7,7 @@ const formatToDateString = (unixTime) => {
     const date = new Date(unixTime);
     return `${date.getMonth() + 1}/${date.getDate()} ${date.getFullYear()}`;
 };
+
 /**
  * Function to Convert Unix Time to Readable Date String
  * @param unixTime
@@ -16,6 +17,7 @@ const formatToTimeString = (unixTime) => {
     const date = new Date(unixTime);
     return `${date.getHours()} : ${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
 };
+
 /**
  * Function to Convert Unix Time to Readable Date and Time String
  * @param unixTime
@@ -26,6 +28,11 @@ const formatToDateAndTimeString = (unixTime) => {
     return `${date.getMonth() + 1}/${date.getDate()} ${date.getFullYear()} ${date.getHours()} : ${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
 };
 
+/**
+ * Get cached User from Session Storage
+ * @param id -> String
+ * @returns {User}
+ */
 const getUsersFromStorage = (id) => {
     const local = sessionStorage.getItem(id);
     if (local) {
@@ -40,6 +47,10 @@ const getUsersFromStorage = (id) => {
     }
 };
 
+/**
+ * Cache User object to Session Storage
+ * @param data
+ */
 const saveUsersToStorage = (data) => {
       try {
           sessionStorage.setItem('postsUsers', JSON.stringify(data));

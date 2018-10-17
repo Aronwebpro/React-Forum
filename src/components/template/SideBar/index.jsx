@@ -1,68 +1,61 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 //Styles
 import './side-bar.css';
 //Components
 import SidebarButtons from '../../mixins/SidebarButtons';
-import FilterCategory from '../../mixins/filterCategory/filterCategory';
+import Spinner from '../../mixins/Spinner';
+import CategoryItem from '../../mixins/CategoryItem';
 
-export default class SideBar extends Component {
-    state = {
-        categories: []
-    };
-
+export default class SideBar extends React.PureComponent {
     render() {
         const {
             respond,
             page,
             clearReply,
             user,
+            categories,
         } = this.props;
-
-        const {categories} = this.state;
-        let all = 0;
+        const total = categories.length !== 0 && categories.map((x) => x.count).reduce((x, y) => x + y);
         return (
             <div ref={(input) => this.categoryBar = input}>
                 <SidebarButtons {...{page, user, respond, clearReply}}/>
                 <div className="search-filter">
-                    <h5>Select a Category</h5>
-                    <ul>
-                        {
-                            Object.keys(categories).map(category => {
-                                all += categories[category].count;
-                                return <FilterCategory key={Math.random()} category={categories[category]}/>
-                            })
-                        }
-                        {
-                            Number.isInteger(all) &&
+                    <h5>Categories</h5>
+                    {categories.length > 0 ? (
+                        <ul>
+                            {categories && categories.map((category, index) => <CategoryItem
+                                key={index.toString()} {...category} />)}
                             <a href="/">
-                                <li>All<span className="filter-count">({all})</span></li>
+                                <li>All<span className="filter-count">{total}</span></li>
                             </a>
-                        }
-                    </ul>
+                        </ul>
+                    ) : (
+                        <div style={{marginTop: '20px'}}>
+                            <Spinner/>
+                        </div>
+                    )}
                 </div>
             </div>
         )
     }
 
     componentDidMount() {
-
+        window.addEventListener('scroll', this.moveBar);
     }
-
-    //TODO: Move Navigation bar up on scroll down
-    // componentDidMount() {
-    // 	window.addEventListener('scroll', this.moveBar);
-    // }
-    // moveBar() {
-    // const Header = this.categoryBar;
-    // if (!Header) return;
-    // const distanceY = window.pageYOffset;
-    //   if(distanceY > 101) {
-    //     Header.style.top = '60px';
-    //   } else {
-    //     Header.style.top = '94px';
-    //   }
-    // }
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.moveBar);
+    }
+    moveBar = () => {
+        const Header = this.categoryBar;
+        if (!Header) return;
+        const distanceY = window.pageYOffset;
+        if (distanceY > 101) {
+            Header.style.top = '60px';
+        } else {
+            Header.style.top = '94px';
+        }
+    }
 }
 
 PropTypes.SideBar = {
@@ -70,4 +63,5 @@ PropTypes.SideBar = {
     page: PropTypes.string,
     respond: PropTypes.func,
     clearReply: PropTypes.func,
+    categories: PropTypes.array.isRequired,
 };

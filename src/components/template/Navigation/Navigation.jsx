@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 //Api
 import {signOut} from "../../../api/auth";
-import {FlashMessageHandler} from '../../../api/FlashMessageHandler';
+import {FlashMessageHandler} from '../../../utils/FlashMessageHandler';
 
 class Navigation extends React.PureComponent {
     render() {

@@ -135,6 +135,14 @@ const getPostDataForPostPage = async (postId) => {
     }
 };
 
+const getCategories = async () => {
+    const categoriesDocRef = db.collection('categories');
+    const categoriesDoc = await categoriesDocRef.get();
+    return categoriesDoc.docs.map((categoryDoc) => {
+        return {categoryId: categoryDoc.id, ...categoryDoc.data()}
+    })
+};
+
 export {
     getPosts,
     getPostByCategory,
@@ -142,4 +150,5 @@ export {
     getUserProfile,
     getPostDataForPostPage,
     getCommentsBelongingToPost,
+    getCategories,
 }
