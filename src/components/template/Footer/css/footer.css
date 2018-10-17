@@ -1,0 +1,27 @@
+.footer {
+	position: relative;
+	margin-top: 3%;
+	min-height: 180px;
+	background-color: #20232a;
+	color:#fff;
+	z-index: 2;
+	text-align: center;
+}
+.footer h1 {
+	margin:10px auto;
+	display: inline-block;
+}
+
+.footer h2 {
+	padding: 5px;
+}
+
+#react-logo  img {
+	margin-left:10px;
+	max-width: 50px;
+	transform:translateY(20%);
+}
+#firebase-logo img {
+	max-width: 200px;
+	transform:translateY(30%);
+}

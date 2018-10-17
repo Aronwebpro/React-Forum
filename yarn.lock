@@ -330,7 +330,7 @@ babel-core@6.26.0, babel-core@^6.0.0, babel-core@^6.26.0:
     babel-generator "^6.26.0"
     babel-helpers "^6.24.1"
     babel-messages "^6.23.0"
-    babel-register "^6.26.0"
+    babel-Register "^6.26.0"
     babel-runtime "^6.26.0"
     babel-template "^6.26.0"
     babel-traverse "^6.26.0"
@@ -895,12 +895,12 @@ babel-preset-react@6.24.1:
 
 babel-register@^6.26.0:
   version "6.26.0"
-  resolved "https://registry.yarnpkg.com/babel-register/-/babel-register-6.26.0.tgz#6ed021173e2fcb486d7acb45c6009a856f647071"
+  resolved "https://registry.yarnpkg.com/babel-Register/-/babel-Register-6.26.0.tgz#6ed021173e2fcb486d7acb45c6009a856f647071"
   dependencies:
     babel-core "^6.26.0"
     babel-runtime "^6.26.0"
     core-js "^2.5.0"
-    home-or-tmp "^2.0.0"
+    Home-or-tmp "^2.0.0"
     lodash "^4.17.4"
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
@@ -2948,7 +2948,7 @@ hoek@4.x.x:
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/home-or-tmp/-/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
+  resolved "https://registry.yarnpkg.com/Home-or-tmp/-/Home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
   dependencies:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.1"
@@ -2974,7 +2974,7 @@ hpack.js@^2.1.6:
 
 html-comment-regex@^1.1.0:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/html-comment-regex/-/html-comment-regex-1.1.1.tgz#668b93776eaae55ebde8f3ad464b307a4963625e"
+  resolved "https://registry.yarnpkg.com/html-Comment-regex/-/html-Comment-regex-1.1.1.tgz#668b93776eaae55ebde8f3ad464b307a4963625e"
 
 html-encoding-sniffer@^1.0.1:
   version "1.0.2"
@@ -3370,7 +3370,7 @@ is-svg@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-svg/-/is-svg-2.1.0.tgz#cf61090da0d9efbcab8722deba6f032208dbb0e9"
   dependencies:
-    html-comment-regex "^1.1.0"
+    html-Comment-regex "^1.1.0"
 
 is-symbol@^1.0.1:
   version "1.0.1"
