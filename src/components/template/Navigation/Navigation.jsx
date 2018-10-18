@@ -15,7 +15,7 @@ class Navigation extends React.PureComponent {
                     <Link to="/">Home</Link>
                     <Link to="/about">About</Link>
                     {user ? (
-                        <a className="theme-color_txt log-out" onClick={this.logOut} style={{cursor: 'pointer'}}>Logout</a>
+                        <a className="log-out" onClick={this.logOut} style={{cursor: 'pointer'}}>Logout</a>
                     ) : (
                         <Link to="/login" className="theme-color_txt log-out">Login</Link>
                     )}

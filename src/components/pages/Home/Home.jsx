@@ -29,40 +29,32 @@ export default class Home extends React.Component {
         return (
             <div className="container">
                 {this.displayFlashMessageIfItSet()}
-                <div id="home">
-                    <div className="left">
-                        <SideBar page="home" {...{user, categories}} />
-                    </div>
-                    <div className="right">
-                        <div className="forum">
-                            <div className="forum-header">
-                                <div className="forum-title">
-                                    <h2>Recent Discussions</h2>
-                                </div>
-                                <div ref={input => (this.arrow = input)} className="arrors"
-                                     onClick={() => this.expand(this)}>
-                                    <div className="leftArrow"/>
-                                    <div className="rightArrow"/>
-                                </div>
-                            </div>
-                            <div className="fl_c"/>
-                            <div ref={input => (this.forumContent = input)} className="forum-content">
-                                <div ref={input => (this.forumContentInner = input)} className="forum-coontent-inner">
-                                    {posts.length > 0 ? posts.map(post => (
-                                        <Post {...post} key={post.title} />
-                                    )) : (
-                                        <Spinner/>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="load-more-wrapper">
-                                {!this.state.hideLoadBtn && (
-                                    <button className="btn" onClick={this.handleLoadMoreClick}>Load More</button>)}
-                            </div>
+                <div className="forum">
+                    <div className="forum-header">
+                        <div className="forum-title">
+                            <h2>Recent Discussions</h2>
+                        </div>
+                        <div ref={input => (this.arrow = input)} className="arrors"
+                             onClick={() => this.expand(this)}>
+                            <div className="leftArrow"/>
+                            <div className="rightArrow"/>
                         </div>
                     </div>
+                    <div className="fl_c"/>
+                    <div ref={input => (this.forumContent = input)} className="forum-content">
+                        <div ref={input => (this.forumContentInner = input)} className="forum-coontent-inner">
+                            {posts.length > 0 ? posts.map(post => (
+                                <Post {...post} key={post.title}/>
+                            )) : (
+                                <Spinner/>
+                            )}
+                        </div>
+                    </div>
+                    <div className="load-more-wrapper">
+                        {!this.state.hideLoadBtn && (
+                            <button className="btn" onClick={this.handleLoadMoreClick}>Load More</button>)}
+                    </div>
                 </div>
-                <div className="fl_c"></div>
             </div>
         )
     }
