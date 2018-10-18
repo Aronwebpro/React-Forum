@@ -5,7 +5,7 @@ import {Redirect, Link} from 'react-router-dom';
 import {signIn} from '../../../api/auth';
 
 //Components
-import  {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
+import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../utils/FlashMessageHandler';
 
 //Styles
@@ -19,36 +19,36 @@ export default class Login extends React.Component {
         back: false,
         flashMessage: {},
         displayFlashMessage: false,
-    }
+    };
+
     render() {
-        //this.displayFlashMessage();
         return this.state.redirect ? (
             <Redirect to={this.state.redirectUrl}/>
         ) : (
-            <div id="login">
-                <div className="container">
-                    {this.displayFlashMessageIfItSet()}
-                    {this.state.back && <Link to={this.state.back}>
-                        <button className="btn">Back</button>
-                    </Link>}
-                    <div className="login-wrapper">
-                        <h1>Login: </h1>
-                        <div className="form-wrapper">
-                            <form onSubmit={this.handleLogin}>
-                                <label htmlFor="email">Email:</label>
-                                <input type="text" name="email" ref={input => this.email = input}/>
-                                <label htmlFor="">Password:</label>
-                                <input type="password" name="password" ref={input => this.password = input}/>
-                                <button className="btn" type="submit" name="submit">Login</button>
-                            </form>
-                            <div className="dont-have-acc">
-                                <p>Don't have an account?</p>
-                                <p><Link to="/register">Click to <span className="bold">Sign Up.</span></Link></p>
-                            </div>
+
+            <div className="container">
+                {this.displayFlashMessageIfItSet()}
+                {this.state.back && <Link to={this.state.back}>
+                    <button className="btn">Back</button>
+                </Link>}
+                <div className="login-wrapper">
+                    <h1>Login: </h1>
+                    <div className="form-wrapper">
+                        <form onSubmit={this.handleLogin}>
+                            <label htmlFor="email">Email:</label>
+                            <input type="text" name="email" ref={input => this.email = input}/>
+                            <label htmlFor="">Password:</label>
+                            <input type="password" name="password" ref={input => this.password = input}/>
+                            <button className="btn" type="submit" name="submit">Login</button>
+                        </form>
+                        <div className="dont-have-acc">
+                            <p>Don't have an account?</p>
+                            <p><Link to="/register">Click to <span className="bold">Sign Up.</span></Link></p>
                         </div>
                     </div>
                 </div>
             </div>
+
         )
     }
 

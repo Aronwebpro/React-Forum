@@ -45,11 +45,11 @@ const AboutPage = PageLayout({
 });
 const RegisterPage = PageLayout({
     PageComponent:  Register,
-    pageId: 'about',
+    pageId: 'register',
 });
 const LoginPage = PageLayout({
     PageComponent:  Login,
-    pageId: 'about',
+    pageId: 'login',
 });
 
 const Root = (props) => {
