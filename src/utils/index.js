@@ -33,8 +33,8 @@ const formatToDateAndTimeString = (unixTime) => {
  * @param id -> String
  * @returns {User}
  */
-const getUsersFromStorage = (id) => {
-    const local = sessionStorage.getItem(id);
+const getUsersFromStorage = () => {
+    const local = sessionStorage.getItem('postsUsers');
     if (local) {
         try {
             return JSON.parse(local);

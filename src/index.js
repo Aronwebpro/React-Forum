@@ -60,13 +60,12 @@ const Root = (props) => {
                 <Header {...{user}}/>
                 <div className="content">
                     <Switch>
+                        <Route exact path="/category/:category" render={(params) => <HomePage {...{params, user}}/>}/>
+                        <Route exact path="/category" render={(params) => <Redirect to="/"/>}/>
                         <Route path="/post/:postId" render={(params) => <PostDetail {...{params, user}} />}/>
                         <Route exact path="/newPost" render={() => <NewPost {...{user}}/>}/>
                         <Route exact path="/login" render={() => <LoginPage {...{user}}/>}/>
                         <Route exact path="/register" render={() => <RegisterPage {...{user}}/>}/>
-                        <Route exact path="/category/:category"
-                               render={(params) => <HomePage {...{params, user}}/>}/>
-                        <Route exact path="/category" render={(params) => <Redirect to="/"/>}/>
                         <Route exact path="/about" component={AboutPage}/>
                         <Route exact path="/" render={() => <HomePage {...{user}}/> } />
                         <Route component={Notfound}/>

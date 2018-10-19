@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 //Styles
 import './side-bar.css';
 //Components
@@ -30,9 +31,9 @@ export default class SideBar extends React.Component {
                         <ul>
                             {categories && categories.map((category, index) => <CategoryItem
                                 key={index.toString()} {...category} />)}
-                            <a href="/">
+                            <Link to="/">
                                 <li>All<span className="filter-count">{total}</span></li>
-                            </a>
+                            </Link>
                         </ul>
                     ) : (
                         <div style={{marginTop: '20px'}}>

@@ -8,7 +8,7 @@ import {getUsersFromStorage, saveUsersToStorage} from '../utils'
  */
 const getPosts = async (limit = 10) => {
     const postsRef = db.collection('posts');
-    const postsDoc = await postsRef.orderBy('created').limit(limit + 1).get();
+    const postsDoc = await postsRef.orderBy('created', 'desc').limit(limit + 1).get();
     const postsData = postsDoc.docs.map(postDoc => {
         return {postId: postDoc.id, ...postDoc.data()}
     });
@@ -77,7 +77,7 @@ const getSinglePost = async (postID) => {
 };
 
 /**
- * Get User Data from FireStore DB
+ * Get User Data from FireStore DB and cache to Session Storage
  * @param userId -> String
  * @returns Object of User's Profile
  */

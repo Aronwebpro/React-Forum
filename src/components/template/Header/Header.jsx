@@ -29,6 +29,9 @@ export default class Header extends PureComponent {
         window.addEventListener('scroll', this.shrinkHeader);
     }
 
+    componentWillUnmount() {
+
+    }
     //shrink the Header when scroll down
     shrinkHeader() {
         const header = this.header;

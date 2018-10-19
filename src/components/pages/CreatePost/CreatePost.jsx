@@ -111,11 +111,11 @@ export default class CreatePost extends Component {
         if (error) {
             this.setState({
                 displayFlashMessage: true,
-                flashMessage: {msg: 'Creating PostDetail Failed :( ', status: 'error'}
+                flashMessage: {msg: 'Creating Post Failed :( ', status: 'error'}
             });
         } else {
             //Create Flash message in DB Flash
-            FlashMessageHandler.create('Congrats! Your PostDetail is Created!', 'success');
+            FlashMessageHandler.create('Congrats! Your Post was Created!', 'success');
 
             //Redirect to New PostDetail
             this.setState({url: '/PostDetail/' + result.postId, redirect: true});
