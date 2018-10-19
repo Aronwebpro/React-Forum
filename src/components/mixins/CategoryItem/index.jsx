@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 //List item for categories in Aside category list
 export default class CategoryItem extends React.PureComponent {
     render() {
         const {title, categoryUrl, count } = this.props;
         return (
-            <a href={`/category/${categoryUrl}`}>
+            <Link to={`/category/${categoryUrl}`}>
                 <li>{title}<span className="filter-count">({count})</span></li>
-            </a>
+            </Link>
         )
     }
 }

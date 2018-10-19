@@ -51,7 +51,9 @@ const createUser = async ({email, password, avatar, nickname}) => {
     };
 
     //Save new user Object to Users Collection
-    db.collection('users').doc(user.uid).set(userObj);
+    await db.collection('users').doc(user.uid).set(userObj);
+
+    console.log('User created!');
 
     return {status: 'success', msg: 'User Created Successfully!'}
 };

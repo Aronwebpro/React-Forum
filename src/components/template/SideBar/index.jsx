@@ -1,21 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 //Styles
 import './side-bar.css';
 //Components
 import SidebarButtons from '../../mixins/SidebarButtons';
 import Spinner from '../../mixins/Spinner';
 import CategoryItem from '../../mixins/CategoryItem';
-
-export default class SideBar extends React.PureComponent {
+//Api
+import {getCategories} from '../../../api/lookups.js';
+export default class SideBar extends React.Component {
+    state = {
+        categories: [],
+    };
     render() {
         const {
             respond,
             page,
             clearReply,
             user,
-            categories,
         } = this.props;
+        const {categories} = this.state;
         const total = categories.length !== 0 && categories.map((x) => x.count).reduce((x, y) => x + y);
         return (
             <div ref={(input) => this.categoryBar = input}>
@@ -26,9 +31,9 @@ export default class SideBar extends React.PureComponent {
                         <ul>
                             {categories && categories.map((category, index) => <CategoryItem
                                 key={index.toString()} {...category} />)}
-                            <a href="/">
+                            <Link to="/">
                                 <li>All<span className="filter-count">{total}</span></li>
-                            </a>
+                            </Link>
                         </ul>
                     ) : (
                         <div style={{marginTop: '20px'}}>
@@ -40,12 +45,19 @@ export default class SideBar extends React.PureComponent {
         )
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         window.addEventListener('scroll', this.moveBar);
+        const categories = await getCategories();
+        if (!this.isUnmount) {
+            this.setState({categories});
+        }
     }
+
     componentWillUnmount() {
         window.removeEventListener('scroll', this.moveBar);
+        this.isUnmount = true;
     }
+
     moveBar = () => {
         const Header = this.categoryBar;
         if (!Header) return;

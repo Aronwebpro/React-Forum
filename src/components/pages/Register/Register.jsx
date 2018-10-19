@@ -28,67 +28,24 @@ import face16 from '../../../img/16face.png';
 const facesRow1 = [face1, face2, face3, face4, face5, face6, face7, face8];
 const facesRow2 = [face9, face10, face11, face12, face13, face14, face15, face16];
 
-class Register extends Component {
+export default class Register extends Component {
     constructor() {
         super();
         this.createUser = this.createUser.bind(this);
         this.setCheckedAvatar = this.setCheckedAvatar.bind(this);
-        this.state = {avatar: '', redirect: false, displayFlashMessage: false, flashMessage: {}, spinner: false}
-
     }
 
-    async createUser() {
-        this.setState({spinner: true});
-        const nickname = this.nickname.value;
-        const userProfile = {
-            nickname: this.nickname.value,
-            avatar: this.state.avatar,
-            email: this.email.value,
-            password: this.password.value,
-        }
-        //Basic Validation
-        if (this.state.avatar === '') {
-            this.setState({displayFlashMessage: true, flashMessage: {msg: 'Please select Avatar!', status: 'error'}});
-            return;
-        }
-        if (nickname === '') {
-            this.setState({
-                displayFlashMessage: true,
-                flashMessage: {msg: 'Nickname field can\'t be blank!', status: 'error'}
-            });
-            return;
-        }
-
-        //Make API Call to Create New User
-        const {status, msg} = await API.createUser(userProfile);
-
-        if (status === 'success') {
-            FlashMessageHandler.create(`Welcome to React Game Forum, ${nickname}`, 'success');
-            this.setState({redirect: true});
-        } else {
-            this.setState({displayFlashMessage: true, flashMessage: {msg, status}, spinner: true});
-        }
-    }
-
-    setCheckedAvatar(url) {
-        this.setState({avatar: url, flash: false});
-    }
-
-    displayFlashMessageIfItSet() {
-        if (this.state.displayFlashMessage) {
-            setTimeout(() => {
-                this.setState({displayFlashMessage: false});
-                FlashMessageHandler.reset();
-            }, 2500);
-            return (<FlashMessage {...this.state.flashMessage} />)
-        }
-    }
+    state = {
+        avatar: '',
+        redirect: false,
+        displayFlashMessage: false,
+        flashMessage: {},
+        loading: false
+    };
 
     render() {
-        //Redirect From the page
+        //Redirect if true
         if (this.state.redirect === true || this.props.user) return (<Redirect to="/"/>)
-        //TODO: Before redirect to Home page show spinner image for user
-        //let spinner;
         return (
             <div className="register-page">
                 {this.displayFlashMessageIfItSet()}
@@ -134,9 +91,64 @@ class Register extends Component {
             </div>
         )
     }
+
+    componentWillUnmount() {
+        this.isUnmount = true;
+    }
+    //Create New User Handler
+    createUser = async () => {
+        this.setState({spinner: true});
+        const nickname = this.nickname.value;
+        const userProfile = {
+            nickname: this.nickname.value,
+            avatar: this.state.avatar,
+            email: this.email.value,
+            password: this.password.value,
+        };
+
+        //Basic Validation
+        if (this.state.avatar === '') {
+            this.setState({displayFlashMessage: true, flashMessage: {msg: 'Please select Avatar!', status: 'error'}});
+            return;
+        }
+        if (nickname === '') {
+            this.setState({
+                displayFlashMessage: true,
+                flashMessage: {msg: 'Nickname field can\'t be blank!', status: 'error'}
+            });
+            return;
+        }
+
+        //Make API Call to Create New User
+        const {status, msg} = await API.createUser(userProfile);
+        console.log(status, 'was called after User created!');
+        if (status === 'success') {
+            FlashMessageHandler.create(`Welcome to React Game Forum, ${nickname}`, 'success');
+            if (!this.isUnmount) {
+                this.setState({redirect: true});
+            }
+        } else {
+            if (!this.isUnmount) {
+                this.setState({displayFlashMessage: true, flashMessage: {msg, status}, spinner: true});
+            }
+        }
+    };
+    //Avatar validation
+    setCheckedAvatar(url) {
+        this.setState({avatar: url, flash: false});
+    }
+    //Show User Message
+    displayFlashMessageIfItSet() {
+        if (this.state.displayFlashMessage) {
+            setTimeout(() => {
+                this.setState({displayFlashMessage: false});
+                FlashMessageHandler.reset();
+            }, 2500);
+            return (<FlashMessage {...this.state.flashMessage} />)
+        }
+    }
 }
 
 Register.PropTypes = {
     user: PropTypes.object
-}
-export default Register;
+};
