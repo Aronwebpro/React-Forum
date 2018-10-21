@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Redirect, Switch, Route} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 //User Messages
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../utils/FlashMessageHandler';
-//Api
-import {getPosts, getPostByCategory, getCategories} from '../../../api/lookups.js';
+
 
 export default class ProfilePosts extends React.Component {
     state = {
