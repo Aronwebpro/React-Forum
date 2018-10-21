@@ -33,7 +33,7 @@ const createUser = async ({email, password, avatar, nickname}) => {
     //Get current logged in user
     const user = await auth().currentUser;
 
-    //Update User Profile in Firebase Auth
+    //Update User User in Firebase Auth
     await user.updateProfile({
         displayName: nickname,
         photoURL: avatar

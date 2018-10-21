@@ -79,7 +79,7 @@ const getSinglePost = async (postID) => {
 /**
  * Get User Data from FireStore DB and cache to Session Storage
  * @param userId -> String
- * @returns Object of User's Profile
+ * @returns Object of User's User
  */
 
 const getUserProfile = async (userId) => {

@@ -14,15 +14,17 @@ class Navigation extends React.PureComponent {
                     className={!this.props.user || (this.props.user && !this.props.user.authorAvatar) ? 'nav-logged-out' : undefined}>
                     <Link to="/">Home</Link>
                     <Link to="/about">About</Link>
+                    {user &&  <Link to="/profile" className="theme-color_txt log-out">Profile</Link>}
                     {user ? (
                         <a className="log-out" onClick={this.logOut} style={{cursor: 'pointer'}}>Logout</a>
                     ) : (
                         <Link to="/login" className="theme-color_txt log-out">Login</Link>
                     )}
                     {!user && <Link to="/register">Sign Up</Link>}
+
                 </nav>
                 {user && user.authorAvatar && (
-                    <div className="header-avatar"><Link to="/user"><img src={user.authorAvatar} alt=""/></Link>
+                    <div className="header-avatar"><Link to="/profile"><img src={user.authorAvatar} alt=""/></Link>
                     </div>)}
             </div>
         );

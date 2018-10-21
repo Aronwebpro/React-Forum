@@ -12,7 +12,7 @@ const PageLayout = ({PageComponent, SideBarComponent, pageId, layout}) => {
                         <div className="container">
                             <div id={pageId ? `${pageId}` : 'page'}>
                                 <div className="left">
-                                    <SideBarComponent page="home" {...this.props}/>
+                                    <SideBarComponent page={pageId} {...this.props}/>
                                 </div>
                                 <div className="right">
                                     <PageComponent {...this.props}/>

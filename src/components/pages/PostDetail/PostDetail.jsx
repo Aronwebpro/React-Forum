@@ -52,7 +52,6 @@ export default class PostDetail extends React.Component {
                 <div className="post-page">
                     <div className="content">
                         <div className="container">
-                            {this.displayFlashMessageIfItSet()}
                             <div className="left">
                                 <SideBar
                                     page="post"
@@ -64,6 +63,7 @@ export default class PostDetail extends React.Component {
                                 />
                             </div>
                             <div className="right post-container">
+                                {this.displayFlashMessageIfItSet()}
                                 <PostDetails {...post} {...{postUser}} />
                                 <div className="post-title forum-header" style={{marginTop: '20px'}}>
                                     <h2>{comments.length || 0} Responses </h2>

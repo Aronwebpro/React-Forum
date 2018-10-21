@@ -1,0 +1,13 @@
+.profile-content {
+    padding: 0 20px;
+}
+.profile-avatar-wrapper {
+    width: 50%;
+    height: 300px;
+    background-color: green;
+}
+.profile-info-wrapper {
+    width: 50%;
+    height: 300px;
+    background-color: yellow;
+}

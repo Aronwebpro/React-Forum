@@ -19,7 +19,13 @@ export default class SideBar extends React.Component {
             page,
             clearReply,
             user,
+            params,
         } = this.props;
+        let active = 'all';
+        if (params) {
+            active = params.location.pathname.split('/category/').join('');
+        }
+
         const {categories} = this.state;
         const total = categories.length !== 0 && categories.map((x) => x.count).reduce((x, y) => x + y);
         return (
@@ -29,10 +35,11 @@ export default class SideBar extends React.Component {
                     <h5>Categories</h5>
                     {categories.length > 0 ? (
                         <ul>
-                            {categories && categories.map((category, index) => <CategoryItem
-                                key={index.toString()} {...category} />)}
+                            {categories && categories.map((category, index) => (
+                                <CategoryItem key={index.toString()} {...category} {...{active}}/>
+                            ))}
                             <Link to="/">
-                                <li>All<span className="filter-count">{total}</span></li>
+                                <li style={active === 'all' ? {backgroundColor: '#6ab9d5', color: '#ededed', border: ' 2px solid #ededed'} : {}}>All<span className="filter-count">{total}</span></li>
                             </Link>
                         </ul>
                     ) : (

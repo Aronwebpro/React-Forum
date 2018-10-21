@@ -54,6 +54,14 @@ a, a:hover, a:active, a:visited {
     float: left;
 }
 
+@media only screen and (max-width: 1200px) {
+    .left {
+        display: none;
+    }
+    .right {
+        width: 100%;
+    }
+}
 .fl_c {
     clear: both;
 }
