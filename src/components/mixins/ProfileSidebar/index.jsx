@@ -14,17 +14,19 @@ export default class  UserSidebar extends React.Component {
             {url: '/profile/settings', pageName: 'profile-settings', title: 'Settings'}
             ];
         return (
-                <div className="search-filter">
-                    <h5>Profile Settings</h5>
-                    <ul>
-                        {
-                            links.map(({url, pageName, title}) => (
-                                <Link to={url} key={title}>
-                                    <li style={ page === pageName ? activeLinkStyle : {}} >{title}</li>
-                                </Link>
-                            ))
-                        }
-                    </ul>
+                <div>
+                    <div className="search-filter">
+                        <h5>Profile Settings</h5>
+                        <ul>
+                            {
+                                links.map(({url, pageName, title}) => (
+                                    <Link to={url} key={title}>
+                                        <li style={ page === pageName ? activeLinkStyle : {}} >{title}</li>
+                                    </Link>
+                                ))
+                            }
+                        </ul>
+                    </div>
                 </div>
         )
     }

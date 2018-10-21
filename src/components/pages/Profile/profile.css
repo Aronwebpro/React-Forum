@@ -1,13 +1,73 @@
 .profile-content {
     padding: 0 20px;
 }
-.profile-avatar-wrapper {
-    width: 50%;
-    height: 300px;
-    background-color: green;
+
+.profile-info-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 300px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.profile-avatar-container {
+    flex: 1;
+    margin-left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+.profile-avatar {
+    border-left: 1px solid #5adafb;
+}
+
 .profile-info-wrapper {
-    width: 50%;
-    height: 300px;
-    background-color: yellow;
+    flex: 2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+
+.profile-info-wrapper h2 {
+    color: #545454;
+}
+
+.user-info-row {
+    flex: 1;
+    display: flex;
+}
+
+.user-info-row ul {
+    padding: 0px;
+    margin: 0px;
+}
+
+.user-info-row ul li {
+    list-style-type: none;
+    padding: 15px 10px;
+    font-weight: 700;
+    border-bottom: 1px solid #ededed;
+    transition: all 0.2s linear;
+}
+
+.user-info-left {
+    flex: 1;
+    background-color: #fff;
+    color: #5adafb;
+}
+
+.user-info-right {
+    flex: 1;
+    color: #545454;
+}
+
+.edit-button-container {
+    margin-top: 20px;
+}
+
+.edit-button-container button {
+    margin-left: 5px;
 }

@@ -6,26 +6,60 @@ import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../utils/FlashMessageHandler';
 //Styles
 import './profile.css';
+//Utils
+import {formatToDateAndTimeString} from '../../../utils';
 
 export default class Profile extends React.Component {
     state = {
-        redirect: false
+        redirect: false,
+        loading: false,
     };
 
     render() {
-        if (this.state.redirect) return <Redirect to="/"/>
-        return (
+        const {redirect} = this.state;
+        const {user} = this.props;
+        const {authorAvatar, authorName} = user || {};
+        return redirect ? (
+            <Redirect to="/"/>
+            ) : (
             <div className="container">
                 {this.displayFlashMessageIfItSet()}
                 <div className="profile-content">
-                    <div>
-                        <div className="profile-avatar-wrapper fl_l">
-                            <div>
-
+                    <div className="post-title forum-header">
+                        <h2>Profile</h2>
+                    </div>
+                    <div className="profile-info-container">
+                        <div className="profile-info-wrapper">
+                            <h2>User Information:</h2>
+                            <div className="user-info-row">
+                                <div className="user-info-left">
+                                    <ul>
+                                        <li>Nick Name:</li>
+                                        <li>Email Address:</li>
+                                        <li>Created:</li>
+                                        <li>Topics Number:</li>
+                                        <li>Comments Number:</li>
+                                    </ul>
+                                </div>
+                                <div className="user-info-right">
+                                    <ul>
+                                        <li>{authorName}</li>
+                                        <li>useremail@email.com</li>
+                                        <li>{formatToDateAndTimeString(Date.now())}</li>
+                                        <li>3</li>
+                                        <li>4</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="edit-button-container">
+                                <button className="btn" onClick={this.handleProfileEditClick}>Edit Profile</button>
+                                <button className="btn" onClick={this.handleChangeAvatarClick}>Change Avatar</button>
                             </div>
                         </div>
-                        <div className="profile-info-wrapper fl_l">
-
+                        <div className="profile-avatar-container">
+                            <div className="profile-avatar">
+                                <img src={authorAvatar} alt=""/>
+                            </div>
                         </div>
                     </div>
                     <div className="fl_c"/>
@@ -36,14 +70,20 @@ export default class Profile extends React.Component {
     }
 
     async componentDidMount() {
-
+        //TODO: Get User Data from DB
     }
 
     componentWillUnmount() {
         this.isUnmount = true;
     }
 
+    handleProfileEditClick = () => {
 
+    };
+
+    handleChangeAvatarClick = () => {
+
+    };
 
     displayFlashMessageIfItSet = () => {
         if (this.state.displayFlashMessage) {

@@ -108,7 +108,7 @@ export default class CreatePost extends Component {
         };
 
         const {error, result} = await API.createPost({post});
-        console.log({error, result});
+
         if (error) {
             this.setState({
                 displayFlashMessage: true,

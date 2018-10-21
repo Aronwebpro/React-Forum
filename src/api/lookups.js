@@ -99,6 +99,15 @@ const getUserProfile = async (userId) => {
         }
     }
 };
+//TODO:
+const getUserInfo = async (userId) => {
+
+};
+
+const getPostBelongingToUser = async (userId) => {
+
+};
+
 /**
  * Get All Comments Belonging to Post
  * @param postID
