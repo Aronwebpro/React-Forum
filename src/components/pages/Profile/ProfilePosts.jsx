@@ -4,28 +4,62 @@ import {Redirect} from 'react-router-dom';
 //User Messages
 import {FlashMessage} from '../../mixins/FlashMessage/FlashMessage';
 import {FlashMessageHandler} from '../../../utils/FlashMessageHandler';
-
+//Components
+import Post from '../../mixins/Post/Post';
+import Spinner from '../../mixins/Spinner';
+//Api
+import {getPostBelongingToUser} from '../../../api/lookups.js';
 
 export default class ProfilePosts extends React.Component {
     state = {
-        redirect: false
+        redirect: false,
+        postsLoading: false,
+        empty: false,
+        posts: [],
     };
 
     render() {
-        if (this.state.redirect) return <Redirect to="/"/>
-        return (
+        const {redirect, postsLoading, empty, posts} = this.state;
+        const {user} = this.props;
+
+        return redirect ? (
+            <Redirect to="/"/>
+        ) : (
             <div className="container">
                 {this.displayFlashMessageIfItSet()}
-                <div>
-                    Posts Component
+                <div className="profile-content">
+                    <div className="post-title forum-header">
+                        <h2>Your Posts</h2>
+                    </div>
+                    <div ref={input => (this.forumContent = input)} className="forum-content">
+                        <div ref={input => (this.forumContentInner = input)} className="forum-content-inner">
+                            {!postsLoading && posts.length > 0 ? posts.map(post => (
+                                <Post {...post} key={post.title}/>
+                            )) : (
+                                <div>
+                                    {empty ? (
+                                        <div style={{textAlign: 'center', fontSize: '2em'}}>
+                                            No Posts
+                                        </div>
+                                    ) : (
+                                        <Spinner/>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="fl_c"/>
                 </div>
-
             </div>
         )
     }
 
     async componentDidMount() {
-
+        const {uid} = this.props.user;
+        const {posts} = await getPostBelongingToUser(uid);
+        if (!this.isUnmount) {
+            this.setState({posts, postsLoading: false});
+        }
     }
 
     componentWillUnmount() {

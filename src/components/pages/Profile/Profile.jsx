@@ -64,7 +64,6 @@ export default class Profile extends React.Component {
                     </div>
                     <div className="fl_c"/>
                 </div>
-
             </div>
         )
     }

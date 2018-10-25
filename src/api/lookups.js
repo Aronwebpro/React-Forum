@@ -103,9 +103,35 @@ const getUserProfile = async (userId) => {
 const getUserInfo = async (userId) => {
 
 };
+/**
+ * Get Posts belonging to User
+ * @param userId -> String
+ * @param limit -> number
+ * @returns Array of Posts
+ */
+const getPostBelongingToUser = async (userId, limit=10) => {
+    const postsRef = db.collection('posts').where('userId', '==', userId);
+    const postsDoc = await postsRef.orderBy('created', 'desc').limit(limit + 1).get();
+    const postsData = postsDoc.docs.map(postDoc => {
+        return {postId: postDoc.id, ...postDoc.data()}
+    });
 
-const getPostBelongingToUser = async (userId) => {
+    const posts = await Promise.all(postsData.map(async (post) => {
+        const [user, lastUser] = await Promise.all([
+            await getUserProfile(post.userId),
+            await getUserProfile(post.lastUserId)
+        ]);
+        post.user = user;
+        post.lastUser = lastUser;
+        return post;
+    }));
 
+    if (posts.length > limit) {
+        const {postId} = posts.pop();
+        return {posts, nextPostId: postId}
+    } else {
+        return {posts};
+    }
 };
 
 /**
@@ -160,4 +186,5 @@ export {
     getPostDataForPostPage,
     getCommentsBelongingToPost,
     getCategories,
+    getPostBelongingToUser,
 }

@@ -42,7 +42,7 @@ export default class Home extends React.Component {
                     </div>
                     <div className="fl_c"/>
                     <div ref={input => (this.forumContent = input)} className="forum-content">
-                        <div ref={input => (this.forumContentInner = input)} className="forum-coontent-inner">
+                        <div ref={input => (this.forumContentInner = input)} className="forum-content-inner">
                             {!postsLoading && posts.length > 0 ? posts.map(post => (
                                 <Post {...post} key={post.title}/>
                             )) : (

@@ -16,10 +16,17 @@ export default class Profile extends React.Component {
         return (
             <div className="container">
                 {this.displayFlashMessageIfItSet()}
-                <div>
-                    Friends Component
+                <div className="profile-content">
+                    <div className="post-title forum-header">
+                        <h2>Friends List</h2>
+                    </div>
+                    <div ref={input => (this.forumContent = input)} className="forum-content">
+                        <div ref={input => (this.forumContentInner = input)} className="forum-content-inner">
+                            You don't have any friends :/
+                        </div>
+                    </div>
+                    <div className="fl_c"/>
                 </div>
-
             </div>
         )
     }

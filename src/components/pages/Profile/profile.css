@@ -3,6 +3,7 @@
 }
 
 .profile-info-container {
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
     min-height: 300px;

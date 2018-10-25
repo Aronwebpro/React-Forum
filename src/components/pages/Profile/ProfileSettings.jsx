@@ -15,10 +15,17 @@ export default class ProfileSettings extends React.Component {
         return (
             <div className="container">
                 {this.displayFlashMessageIfItSet()}
-                <div>
-                    Settings Component
+                <div className="profile-content">
+                    <div className="post-title forum-header">
+                        <h2>Settings</h2>
+                    </div>
+                    <div ref={input => (this.forumContent = input)} className="forum-content">
+                        <div ref={input => (this.forumContentInner = input)} className="forum-content-inner">
+                           Profile Settings
+                        </div>
+                    </div>
+                    <div className="fl_c"/>
                 </div>
-
             </div>
         )
     }
