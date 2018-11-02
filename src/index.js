@@ -13,7 +13,7 @@ import {auth} from 'firebase/index';
 
 //Layout Higher Order Component
 import PageLayout from './components/template/PageLayout/index.js';
-
+import AuthenticatedRoute from './components/AuthenticatedRoute';
 
 //Components
 import Home from './components/pages/Home/Home.jsx';
@@ -103,10 +103,10 @@ const Root = (props) => {
                         <Route exact path="/category/:category" render={(params) => <HomePage {...{params, user}}/>}/>
                         <Route exact path="/category" render={() => <Redirect to="/"/>}/>
                         {/*Profile*/}
-                        <Route exact path='/profile/posts' component={() => <ProfilePostsPage {...{user}}/>} />
-                        <Route exact path='/profile/friends' component={() => <ProfileFriendsPage {...{user}}/>} />
-                        <Route exact path='/profile/settings' component={() => <ProfileSettingsPage {...{user}}/>} />
-                        <Route exact path='/profile' component={() => <ProfilePage {...{user}}/>} />
+                        <AuthenticatedRoute exact path='/profile/posts' render={() => <ProfilePostsPage {...{user}}/>} />
+                        <AuthenticatedRoute exact path='/profile/friends' render={() => <ProfileFriendsPage {...{user}}/>} />
+                        <AuthenticatedRoute exact path='/profile/settings' render={() => <ProfileSettingsPage {...{user}}/>} />
+                        <AuthenticatedRoute exact path='/profile' render={() => <ProfilePage {...{user}}/>} />
                         {/*User*/}
                         <Route exact path="/user/:id" render={() => <UserPage /> } />
                         <Route exact path="/user" render={() =>  <Redirect to="/"/>} />
@@ -140,7 +140,7 @@ auth().onAuthStateChanged(userObj => {
         };
         ReactDOM.render(<Root {...{user}} />, document.getElementById('root'));
     } else {
-        ReactDOM.render(<Root isLoggedIn={false}/>, document.getElementById('root'));
+        ReactDOM.render(<Root/>, document.getElementById('root'));
     }
 });
 
