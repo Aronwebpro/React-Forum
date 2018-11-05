@@ -13,16 +13,23 @@ import {auth} from 'firebase/index';
 
 //Layout Higher Order Component
 import PageLayout from './components/template/PageLayout/index.js';
+import AuthenticatedRoute from './components/AuthenticatedRoute';
 
-
-//Page Components
+//Components
 import Home from './components/pages/Home/Home.jsx';
 import Notfound from './components/pages/404/Notfound.jsx';
 import PostDetail from './components/pages/PostDetail/PostDetail';
 import NewPost from './components/pages/CreatePost/CreatePost';
 import Login from './components/pages/Login/Login';
-import Register from './components/pages/Register/Register.jsx';
-import About from './components/pages/About/about.jsx';
+import Register from './components/pages/Register/Register';
+import About from './components/pages/About/about';
+import User from './components/pages/User/User';
+//Profile
+import ProfileSidebar from './components/mixins/ProfileSidebar';
+import Profile from './components/pages/Profile/Profile';
+import ProfilePosts from './components/pages/Profile/ProfilePosts';
+import ProfileFriends from './components/pages/Profile/ProfileFriends';
+import ProfileSettings from './components/pages/Profile/ProfileSettings';
 
 
 //Template parts
@@ -51,6 +58,38 @@ const LoginPage = PageLayout({
     PageComponent:  Login,
     pageId: 'login',
 });
+const UserPage = PageLayout({
+    PageComponent: User,
+    SideBarComponent: SideBar,
+    pageId: 'user',
+    layout: 'withSidebar',
+});
+const ProfilePage = PageLayout({
+    PageComponent: Profile,
+    SideBarComponent: ProfileSidebar,
+    pageId: 'profile',
+    layout: 'withSidebar',
+});
+
+const ProfilePostsPage = PageLayout({
+    PageComponent: ProfilePosts,
+    SideBarComponent: ProfileSidebar,
+    pageId: 'profile-posts',
+    layout: 'withSidebar',
+});
+const ProfileFriendsPage = PageLayout({
+    PageComponent: ProfileFriends,
+    SideBarComponent: ProfileSidebar,
+    pageId: 'profile-friends',
+    layout: 'withSidebar',
+});
+const ProfileSettingsPage = PageLayout({
+    PageComponent: ProfileSettings,
+    SideBarComponent: ProfileSidebar,
+    pageId: 'profile-settings',
+    layout: 'withSidebar',
+});
+
 
 const Root = (props) => {
     const {user} = props;
@@ -60,13 +99,24 @@ const Root = (props) => {
                 <Header {...{user}}/>
                 <div className="content">
                     <Switch>
+                        {/*Category*/}
                         <Route exact path="/category/:category" render={(params) => <HomePage {...{params, user}}/>}/>
-                        <Route exact path="/category" render={(params) => <Redirect to="/"/>}/>
+                        <Route exact path="/category" render={() => <Redirect to="/"/>}/>
+                        {/*Profile*/}
+                        <AuthenticatedRoute {...{user}} exact path='/profile/posts' render={() => <ProfilePostsPage {...{user}}/>} />
+                        <AuthenticatedRoute {...{user}} exact path='/profile/friends' render={() => <ProfileFriendsPage {...{user}}/>} />
+                        <AuthenticatedRoute {...{user}} exact path='/profile/settings' render={() => <ProfileSettingsPage {...{user}}/>} />
+                        <AuthenticatedRoute {...{user}} exact path='/profile' render={() => <ProfilePage {...{user}}/>} />
+                        {/*User*/}
+                        <Route exact path="/user/:id" render={() => <UserPage /> } />
+                        <Route exact path="/user" render={() =>  <Redirect to="/"/>} />
+                        {/*Other*/}
                         <Route path="/post/:postId" render={(params) => <PostDetail {...{params, user}} />}/>
                         <Route exact path="/newPost" render={() => <NewPost {...{user}}/>}/>
                         <Route exact path="/login" render={() => <LoginPage {...{user}}/>}/>
                         <Route exact path="/register" render={() => <RegisterPage {...{user}}/>}/>
                         <Route exact path="/about" component={AboutPage}/>
+                        {/*Home*/}
                         <Route exact path="/" render={() => <HomePage {...{user}}/> } />
                         <Route component={Notfound}/>
                     </Switch>
@@ -76,9 +126,9 @@ const Root = (props) => {
         </BrowserRouter>
     );
 };
+
 PropTypes.Root = {
-    userMeta: PropTypes.object,
-    isLoggedIn: PropTypes.bool
+    user: PropTypes.object,
 };
 
 auth().onAuthStateChanged(userObj => {
@@ -90,7 +140,7 @@ auth().onAuthStateChanged(userObj => {
         };
         ReactDOM.render(<Root {...{user}} />, document.getElementById('root'));
     } else {
-        ReactDOM.render(<Root isLoggedIn={false}/>, document.getElementById('root'));
+        ReactDOM.render(<Root/>, document.getElementById('root'));
     }
 });
 

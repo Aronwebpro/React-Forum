@@ -34,15 +34,10 @@ export default class Home extends React.Component {
                         <div className="forum-title">
                             <h2>Recent Discussions</h2>
                         </div>
-                        <div ref={input => (this.arrow = input)} className="arrors"
-                             onClick={() => this.expand(this)}>
-                            <div className="leftArrow"/>
-                            <div className="rightArrow"/>
-                        </div>
                     </div>
                     <div className="fl_c"/>
                     <div ref={input => (this.forumContent = input)} className="forum-content">
-                        <div ref={input => (this.forumContentInner = input)} className="forum-coontent-inner">
+                        <div ref={input => (this.forumContentInner = input)} className="forum-content-inner">
                             {!postsLoading && posts.length > 0 ? posts.map(post => (
                                 <Post {...post} key={post.title}/>
                             )) : (
@@ -76,10 +71,12 @@ export default class Home extends React.Component {
                 this.setState({displayFlashMessage: true, flashMessage});
             }
         }
+        if (window) {
+            window.scrollTo(0, 0);
+        }
     }
 
     componentDidUpdate(prevProps) {
-        window.addEventListener('load', this.setHeight);
         if (
             this.props.params &&
             prevProps.params &&
@@ -88,7 +85,7 @@ export default class Home extends React.Component {
             this.props.params.match.url !== prevProps.params.match.url ||
             this.props.params !== prevProps.params
         ) {
-
+            window.scrollTo(0, 0);
             this.getScreenData();
         }
 
@@ -96,12 +93,7 @@ export default class Home extends React.Component {
 
     componentWillUnmount() {
         this.isUnmount = true;
-        window.removeEventListener('load', this.setHeight);
     }
-
-    setHeight = () => {
-        this.forumContent.style.height = this.forumContentInner.clientHeight + 'px';
-    };
 
     //Retrieve Topics and categories from DB
     getScreenData = async (limit) => {
@@ -126,26 +118,6 @@ export default class Home extends React.Component {
             if (!this.isUnmount) {
                 this.setState({posts, categories, hideLoadBtn: !nextPostId, postsLoading: false});
             }
-        }
-    };
-
-    //Expand Widget Header on Click
-    expand = (component) => {
-        if (component.forumContent.clientHeight > 0) {
-            component.forumContent.style.height = 0 + 'px';
-            component.changeBtn('down');
-        } else {
-            component.forumContent.style.height = component.forumContentInner.clientHeight + 'px';
-            component.changeBtn();
-        }
-    };
-
-    //Change Header arrow position up or down
-    changeBtn = (position) => {
-        if (position === 'down') {
-            this.arrow.style.transform = 'rotateZ(-90deg) translate(7%, 40%)';
-        } else {
-            this.arrow.style.transform = 'rotateZ(0deg) translate(20%, 0%)';
         }
     };
 

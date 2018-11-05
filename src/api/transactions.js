@@ -33,7 +33,7 @@ const createUser = async ({email, password, avatar, nickname}) => {
     //Get current logged in user
     const user = await auth().currentUser;
 
-    //Update User Profile in Firebase Auth
+    //Update User User in Firebase Auth
     await user.updateProfile({
         displayName: nickname,
         photoURL: avatar
@@ -53,14 +53,50 @@ const createUser = async ({email, password, avatar, nickname}) => {
     //Save new user Object to Users Collection
     await db.collection('users').doc(user.uid).set(userObj);
 
-    console.log('User created!');
+    //Create Settings sub-collection
+    const defaultSettings = {
+        emailNotifications: true,
+        privateProfile: false,
+        subscribeNews: true,
+    };
+    await db.collection('users').doc(user.uid).collection('settings').add(defaultSettings);
 
+    //Return Status
     return {status: 'success', msg: 'User Created Successfully!'}
 };
 
 const updateUser = async ({uid, data}) => {
 
 };
+
+const updateUserAvatar = async ({uid, authorAvatar}) => {
+    //Get current logged in user
+    const user = await auth().currentUser;
+
+    //Update User User in Firebase Auth
+    await user.updateProfile({
+        photoURL: authorAvatar
+    });
+
+    const userDocumentRef = db.collection('users').doc(uid);
+    await userDocumentRef.update({
+        authorAvatar
+    });
+    return 'success';
+};
+
+const updateUserSettings = async ({uid, emailNotifications, subscribeNews, privateProfile}) => {
+    const userDocumentRef = db.collection('users').doc(uid).collection('private').doc('settings');
+
+    await userDocumentRef.update({
+        emailNotifications,
+        subscribeNews,
+        privateProfile
+    });
+    return 'success';
+};
+
+
 /**
  * Create PostDetail in FireStore DB
  * @param post -> Object
@@ -79,6 +115,13 @@ const createPost = async ({post}) => {
     return {postId: postDocRef.id}
 };
 
+/**
+ * Create New Post
+ * @param postId
+ * @param comment
+ * @param userId
+ * @returns Comment -> Object
+ */
 const createComment = async ({postId, comment, userId}) => {
     const commentDocRef = await db.collection('posts').doc(postId).collection('comments').add(comment);
     const commentDoc = await commentDocRef.get();
@@ -89,12 +132,13 @@ const createComment = async ({postId, comment, userId}) => {
     return commentDoc.data();
 };
 
-
 const API = {
     createUser: TransactionWrapper.bind(this, createUser),
     updateUser: TransactionWrapper.bind(this, updateUser),
     createPost: TransactionWrapper.bind(this, createPost),
     createComment: TransactionWrapper.bind(this, createComment),
-}
+    updateUserSettings: TransactionWrapper.bind(this, updateUserSettings),
+    updateUserAvatar: TransactionWrapper.bind(this, updateUserAvatar),
+};
 
 export default API;

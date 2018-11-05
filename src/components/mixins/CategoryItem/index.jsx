@@ -5,10 +5,10 @@ import {Link} from 'react-router-dom';
 //List item for categories in Aside category list
 export default class CategoryItem extends React.PureComponent {
     render() {
-        const {title, categoryUrl, count } = this.props;
+        const {title, categoryUrl, count, active } = this.props;
         return (
             <Link to={`/category/${categoryUrl}`}>
-                <li>{title}<span className="filter-count">({count})</span></li>
+                <li style={active === categoryUrl ? {backgroundColor: '#6ab9d5', color: '#ededed', border: ' 2px solid #ededed'} : {}}>{title}<span className="filter-count">({count})</span></li>
             </Link>
         )
     }

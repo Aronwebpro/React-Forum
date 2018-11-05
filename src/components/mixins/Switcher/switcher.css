@@ -1,0 +1,31 @@
+.switcher {
+    display: inline-block;
+    background: #EFEFEF;
+    border-radius: 24px;
+    height: 30px;
+    width: 49px;
+    border: 1px solid #A3A3A3;
+    cursor: pointer;
+}
+
+
+.switcher:after {
+    content: "";
+    display: block;
+    width: 26px;
+    height: 26px;
+    border-radius: 26px;
+    background: white;
+    border: 1px solid #A3A3A3;
+    margin: 0 0 0 -1px;
+}
+
+.switcherChecked {
+    background: #98c878;
+    border-color: #7da562;
+}
+
+.switcherChecked:after {
+    border-color: #7da562;
+    float: right;
+}
