@@ -55,6 +55,9 @@ export default class ProfilePosts extends React.Component {
     }
 
     async componentDidMount() {
+        if (window) {
+            window.scrollTo(0, 0);
+        }
         const {uid} = this.props.user;
         const {posts} = await getPostBelongingToUser(uid);
         if (!this.isUnmount) {

@@ -71,6 +71,9 @@ export default class Home extends React.Component {
                 this.setState({displayFlashMessage: true, flashMessage});
             }
         }
+        if (window) {
+            window.scrollTo(0, 0);
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -82,7 +85,7 @@ export default class Home extends React.Component {
             this.props.params.match.url !== prevProps.params.match.url ||
             this.props.params !== prevProps.params
         ) {
-
+            window.scrollTo(0, 0);
             this.getScreenData();
         }
 
@@ -91,7 +94,7 @@ export default class Home extends React.Component {
     componentWillUnmount() {
         this.isUnmount = true;
     }
-    
+
     //Retrieve Topics and categories from DB
     getScreenData = async (limit) => {
         if (!this.isUnmount) {

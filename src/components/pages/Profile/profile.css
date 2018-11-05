@@ -41,12 +41,12 @@
     display: flex;
 }
 
-.user-info-row ul {
+.profile-content ul {
     padding: 0px;
     margin: 0px;
 }
 
-.user-info-row ul li {
+.profile-content ul li {
     list-style-type: none;
     padding: 15px 10px;
     font-weight: 700;
@@ -66,9 +66,40 @@
 }
 
 .edit-button-container {
+    display: flex;
+    height: 70px;
     margin-top: 20px;
+    padding: 10px;
+
 }
 
 .edit-button-container button {
     margin-left: 5px;
+}
+
+.edit-button-inner {
+    display: inline-block;
+    width: 100px;
+}
+
+.settings-table {
+    flex: 1;
+}
+
+.settings-table ul li {
+    display: flex;
+    justify-content: center;
+}
+.settings-title {
+    flex: 1;
+}
+.switcher-container {
+    margin-right: 20px;
+}
+.update-avatar-container {
+    padding: 40px;
+    flex-direction: column;
+}
+.register-avatar-form {
+    padding: 20px;
 }

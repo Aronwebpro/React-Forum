@@ -31,8 +31,10 @@ export default class Profile extends React.Component {
         )
     }
 
-    async componentDidMount() {
-
+    componentDidMount() {
+                if (window) {
+                    window.scrollTo(0, 0);
+                }
     }
 
     componentWillUnmount() {

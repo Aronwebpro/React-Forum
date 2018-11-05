@@ -103,10 +103,10 @@ const Root = (props) => {
                         <Route exact path="/category/:category" render={(params) => <HomePage {...{params, user}}/>}/>
                         <Route exact path="/category" render={() => <Redirect to="/"/>}/>
                         {/*Profile*/}
-                        <AuthenticatedRoute exact path='/profile/posts' render={() => <ProfilePostsPage {...{user}}/>} />
-                        <AuthenticatedRoute exact path='/profile/friends' render={() => <ProfileFriendsPage {...{user}}/>} />
-                        <AuthenticatedRoute exact path='/profile/settings' render={() => <ProfileSettingsPage {...{user}}/>} />
-                        <AuthenticatedRoute exact path='/profile' render={() => <ProfilePage {...{user}}/>} />
+                        <AuthenticatedRoute {...{user}} exact path='/profile/posts' render={() => <ProfilePostsPage {...{user}}/>} />
+                        <AuthenticatedRoute {...{user}} exact path='/profile/friends' render={() => <ProfileFriendsPage {...{user}}/>} />
+                        <AuthenticatedRoute {...{user}} exact path='/profile/settings' render={() => <ProfileSettingsPage {...{user}}/>} />
+                        <AuthenticatedRoute {...{user}} exact path='/profile' render={() => <ProfilePage {...{user}}/>} />
                         {/*User*/}
                         <Route exact path="/user/:id" render={() => <UserPage /> } />
                         <Route exact path="/user" render={() =>  <Redirect to="/"/>} />

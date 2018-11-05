@@ -103,6 +103,13 @@ const getUserProfile = async (userId) => {
 const getUserInfo = async (userId) => {
 
 };
+
+const getUserSettings = async (userId) => {
+    const userSettingsRef = await db.collection('users').doc(userId).collection('private').doc('settings').get();
+    const settings = userSettingsRef.data();
+    return {settings}
+};
+
 /**
  * Get Posts belonging to User
  * @param userId -> String
@@ -187,4 +194,5 @@ export {
     getCommentsBelongingToPost,
     getCategories,
     getPostBelongingToUser,
+    getUserSettings,
 }

@@ -110,7 +110,7 @@ export default class PostDetail extends React.Component {
     }
 
     getScreenData = async () => {
-
+        window.scrollTo(0, 0);
         document.addEventListener('click', this.comClick);
         document.addEventListener('keydown', this.escClick);
 
