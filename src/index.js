@@ -24,6 +24,7 @@ import Login from './components/pages/Login/Login';
 import Register from './components/pages/Register/Register';
 import About from './components/pages/About/about';
 import User from './components/pages/User/User';
+
 //Profile
 import ProfileSidebar from './components/mixins/ProfileSidebar';
 import Profile from './components/pages/Profile/Profile';
