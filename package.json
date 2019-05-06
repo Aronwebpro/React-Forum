@@ -15,7 +15,8 @@
     "react-dom": "^16.5.2",
     "react-router": "4.0.0-alpha.4",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.0.14"
+    "react-scripts": "1.0.14",
+    "snyk": "^1.161.1"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
@@ -25,10 +26,13 @@
     "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "devDependencies": {
     "jest": "^22.4.4",
     "react-test-renderer": "^16.5.2"
-  }
+  },
+  "snyk": true
 }
