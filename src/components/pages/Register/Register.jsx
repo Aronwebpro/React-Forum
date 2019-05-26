@@ -149,6 +149,6 @@ export default class Register extends Component {
     }
 }
 
-Register.PropTypes = {
+Register.propTypes = {
     user: PropTypes.object
 };
