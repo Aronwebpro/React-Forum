@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 //Api
-import { auth } from 'firebase';
+import { auth } from 'firebase/app';
 
 //Layout Higher Order Component
 import PageLayout from './components/template/PageLayout/index.js';
