@@ -1,4 +1,4 @@
-import {auth} from "firebase";
+import { auth } from 'firebase/app';
 
 /**
  * Sign with FireBase SDK
@@ -20,4 +20,4 @@ const signOut = () => {
 export {
     signIn,
     signOut,
-}
+};

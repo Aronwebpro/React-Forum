@@ -1,5 +1,11 @@
+// Firebase
 import db from '../firebase.js';
-import {getUsersFromStorage, saveUsersToStorage} from '../utils'
+
+// Utils
+import {
+    getUsersFromStorage,
+    saveUsersToStorage
+} from '../utils';
 
 /**
  * Get PostDetail List from FireStore DB
@@ -10,7 +16,7 @@ const getPosts = async (limit = 10) => {
     const postsRef = db.collection('posts');
     const postsDoc = await postsRef.orderBy('created', 'desc').limit(limit + 1).get();
     const postsData = postsDoc.docs.map(postDoc => {
-        return {postId: postDoc.id, ...postDoc.data()}
+        return { postId: postDoc.id, ...postDoc.data() };
     });
 
     const posts = await Promise.all(postsData.map(async (post) => {
@@ -24,10 +30,10 @@ const getPosts = async (limit = 10) => {
     }));
 
     if (posts.length > limit) {
-        const {postId} = posts.pop();
-        return {posts, nextPostId: postId}
+        const { postId } = posts.pop();
+        return { posts, nextPostId: postId };
     } else {
-        return {posts};
+        return { posts };
     }
 };
 
@@ -41,7 +47,7 @@ const getPostByCategory = async (categoryId, limit = 10) => {
     const postsRef = db.collection('posts').where('categoryId', '==', categoryId);
     const postsDoc = await postsRef.limit(limit).get();
     const postsData = postsDoc.docs.map(postDoc => {
-        return {postId: postDoc.id, ...postDoc.data()}
+        return { postId: postDoc.id, ...postDoc.data() };
     }).sort((a, b) => a.created > b.created ? 1 : -1);
 
     const posts = await Promise.all(postsData.map(async (post) => {
@@ -55,10 +61,10 @@ const getPostByCategory = async (categoryId, limit = 10) => {
     }));
 
     if (posts.length > limit) {
-        const {postId} = posts.pop();
-        return {posts, nextPostId: postId}
+        const { postId } = posts.pop();
+        return { posts, nextPostId: postId };
     } else {
-        return {posts};
+        return { posts };
     }
 };
 
@@ -73,7 +79,7 @@ const getSinglePost = async (postID) => {
     if (!postDoc.exists) {
         return undefined;
     }
-    return {postId: postDoc.id, ...postDoc.data()};
+    return { postId: postDoc.id, ...postDoc.data() };
 };
 
 /**
@@ -107,7 +113,7 @@ const getUserInfo = async (userId) => {
 const getUserSettings = async (userId) => {
     const userSettingsRef = await db.collection('users').doc(userId).collection('private').doc('settings').get();
     const settings = userSettingsRef.data();
-    return {settings}
+    return { settings };
 };
 
 /**
@@ -116,11 +122,11 @@ const getUserSettings = async (userId) => {
  * @param limit -> number
  * @returns Array of Posts
  */
-const getPostBelongingToUser = async (userId, limit=10) => {
+const getPostBelongingToUser = async (userId, limit = 10) => {
     const postsRef = db.collection('posts').where('userId', '==', userId);
     const postsDoc = await postsRef.orderBy('created', 'desc').limit(limit + 1).get();
     const postsData = postsDoc.docs.map(postDoc => {
-        return {postId: postDoc.id, ...postDoc.data()}
+        return { postId: postDoc.id, ...postDoc.data() };
     });
 
     const posts = await Promise.all(postsData.map(async (post) => {
@@ -134,10 +140,10 @@ const getPostBelongingToUser = async (userId, limit=10) => {
     }));
 
     if (posts.length > limit) {
-        const {postId} = posts.pop();
-        return {posts, nextPostId: postId}
+        const { postId } = posts.pop();
+        return { posts, nextPostId: postId };
     } else {
-        return {posts};
+        return { posts };
     }
 };
 
@@ -150,7 +156,7 @@ const getCommentsBelongingToPost = async (postID) => {
     const commentsDocRef = db.collection('posts').doc(postID).collection('comments');
     const commentsDoc = await commentsDocRef.orderBy('created', 'desc').get();
     const comments = await commentsDoc.docs.map(commentDoc => {
-        return {commentId: commentsDoc.id, ...commentDoc.data()}
+        return { commentId: commentsDoc.id, ...commentDoc.data() };
     });
     const commentWithUser = await Promise.all(comments.map(async (comment) => {
         comment.user = comment.userId && await getUserProfile(comment.userId);
@@ -168,12 +174,12 @@ const getPostDataForPostPage = async (postId) => {
     if (post && post.userId) {
         const postUser = await getUserProfile(post.userId);
         if (postUser) {
-            return {postUser, post}
+            return { postUser, post };
         } else {
-            return {}
+            return {};
         }
     } else {
-        return {}
+        return {};
     }
 };
 
@@ -181,8 +187,8 @@ const getCategories = async () => {
     const categoriesDocRef = db.collection('categories');
     const categoriesDoc = await categoriesDocRef.get();
     return categoriesDoc.docs.map((categoryDoc) => {
-        return {categoryId: categoryDoc.id, ...categoryDoc.data()}
-    })
+        return { categoryId: categoryDoc.id, ...categoryDoc.data() };
+    });
 };
 
 export {
@@ -195,4 +201,4 @@ export {
     getCategories,
     getPostBelongingToUser,
     getUserSettings,
-}
+};

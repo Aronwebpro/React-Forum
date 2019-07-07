@@ -1,6 +1,6 @@
 {
-  "name": "React Game Forum",
-  "version": "0.1.0",
+  "name": "React_Game_Forum",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "firebase": "^6.0.4",
