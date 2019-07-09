@@ -12,30 +12,31 @@ import {
 import { auth } from 'firebase/app';
 
 //Layout Higher Order Component
-import PageLayout from './components/template/PageLayout/index.js';
-import AuthenticatedRoute from './components/AuthenticatedRoute';
+import PageLayout from './ui/template/PageLayout/index.js';
+import AuthenticatedRoute from './ui/components/AuthenticatedRoute';
 
 //Components
-import Home from './components/pages/Home/Home.jsx';
-import Notfound from './components/pages/404/Notfound.jsx';
-import PostDetail from './components/pages/PostDetail/PostDetail';
-import NewPost from './components/pages/CreatePost/CreatePost';
-import Login from './components/pages/Login/Login';
-import Register from './components/pages/Register/Register';
-import About from './components/pages/About/about';
-import User from './components/pages/User/User';
+import Home from './ui/pages/Home/Home.jsx';
+import Notfound from './ui/pages/404/Notfound.jsx';
+import PostDetail from './ui/pages/PostDetail/PostDetail';
+import NewPost from './ui/pages/CreatePost/CreatePost';
+import Login from './ui/pages/Login/Login';
+import Register from './ui/pages/Register/Register';
+import About from './ui/pages/About/about';
+import User from './ui/pages/User/User';
+
 //Profile
-import ProfileSidebar from './components/mixins/ProfileSidebar';
-import Profile from './components/pages/Profile/Profile';
-import ProfilePosts from './components/pages/Profile/ProfilePosts';
-import ProfileFriends from './components/pages/Profile/ProfileFriends';
-import ProfileSettings from './components/pages/Profile/ProfileSettings';
+import ProfileSidebar from './ui/components/ProfileSidebar';
+import Profile from './ui/pages/Profile/Profile';
+import ProfilePosts from './ui/pages/Profile/ProfilePosts';
+import ProfileFriends from './ui/pages/Profile/ProfileFriends';
+import ProfileSettings from './ui/pages/Profile/ProfileSettings';
 
 
 //Template parts
-import Header from './components/template/Header/Header';
-import Footer from './components/template/Footer/Footer';
-import SideBar from './components/template/SideBar';
+import Header from './ui/template/Header/Header';
+import Footer from './ui/template/Footer/Footer';
+import SideBar from './ui/template/SideBar';
 
 //Styles
 import './css/theme.css'

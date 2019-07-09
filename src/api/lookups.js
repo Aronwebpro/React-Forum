@@ -5,7 +5,7 @@ import db from '../firebase.js';
 import {
     getUsersFromStorage,
     saveUsersToStorage
-} from '../utils';
+} from '../lib/utils';
 
 /**
  * Get PostDetail List from FireStore DB
