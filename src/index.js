@@ -15,17 +15,17 @@ import { auth } from 'firebase/app';
 import PageLayout from './ui/template/PageLayout/index.js';
 import AuthenticatedRoute from './ui/components/AuthenticatedRoute';
 
-//Components
+// Components
 import Home from './ui/pages/Home/Home.tsx';
 import Notfound from './ui/pages/404/Notfound.jsx';
 import PostDetail from './ui/pages/PostDetail/PostDetail';
 import NewPost from './ui/pages/CreatePost/CreatePost';
 import Login from './ui/pages/Login/Login';
 import Register from './ui/pages/Register/Register';
-import About from './ui/pages/About/about';
+import About from './ui/pages/About/About';
 import User from './ui/pages/User/User';
 
-//Profile
+// Profile
 import ProfileSidebar from './ui/components/ProfileSidebar';
 import Profile from './ui/pages/Profile/Profile';
 import ProfilePosts from './ui/pages/Profile/ProfilePosts';
