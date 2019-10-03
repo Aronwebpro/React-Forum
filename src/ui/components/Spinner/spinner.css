@@ -1,8 +1,15 @@
-.page-spinner {
+.page-spinner-container {
+    height: 50vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex: 1;
+}
+.width-vw {
+    width: 100%;
+}
+.width-cw {
+    width: 100%;
 }
 .page-spinner-wrapper {
     width: 50px;
@@ -10,10 +17,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 #page-spinner-img {
     padding: 2px;
     width: 100%;
+}
+
+@media only screen and (max-width: 1200px) {
+    .width-vw {
+        width: 100vw;
+    }
 }
