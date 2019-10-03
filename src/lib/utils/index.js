@@ -59,10 +59,20 @@ const saveUsersToStorage = (data) => {
       }
 };
 
+/**
+ * Get property of the object by passing the path string
+ * @param obj
+ * @param string
+ */
+const get = (obj = {}, string = '') => {
+    return string.split('.').reduce((x, y) => (x === undefined ? undefined : x[y]), obj);
+};
+
 export {
     formatToDateString,
     formatToTimeString,
     getUsersFromStorage,
     saveUsersToStorage,
     formatToDateAndTimeString,
+    get,
 }

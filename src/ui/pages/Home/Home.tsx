@@ -1,37 +1,62 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 
-// User Messages
-import { FlashMessage } from '../../../ui/components/FlashMessage/FlashMessage';
-import { FlashMessageHandler } from '../../../lib/utils/FlashMessageHandler';
+// Router
+import { Redirect } from 'react-router-dom';
+import { RouteChildrenProps, RouteProps } from 'react-router';
 
 // Api
-import { getPosts, getPostByCategory, getCategories } from '../../../api/lookups.js';
+import {
+    getPosts,
+    getPostByCategory,
+    getCategories
+} from '../../../api/lookups.js';
+
+// Utils
+import { get } from '../../../lib/utils';
 
 // Components
 import Post from '../../../ui/components/Post/Post';
 import Spinner from '../../../ui/components/Spinner/index';
 
-export default class Home extends React.Component {
-    state = {
-        posts: [],
-        categories: [],
-        redirect: false,
-        flashMessage: {},
-        displayFlashMessage: false,
-        hideLoadBtn: true,
-        amount: 10,
-        empty: false,
-        postsLoading: false,
+// @types
+type State = {
+    posts: Post[]
+    categories: string[]
+    showLoadButton: boolean
+    amount: number
+    loading: boolean
+}
+
+type Props = RouteProps;
+
+export default class Home extends React.Component<Props, State> {
+    static propTypes = {
+        user: PropTypes.shape({
+            uid: PropTypes.string.isRequired,
+            authorName: PropTypes.string.isRequired,
+            authorAvatar: PropTypes.string.isRequired,
+        }),
+        params: PropTypes.object
     };
 
-    render() {
-        const { posts, empty, postsLoading } = this.state;
-        if (this.state.redirect) return <Redirect to="/"/>;
+    public readonly state = {
+        posts: [],
+        categories: [],
+        showLoadButton: false,
+        amount: 10,
+        loading: true,
+    };
+
+    public render() {
+        const {
+            posts,
+            loading,
+            showLoadButton,
+        } = this.state;
+
         return (
             <div className="container">
-                {this.displayFlashMessageIfItSet()}
                 <div className="forum">
                     <div className="forum-header">
                         <div className="forum-title">
@@ -39,25 +64,29 @@ export default class Home extends React.Component {
                         </div>
                     </div>
                     <div className="fl_c"/>
-                    <div ref={input => (this.forumContent = input)} className="forum-content">
-                        <div ref={input => (this.forumContentInner = input)} className="forum-content-inner">
-                            {!postsLoading && posts.length > 0 ? posts.map(post => (
-                                <Post {...post} key={post.title}/>
-                            )) : (
+                    <div className="forum-content">
+                        <div className="forum-content-inner">
+                            {loading ? (
+                               <div className="loader-container">
+                                   <Spinner screenWidth />
+                               </div>
+                            ) : (
                                 <div>
-                                    {empty ? (
+                                    {posts.length ? (
+                                        posts.map((post, index) => (
+                                            <Post {...post} key={index.toString()}/>
+                                        ))
+                                    ) : (
                                         <div style={{ textAlign: 'center', fontSize: '2em' }}>
                                             No Posts
                                         </div>
-                                    ) : (
-                                        <Spinner/>
                                     )}
                                 </div>
                             )}
                         </div>
                     </div>
                     <div className="load-more-wrapper">
-                        {!this.state.hideLoadBtn && (
+                        {showLoadButton && (
                             <button className="btn" onClick={this.handleLoadMoreClick}>Load More</button>)}
                     </div>
                 </div>
@@ -65,46 +94,32 @@ export default class Home extends React.Component {
         );
     }
 
-    async componentDidMount() {
-        //Retrieve Topics from DB
-        this.getScreenData();
-        const flashMessage = FlashMessageHandler.fetch();
-        if (flashMessage.msg && !this.isUnmount) {
-            if (!this.isUnmount) {
-                this.setState({ displayFlashMessage: true, flashMessage });
-            }
-        }
+    public async componentDidMount() {
         if (window) {
             window.scrollTo(0, 0);
         }
+
+        // Fetch Topics from api
+        await this.handleScreenData();
     }
 
-    componentDidUpdate(prevProps) {
-        if (
-            this.props.params &&
-            prevProps.params &&
-            this.props.params.match.url &&
-            prevProps.params.match.url &&
-            this.props.params.match.url !== prevProps.params.match.url ||
-            this.props.params !== prevProps.params
-        ) {
+    public async componentDidUpdate(prevProps) {
+        if (get(prevProps, 'params.match.url') !== get(this.props, 'params.match.url')) {
             window.scrollTo(0, 0);
-            this.getScreenData();
+            await this.handleScreenData();
         }
-
     }
 
-    componentWillUnmount() {
+    public componentWillUnmount() {
         this.isUnmount = true;
     }
 
-    //Retrieve Topics and categories from DB
-    getScreenData = async (limit) => {
-        if (!this.isUnmount) {
-            this.setState({ postsLoading: true });
-        }
+    private isUnmount: boolean = false;
 
+    // Fetch posts and categories from API
+    private handleScreenData = async (limit: number = 10) => {
         const { params } = this.props;
+        //
         if (params && params.match) {
             const { category } = params.match.params;
             const [postsObj, categories] = await Promise.all([
@@ -112,42 +127,35 @@ export default class Home extends React.Component {
                 getCategories()
             ]);
             const { posts, nextPostId } = postsObj;
+
             if (!this.isUnmount) {
-                this.setState({ posts, categories, hideLoadBtn: !nextPostId, empty: posts.length === 0, postsLoading: false });
+                this.setState({
+                    posts,
+                    categories,
+                    showLoadButton: !!(nextPostId),
+                    loading: false,
+                });
             }
         } else {
             const { posts, nextPostId } = await getPosts(limit);
             const categories = await getCategories();
+
             if (!this.isUnmount) {
-                this.setState({ posts, categories, hideLoadBtn: !nextPostId, postsLoading: false });
+                this.setState({
+                    posts,
+                    categories,
+                    showLoadButton: !!(nextPostId),
+                    loading: false,
+                });
             }
         }
     };
 
-    handleLoadMoreClick = () => {
+    private handleLoadMoreClick = (): void => {
+        // TODO: build functionality to load more posts
         const amount = this.state.amount + 10;
-        this.getPosts(amount);
+        //this.getPosts(amount);
         this.setState({ amount });
-    };
-
-    displayFlashMessageIfItSet = () => {
-        if (this.state.displayFlashMessage) {
-            setTimeout(() => {
-                if (!this.isUnmount) {
-                    this.setState({ displayFlashMessage: false });
-                }
-                FlashMessageHandler.reset();
-            }, 2500);
-            return <FlashMessage {...this.state.flashMessage} />;
-        }
     };
 }
 
-Home.propTypes = {
-    user: PropTypes.shape({
-        uid: PropTypes.string.isRequired,
-        authorName: PropTypes.string.isRequired,
-        authorAvatar: PropTypes.string.isRequired,
-    }.isRequired),
-    params: PropTypes.object
-};
