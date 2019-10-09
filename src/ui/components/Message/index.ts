@@ -1,5 +1,10 @@
 const styles = require('./message.css');
 
+// Icons
+const cross = require('./cross.svg');
+const defaultImg = require('./default.svg');
+const success = require('./success.svg');
+
 const Message = (function constructor() {
     const component =  {
         body: document.getElementsByTagName('body')[0],
@@ -13,7 +18,9 @@ const Message = (function constructor() {
             this.container.setAttribute('class', 'flash-message');
 
             // Append Styles
-            this.container.appendChild(styles);
+            if (styles && typeof styles === 'object' && Object.keys(styles).length) {
+                this.container.appendChild(styles);
+            }
 
             //Append Message Container To Body
             this.body.appendChild(this.container);
@@ -84,13 +91,13 @@ const Message = (function constructor() {
             icon.setAttribute('class', 'icon');
             switch (type) {
                 case 'error' :
-                    icon.setAttribute('src', '/cross.svg');
+                    icon.setAttribute('src', `${cross}`);
                     break;
                 case 'success' :
-                    icon.setAttribute('src', '/success.svg');
+                    icon.setAttribute('src', `${success}`);
                     break;
                 default :
-                    icon.setAttribute('src', '/default.svg');
+                    icon.setAttribute('src', `${defaultImg}`);
             }
             return icon;
         }

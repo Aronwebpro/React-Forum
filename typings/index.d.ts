@@ -22,3 +22,10 @@ declare type Post = {
     userId: string
     user: User
 }
+
+declare type GoogleUser = {
+    uid: string
+    displayName: string
+    email: string
+    photoURL: string
+}
