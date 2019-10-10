@@ -1,16 +1,25 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-//Styles
-import './post.css';
-//Api
-import {getUserProfile} from '../../../api/lookups';
-//Utils
-import {formatToDateString, formatToTimeString} from '../../../lib/utils'
-//Components
-import UserView from '../UserView';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
-//images
+// React Router
+import { Link } from 'react-router-dom';
+
+// Styles
+import './post.css';
+
+// Api
+import { getUserProfile } from '../../../../api/lookups';
+
+// Utils
+import {
+    formatToDateString,
+    formatToTimeString
+} from '../../../../lib/utils'
+
+// Components
+import UserView from '../../common/UserView';
+
+// images
 import defGm from './img/forum_img.png';
 import brdGm from './img/board-games.png';
 import CardGm from './img/card-games.jpg';
@@ -18,14 +27,59 @@ import PcGm from './img/pc-games.png';
 import ConsGm from './img/console-games.png';
 import HandGm from './img/handheld-games.png';
 
-export default class Post extends Component {
-    state = {
-        user: '',
-        lastUser: '',
+// @types
+type State = {
+    user?: User
+    lastUser?: User
+}
+
+type Props = {
+    userId: string
+    lastUserId: string
+    postId: string
+    created: string
+    repliesCount: string
+    category: string
+    text: string
+    title: string
+    type: string
+    lastReply: string
+    user: User
+    lastUser: User
+}
+
+export default class Post extends React.Component<Props, State> {
+    public static propTypes = {
+        userId: PropTypes.string.isRequired,
+        lastUserId: PropTypes.string.isRequired,
+        postId: PropTypes.string.isRequired,
+        created: PropTypes.number.isRequired,
+        repliesCount: PropTypes.number.isRequired,
+        category: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        lastReply: PropTypes.number.isRequired,
     };
 
-    render() {
-        const {postId, created, repliesCount, category, text, title, type, lastReply, user, lastUser} = this.props;
+    public readonly state = {
+        user: undefined,
+        lastUser: undefined,
+    };
+
+    public render() {
+        const {
+            postId,
+            created,
+            repliesCount,
+            category,
+            text,
+            title,
+            type,
+            lastReply,
+            user,
+            lastUser
+        } = this.props;
 
         return (
             <div className="topic">
@@ -44,24 +98,25 @@ export default class Post extends Component {
                                 <h3>{title}</h3>
                                 <p>
                                     <span className="theme-color_txt">Created:</span>
-                                    <span className="created-time">{`${formatToDateString(created)} ${formatToTimeString(created)}`}</span>
+                                    <span
+                                        className="created-time">{`${formatToDateString(created)} ${formatToTimeString(created)}`}</span>
                                     <span className="topic-type">{type && (<span>#{type}</span>)}</span>
                                 </p>
                             </div>
                             <div className="fl_l title-right">
-                                <table style={{borderLeft: '1px solid #ededde'}}>
+                                <table style={{ borderLeft: '1px solid #ededde' }}>
                                     <tbody>
                                     <tr>
-                                        <th width="20%">Replies:</th>
-                                        <th style={{fontWeight: '600', fontSize: '1.1em'}}>{repliesCount}</th>
-                                        <th rowSpan="2" style={{borderLeft: '1px solid #ededde'}}>
-                                            <UserView {...lastUser} {...{lastReply}} type={'last'}/>
+                                        <th style={{width: "20%"}}>Replies:</th>
+                                        <th style={{ fontWeight: 600, fontSize: '1.1em' }}>{repliesCount}</th>
+                                        <th rowSpan={2} style={{ borderLeft: '1px solid #ededde' }}>
+                                            <UserView {...lastUser} {...{ lastReply }} type={'last'}/>
                                         </th>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="fl_c"></div>
+                            <div className="fl_c"/>
                         </div>
                         <div className="topic-description">
                             <p>{text}</p>
@@ -73,28 +128,30 @@ export default class Post extends Component {
                     <div className="row-right">
                         <UserView {...user}/>
                     </div>
-
                 </Link>
                 <div className="fl_c"/>
             </div>
         );
     }
 
-    componentDidMount() {
+    public componentDidMount() {
         this.getUsersForPost();
     }
 
-    componentWillUnmount() {
+    public componentWillUnmount() {
         //Setup Flag to know is component Unmounted
         this.isUnmounted = true;
     }
-    //Fetch PostDetail from DB
-    getUsersForPost = async () => {
-        const {userId, lastUserId} = this.props;
+
+    private isUnmounted: boolean = false;
+
+    // Fetch PostDetail from DB
+    private getUsersForPost = async () => {
+        const { userId, lastUserId } = this.props;
         if (userId === lastUserId) {
             const user = await getUserProfile(userId);
             if (!this.isUnmounted) {
-                this.setState({user, lastUser: user});
+                this.setState({ user, lastUser: user });
             }
         } else {
             const [user, lastUser] = await Promise.all([
@@ -102,12 +159,13 @@ export default class Post extends Component {
                 getUserProfile(lastUserId)
             ]);
             if (!this.isUnmounted) {
-                this.setState({user, lastUser});
+                this.setState({ user, lastUser });
             }
         }
     };
-    //Return Image by PostDetail Category
-    categoryImg = (category) => {
+
+    // Return Image by PostDetail Category
+    private categoryImg = (category) => {
         switch (category) {
             case 'Board Games':
                 return brdGm;
@@ -124,16 +182,3 @@ export default class Post extends Component {
         }
     }
 }
-
-Post.propTypes = {
-    userId: PropTypes.string.isRequired,
-    lastUserId: PropTypes.string.isRequired,
-    postId: PropTypes.string.isRequired,
-    created: PropTypes.number.isRequired,
-    repliesCount: PropTypes.number.isRequired,
-    category: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    lastReply: PropTypes.number.isRequired,
-};

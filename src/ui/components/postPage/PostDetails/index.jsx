@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {formatToDateAndTimeString} from "../../../lib/utils";
+import {formatToDateAndTimeString} from "../../../../lib/utils";
 
-import UserView from '../UserView/index';
-import Spinner from '../Spinner/index';
+import UserView from '../../common/UserView';
+import Spinner from '../../common/Spinner';
 
 
 export default class PostDetails extends React.PureComponent {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FlashMessageHandler} from '../../../lib/utils/FlashMessageHandler';
+import {FlashMessageHandler} from '../../../../lib/utils/FlashMessageHandler';
 import './FlashMessage.css';
 
 

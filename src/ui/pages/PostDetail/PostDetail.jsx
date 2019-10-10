@@ -14,12 +14,12 @@ import API from '../../../api/transactions';
 
 //Components
 import SideBar from '../../template/SideBar/index';
-import PostDetails from '../../../ui/components/PostDetails/index';
-import CommentRow from '../../../ui/components/Comment/Comment';
-import CommentCreateForm from '../../../ui/components/CommentCreateForm/index';
+import PostDetails from '../../components/postPage/PostDetails/index';
+import CommentRow from '../../components/postPage/Comment/Comment';
+import CommentCreateForm from '../../components/createCommentPage/CommentCreateForm/index';
 
 //TODO:
-import { FlashMessage } from '../../../ui/components/FlashMessage/FlashMessage';
+import { FlashMessage } from '../../components/common/FlashMessage/FlashMessage';
 import { FlashMessageHandler } from '../../../lib/utils/FlashMessageHandler';
 
 export default class PostDetail extends React.Component {

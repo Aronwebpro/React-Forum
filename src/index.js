@@ -13,7 +13,7 @@ import { auth } from 'firebase/app';
 
 //Layout Higher Order Component
 import PageLayout from './ui/template/PageLayout/index.js';
-import AuthenticatedRoute from './ui/components/AuthenticatedRoute';
+import AuthenticatedRoute from './ui/components/common/AuthenticatedRoute';
 
 // Components
 import Home from './ui/pages/Home/Home.tsx';
@@ -26,7 +26,7 @@ import About from './ui/pages/About/About';
 import User from './ui/pages/User/User';
 
 // Profile
-import ProfileSidebar from './ui/components/ProfileSidebar';
+import ProfileSidebar from './ui/components/userPage/UserPageSideMenu';
 import Profile from './ui/pages/Profile/Profile';
 import ProfilePosts from './ui/pages/Profile/ProfilePosts';
 import ProfileFriends from './ui/pages/Profile/ProfileFriends';

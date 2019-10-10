@@ -16,8 +16,8 @@ import {
 import { get } from '../../../lib/utils';
 
 // Components
-import Post from '../../../ui/components/Post/Post';
-import Spinner from '../../../ui/components/Spinner/index';
+import Post from '../../components/postPage/Post/Post';
+import Spinner from '../../components/common/Spinner/index';
 
 // @types
 type State = {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 //User Messages
-import { FlashMessage } from '../../../ui/components/FlashMessage/FlashMessage';
+import { FlashMessage } from '../../components/common/FlashMessage/FlashMessage';
 import { FlashMessageHandler } from '../../../lib/utils/FlashMessageHandler';
 
 

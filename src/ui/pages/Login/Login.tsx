@@ -8,7 +8,7 @@ import { RouteChildrenProps } from 'react-router';
 import { signIn } from '../../../api/auth';
 
 // Components
-import Message from '../../components/Message';
+import Message from '../../components/common/Message';
 
 //Styles
 import './css/login.css';

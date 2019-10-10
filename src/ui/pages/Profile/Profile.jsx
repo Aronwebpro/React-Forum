@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 //User Messages
-import { FlashMessage } from '../../../ui/components/FlashMessage/FlashMessage';
+import { FlashMessage } from '../../components/common/FlashMessage/FlashMessage';
 import { FlashMessageHandler } from '../../../lib/utils/FlashMessageHandler';
 //Styles
 import './profile.css';
@@ -10,7 +10,7 @@ import './profile.css';
 import { formatToDateAndTimeString } from '../../../lib/utils';
 
 //Components
-import Spinner from '../../../ui/components/Spinner';
+import Spinner from '../../components/common/Spinner';
 
 //Transactions
 import API from '../../../api/transactions';

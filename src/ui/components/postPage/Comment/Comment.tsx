@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
 // Utils
-import { formatToDateAndTimeString } from '../../../lib/utils';
+import { formatToDateAndTimeString } from '../../../../lib/utils/index';
 
 // Components
-import UserView from '../UserView/index';
+import UserView from '../../common/UserView';
 
 //Styles
 import './comment.css';

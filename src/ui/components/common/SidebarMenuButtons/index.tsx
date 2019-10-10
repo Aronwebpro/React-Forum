@@ -1,15 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
-//Api
-import {FlashMessageHandler} from '../../../lib/utils/FlashMessageHandler';
+// React Router
+import { Link } from 'react-router-dom';
+import { RouteChildrenProps } from 'react-router';
 
 //Style
 import './sidebarButtons.css';
 
-export default class SidebarButtons extends React.PureComponent {
-    render() {
+// Components
+import Message from '../common/Message';
+
+// @types
+type Props = RouteChildrenProps & {
+    reset: () => void
+    clearReply: () => void
+    respond: () => void
+    user: User
+    page: string
+}
+
+export default class SidebarButtons extends React.PureComponent<Props, {}> {
+    public static propTypes = {
+        user: PropTypes.object,
+        page: PropTypes.string,
+        respond: PropTypes.func,
+        clearReply: PropTypes.func,
+        reset: PropTypes.func,
+    };
+
+    public render() {
         return (
             <div className="navigation-buttons">
                 {this.sidebarButtons()}
@@ -17,19 +37,20 @@ export default class SidebarButtons extends React.PureComponent {
         )
     }
 
-    sidebarButtons = () => {
+    private sidebarButtons = () => {
         const {
             reset,
             user,
             page,
         } = this.props;
+
         switch (page) {
             case 'home' :
                 if (user) {
                     return (<Link to="/newPost" className="new-topic-button btn">New Discussion</Link>);
                 } else {
                     return (
-                        <Link to="/login" onClick={this.handleNewDiscussionWithouUser} className="new-topic-button btn">
+                        <Link to="/login" onClick={this.handleNewDiscussionWithoutUser} className="new-topic-button btn">
                             New Discussion
                         </Link>
                     );
@@ -68,23 +89,17 @@ export default class SidebarButtons extends React.PureComponent {
         }
     };
 
-    handleReplyWithUser = () => {
-        const {respond, clearReply} = this.props;
+    private handleReplyWithUser = () => {
+        const { respond, clearReply } = this.props;
         respond();
         clearReply();
     };
-    handleReplyWithoutUser = () => {
-        FlashMessageHandler.create('Sorry! If you want to write a comment, You have to Login!', 'error', false, '', window.location.to)
-    };
-    handleNewDiscussionWithouUser = () => {
-        FlashMessageHandler.create('Sorry! You have to login If you want to start new Discussion!', 'error', false, '', '/')
-    };
-};
 
-PropTypes.SidebarButtons = {
-    user: PropTypes.object,
-    page: PropTypes.string,
-    respond: PropTypes.func,
-    clearReply: PropTypes.func,
-    reset: PropTypes.func,
+    private handleReplyWithoutUser = () => {
+        Message.error('Sorry! If you want to write a comment, You have to Login!')
+    };
+
+    private handleNewDiscussionWithoutUser = () => {
+        Message.error('Sorry! You have to login If you want to start new Discussion!');
+    };
 };

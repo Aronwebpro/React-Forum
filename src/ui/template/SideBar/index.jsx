@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 import './side-bar.css';
 
 // Components
-import SidebarButtons from '../../components/SidebarButtons';
-import Spinner from '../../components/Spinner';
-import CategoryItem from '../../components/CategoryItem';
+import SidebarButtons from '../../components/common/SidebarMenuButtons';
+import Spinner from '../../components/common/Spinner';
+import CategoryItem from '../../components/template/CategoryItem';
 
 // Api
 import { getCategories } from '../../../api/lookups.js';

@@ -10,7 +10,7 @@ import { getCategories } from '../../../api/lookups';
 import SideBar from '../../template/SideBar/index';
 
 // Flash Message Handlers
-import { FlashMessage } from '../../../ui/components/FlashMessage/FlashMessage';
+import { FlashMessage } from '../../components/common/FlashMessage/FlashMessage';
 import { FlashMessageHandler } from '../../../lib/utils/FlashMessageHandler';
 
 export default class CreatePost extends Component {

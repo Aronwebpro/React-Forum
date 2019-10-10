@@ -2,9 +2,11 @@ declare type User = {
     uid: string
     authorName: string
     authorAvatar: string
-    memberSince: number // Date
+    memberSince: string // Date
     topics: number
     answers: number
+    lastReply: string
+    type: string
 }
 
 declare type Post = {
