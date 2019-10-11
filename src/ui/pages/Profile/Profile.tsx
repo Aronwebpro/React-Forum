@@ -1,18 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
-//User Messages
-import { FlashMessage } from '../../components/common/FlashMessage/FlashMessage';
-import { FlashMessageHandler } from '../../../lib/utils/FlashMessageHandler';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+
 //Styles
 import './profile.css';
-//Utils
+
+// Utils
 import { formatToDateAndTimeString } from '../../../lib/utils';
 
-//Components
+// Components
 import Spinner from '../../components/common/Spinner';
+import Message from '../../components/common/Message';
 
-//Transactions
+// Transactions
 import API from '../../../api/transactions';
 
 //Avatar Images
@@ -37,9 +36,30 @@ import face16 from '../../../img/16face.png';
 const facesRow1 = [face1, face2, face3, face4, face5, face6, face7, face8];
 const facesRow2 = [face9, face10, face11, face12, face13, face14, face15, face16];
 
-export default class Profile extends React.Component {
-    state = {
-        redirect: false,
+// @types
+type State = {
+    loading: boolean
+    showChangeAvatarBlock: boolean
+    updateAvatarLoader: boolean
+    authorAvatar: string
+    authorName: string
+}
+
+type Props = {
+    user: User
+}
+
+export default class Profile extends React.Component<Props, State> {
+    static propTypes = {
+        user: PropTypes.shape({
+            uid: PropTypes.string.isRequired,
+            authorName: PropTypes.string.isRequired,
+            authorAvatar: PropTypes.string.isRequired,
+        }),
+        params: PropTypes.object
+    };
+
+    public readonly state = {
         loading: false,
         showChangeAvatarBlock: false,
         updateAvatarLoader: false,
@@ -48,19 +68,15 @@ export default class Profile extends React.Component {
         authorName: '',
     };
 
-    render() {
+    public render() {
         const {
-            redirect,
             showChangeAvatarBlock,
             updateAvatarLoader,
             authorAvatar,
             authorName
         } = this.state;
-        return redirect ? (
-            <Redirect to="/"/>
-        ) : (
+        return (
             <div className="container">
-                {this.displayFlashMessageIfItSet()}
                 <div className="profile-content">
                     <div className="post-title forum-header">
                         <h2>Profile</h2>
@@ -98,7 +114,7 @@ export default class Profile extends React.Component {
                                 {authorAvatar ? (
                                     <img src={authorAvatar} alt=""/>
                                 ) : (
-                                    <Spinner/>
+                                    <Spinner screenWidth={false}/>
                                 )}
                             </div>
                         </div>
@@ -110,7 +126,10 @@ export default class Profile extends React.Component {
                                 <div className="form-wrapper">
                                     <div className="avatar-wrapper">
                                         <div className="avatar-title"><label>Choose Your New Avatar:</label></div>
-                                        <form className="register-avatar-form" ref={input => this.avatar = input}>
+                                        <form
+                                            className="register-avatar-form"
+                                            ref={this.avatar}
+                                        >
                                             <div className="avatar-row">
                                                 {facesRow1.map((face, i) => {
                                                     return (
@@ -128,9 +147,16 @@ export default class Profile extends React.Component {
                                                     return (
                                                         <div key={face} className="avatar-square">
                                                             <input type="radio" name="avatar" id={`img${i + 9}`} value={face}/>
-                                                            <label id="" htmlFor={`img${i + 9}`}
-                                                                   onClick={() => this.setCheckedAvatar(face)}><img src={face}
-                                                                                                                    alt=""/></label>
+                                                            <label
+                                                                id=""
+                                                                htmlFor={`img${i + 9}`}
+                                                                onClick={() => this.setCheckedAvatar(face)}
+                                                            >
+                                                                <img
+                                                                    src={face}
+                                                                    alt=""
+                                                                />
+                                                            </label>
                                                         </div>
                                                     );
                                                 })}
@@ -144,7 +170,7 @@ export default class Profile extends React.Component {
                                 <div className="edit-button-container">
                                     <button className="btn" onClick={this.updateAvatar}>Update Avatar</button>
                                     <div className="edit-button-inner">
-                                        {updateAvatarLoader && (<Spinner/>)}
+                                        {updateAvatarLoader && (<Spinner screenWidth={false}/>)}
                                     </div>
                                 </div>
                             </div>
@@ -155,64 +181,45 @@ export default class Profile extends React.Component {
         );
     }
 
-    componentDidMount() {
+    public isUnmount: boolean = false;
+
+    public componentDidMount() {
         if (window) {
             window.scrollTo(0, 0);
         }
         const { user } = this.props;
-        const { authorAvatar, authorName } = user || {};
+        const { authorAvatar, authorName } = user || {} as {};
         this.setState({ authorAvatar, authorName });
     }
 
-    componentWillUnmount() {
+    public componentWillUnmount() {
         this.isUnmount = true;
     }
 
-    //Avatar Handlers
-    handleChangeAvatarClick = () => this.setState({ showChangeAvatarBlock: true });
-    setCheckedAvatar = (url) => this.setState({ authorAvatar: url, flash: false });
+    private avatar: React.RefObject<any> = React.createRef();
 
-    updateAvatar = async () => {
+    // Avatar Handlers
+    private handleChangeAvatarClick = (): void => this.setState({ showChangeAvatarBlock: true });
+    private setCheckedAvatar = (url: string): void => this.setState({ authorAvatar: url });
+
+    // Handle Update Avatar
+    private updateAvatar = async (): Promise<void> => {
         this.setState({ updateAvatarLoader: true });
         const { authorAvatar } = this.state;
         const { uid } = this.props.user;
         const { error, result } = await API.updateUserAvatar({ uid, authorAvatar });
         if (error) {
-            this.setState({ displayFlashMessage: true, msg: error, status: 'error', updateAvatarLoader: false });
+            Message.error(error);
+            this.setState({ updateAvatarLoader: false });
         } else {
             window.scrollTo(0, 0);
+            Message.success('Settings has been Updated!');
+
             this.setState({
-                displayFlashMessage: true,
-                msg: 'Settings has been Updated!',
-                status: 'success',
                 updateAvatarLoader: false,
                 showChangeAvatarBlock: false,
                 authorAvatar,
             });
         }
-
-    };
-
-    //User Message Handler
-    displayFlashMessageIfItSet = () => {
-        const { msg, status, displayFlashMessage } = this.state;
-        if (displayFlashMessage) {
-            setTimeout(() => {
-                if (!this.isUnmount) {
-                    this.setState({ displayFlashMessage: false });
-                }
-                FlashMessageHandler.reset();
-            }, 2500);
-            return <FlashMessage {...{ msg, status }} />;
-        }
     };
 }
-
-Profile.propTypes = {
-    user: PropTypes.shape({
-        uid: PropTypes.string.isRequired,
-        authorName: PropTypes.string.isRequired,
-        authorAvatar: PropTypes.string.isRequired,
-    }.isRequired),
-    params: PropTypes.object
-};
