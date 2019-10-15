@@ -17,7 +17,7 @@ import AuthenticatedRoute from './ui/components/common/AuthenticatedRoute';
 
 // Components
 import Home from './ui/pages/Home/Home.tsx';
-import Notfound from './ui/pages/404/Notfound.jsx';
+import Notfound from './ui/pages/404/Notfound';
 import PostDetail from './ui/pages/PostDetail/PostDetail';
 import NewPost from './ui/pages/CreatePost/CreatePost';
 import Login from './ui/pages/Login/Login';

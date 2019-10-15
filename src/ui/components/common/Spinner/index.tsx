@@ -9,8 +9,8 @@ import img from './img/spinner.gif';
 
 // @types
 type Props = {
-    size: string
-    screenWidth: boolean
+    size?: string
+    screenWidth?: boolean
 }
 
 export default class Spinner extends React.PureComponent<Props, {}> {

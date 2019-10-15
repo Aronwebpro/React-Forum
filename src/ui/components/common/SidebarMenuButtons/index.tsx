@@ -9,7 +9,7 @@ import { RouteChildrenProps } from 'react-router';
 import './sidebarButtons.css';
 
 // Components
-import Message from '../common/Message';
+import Message from '../Message';
 
 // @types
 type Props = RouteChildrenProps & {

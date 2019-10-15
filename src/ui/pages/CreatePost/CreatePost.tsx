@@ -1,38 +1,46 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+
+// React router
+import { Redirect, withRouter } from 'react-router-dom';
+import { RouteChildrenProps } from 'react-router';
 
 // Api
 import API from '../../../api/transactions';
+
+// Lookups
 import { getCategories } from '../../../api/lookups';
 
 // Components
 import SideBar from '../../template/SideBar/index';
+import Message from '../../components/common/Message';
 
-// Flash Message Handlers
-import { FlashMessage } from '../../components/common/FlashMessage/FlashMessage';
-import { FlashMessageHandler } from '../../../lib/utils/FlashMessageHandler';
+// @types
+type Props = RouteChildrenProps & {
+    user: User
+}
 
-export default class CreatePost extends Component {
-    state = {
+type State = {
+    categories: any[] //TODO:
+}
+
+class CreatePost extends React.Component<Props, State> {
+    public static propTypes = {
+        user: PropTypes.object
+    };
+
+    public readonly state = {
         topics: [],
-        redirect: false,
-        redirectUrl: '',
-        flashMessage: {},
-        displayFlashMessage: false,
         loading: false,
         categories: [],
     };
 
     render() {
         const { user } = this.props;
-        const { redirect, redirectUrl, categories } = this.state;
-        return !user || redirect ? (
-            <Redirect to={redirectUrl || '/'}/>
-        ) : (
+        const { categories } = this.state;
+        return (
             <div id="home">
                 <div className="container">
-                    {this.displayFlashMessageIfItSet()}
                     <div className="left">
                         <SideBar page="new" {...{ user, categories }}/>
                     </div>
@@ -43,10 +51,18 @@ export default class CreatePost extends Component {
                         <div className="full-post new-post-body">
                             <form>
                                 <label htmlFor=""><h3>Title:</h3></label>
-                                <input type="text" name="title" ref={(input => this.title = input)}/>
+                                <input
+                                    type="text"
+                                    name="title"
+                                    ref={ this.title}
+                                />
                                 <div className="category-select">
                                     <label htmlFor=""><h3>Category</h3></label>
-                                    <select name="category" id="" ref={(input => this.category = input)}>
+                                    <select
+                                        name="category"
+                                        id=""
+                                        ref={this.category}
+                                    >
                                         <option value="">Select Category</option>
                                         <option value="Board Games">Board Games</option>
                                         <option value="Card Games">Card Games</option>
@@ -57,7 +73,11 @@ export default class CreatePost extends Component {
                                 </div>
                                 <div className="category-select">
                                     <label htmlFor=""><h3>Discussion Type</h3></label>
-                                    <select name="category" id="" ref={(input => this.type = input)}>
+                                    <select
+                                        name="category"
+                                        id=""
+                                        ref={this.type}
+                                    >
                                         <option value="">Select Type</option>
                                         <option value="announcement">Announcement</option>
                                         <option value="question">Question</option>
@@ -68,22 +88,21 @@ export default class CreatePost extends Component {
                                 <textarea
                                     name="Text"
                                     id=""
-                                    cols="30"
-                                    rows="10"
-                                    ref={(input => this.text = input)}
+                                    cols={30}
+                                    rows={10}
+                                    ref={this.text}
                                 />
                             </form>
                             <button className="btn" onClick={this.createPost} style={{ marginTop: '20px' }}>Post</button>
                         </div>
                     </div>
-
                 </div>
                 <div className="fl_c"/>
             </div>
         );
     }
 
-    async componentDidMount() {
+    public async componentDidMount() {
         const categories = await getCategories();
         if (!this.isUnmount) {
             this.setState({ categories });
@@ -94,56 +113,48 @@ export default class CreatePost extends Component {
         this.isUnmount = true;
     }
 
+    private isUnmount: boolean = false;
+    private title: React.RefObject<HTMLInputElement> = React.createRef();
+    private text: React.RefObject<HTMLTextAreaElement> = React.createRef();
+    private category: React.RefObject<HTMLSelectElement> = React.createRef();
+    private type: React.RefObject<HTMLSelectElement> = React.createRef();
+
     //This method creates new PostDetail, updates Posts Count, Creates new Flash Message in localStorage
     createPost = async () => {
-        const date = Date.now();
         const { uid } = this.props.user;
-        const categoryId = this.category.value.replace(/\s/g, '').toLowerCase();
+        const date = Date.now();
+        const categoryId = this.category.current &&
+            this.category.current.value.replace(/\s/g, '').toLowerCase();
 
-        //Data object to save to DB
+        // TODO: Handle Empty Values
+
+        // Construct post
         const post = {
-            category: this.category.value,
+            category: this.category.current && this.category.current.value,
             categoryId: categoryId,
             created: date,
             lastReply: date,
             lastUserId: uid,
             repliesCount: 0,
-            text: this.text.value,
-            title: this.title.value,
-            type: this.type.value,
+            text: this.text.current && this.text.current.value,
+            title: this.title.current && this.title.current.value,
+            type: this.type.current && this.type.current.value,
             userId: uid,
         };
 
         const { error, result } = await API.createPost({ post });
 
         if (error) {
-            this.setState({
-                displayFlashMessage: true,
-                flashMessage: { msg: 'Creating Post Failed :( ', status: 'error' }
-            });
+            Message.error('Creating Post Failed :(');
+            Message.error(error);
         } else {
-            //Create Flash message in DB Flash
-            FlashMessageHandler.create('Congrats! Your Post was Created!', 'success');
+            Message.success('Congrats! Your Post was Created!');
 
-            //Redirect to New PostDetail
-            this.setState({ url: '/PostDetail/' + result.postId, redirect: true });
-        }
-
-    };
-
-    displayFlashMessageIfItSet = () => {
-        const { displayFlashMessage, flashMessage } = this.state;
-        if (displayFlashMessage) {
-            setTimeout(() => {
-                this.setState({ displayFlashMessage: false });
-                FlashMessageHandler.reset();
-            }, 4000);
-            return (<FlashMessage {...flashMessage} />);
+            // Redirect to New Post Page
+            const { history } = this.props;
+            history.push(`/post/${result.postId}`);
         }
     };
 }
 
-CreatePost.propTypes = {
-    user: PropTypes.object
-};
-
+export default withRouter(CreatePost);
