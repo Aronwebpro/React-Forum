@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Router
-import { Redirect } from 'react-router-dom';
 import { RouteChildrenProps, RouteProps } from 'react-router';
 
 // Api
@@ -10,7 +9,7 @@ import {
     getPosts,
     getPostByCategory,
     getCategories
-} from '../../../api/lookups.js';
+} from '../../../api/lookups';
 
 // Utils
 import { get } from '../../../lib/utils';
