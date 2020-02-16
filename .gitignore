@@ -9,9 +9,10 @@
 # production
 /build
 
-# Rebase logins
+# Firebase
 /src/base.js
 /src/firebase.js
+src/._firebase.js
 
 # misc
 .DS_Store
